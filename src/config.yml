@@ -1,0 +1,30 @@
+# Item: Supported Items Below
+# All Tools, use MATERIAL_TOOL to denote
+# Eg: DIAMOND_PICKAXE
+
+# Item TODO
+
+# Reload plugin with /reloadItemRewardsQuest
+
+VampireBlade:
+  Name: "&4Vampire Blade"
+  Lore:
+    - "&6Ability: Gain half as much HP as you do damage."
+  Healing: 0.50
+
+ThorHammer:
+  Name: "&bThor's Hammer"
+  Lore:
+    - "&cAbility: Incur lightning upon your victims."
+
+GhastBow:
+  Name: "&3Ghast Bow"
+  Lore:
+    - "&eAbility: create explosions upon whom your arrow lands on"
+  Power: 4.0
+
+WitchScythe:
+  Name: "&aWitch's Scythe"
+  Lore:
+    - "&aAbility: inflict poison on your victims"
+  Seconds: 2
