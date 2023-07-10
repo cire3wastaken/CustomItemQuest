@@ -16,12 +16,14 @@ ThorHammer:
   Name: "&bThor's Hammer"
   Lore:
     - "&cAbility: Incur lightning upon your victims."
+  Damage: 2.0
 
 GhastBow:
   Name: "&3Ghast Bow"
   Lore:
     - "&eAbility: create explosions upon whom your arrow lands on"
   Power: 4.0
+  Damage: 3.0
 
 WitchScythe:
   Name: "&aWitch's Scythe"

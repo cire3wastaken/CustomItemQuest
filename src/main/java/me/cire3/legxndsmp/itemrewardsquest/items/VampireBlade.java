@@ -16,7 +16,7 @@ public class VampireBlade {
         this.name = plugin.getConfig().getString("VampireBlade.Name");
 
         for(String s : plugin.getConfig().getStringList("VampireBlade.Lore")){
-            lore.add(s.toLowerCase());
+            this.lore.add(s.toLowerCase());
         }
     }
 }

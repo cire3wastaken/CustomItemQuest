@@ -54,6 +54,10 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                     playerAttacker.getItemInHand().getType().equals(Material.GOLD_AXE))
                 {
                     playerAttacker.getWorld().strikeLightning(victim.getLocation());
+                    if(victim instanceof Player){
+                        Player target = (Player) victim;
+                        target.setHealth(target.getHealth() - ItemRewardsQuest.INSTANCE.thorHammer.damage);
+                    }
                 }
 
                 // Handles witch scythe

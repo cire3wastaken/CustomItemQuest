@@ -16,7 +16,7 @@ public class WitchScythe {
         this.name = plugin.getConfig().getString("WitchScythe.name");
 
         for(String s : plugin.getConfig().getStringList("WitchScythe.Lore")){
-            lore.add(s.toLowerCase());
+            this.lore.add(s.toLowerCase());
         }
     }
 }

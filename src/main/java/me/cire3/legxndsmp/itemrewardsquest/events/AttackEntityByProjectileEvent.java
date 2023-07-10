@@ -41,7 +41,7 @@ public class AttackEntityByProjectileEvent implements Listener {
                     playerShooter.getItemInHand().getType().equals(Material.BOW)){
                     playerShooter.getWorld().createExplosion(event.getEntity().getLocation(), (float) ItemRewardsQuest.INSTANCE.ghastBow.explosionPower);
 
-                    ((Player) event.getEntity()).setHealth(((Player) event.getEntity()).getHealth() - 2.0F);
+                    ((Player) event.getEntity()).setHealth(((Player) event.getEntity()).getHealth() - ItemRewardsQuest.INSTANCE.ghastBow.damage);
                 }
             }
         }

@@ -7,11 +7,15 @@ import me.cire3.legxndsmp.itemrewardsquest.items.ThorHammer;
 import me.cire3.legxndsmp.itemrewardsquest.items.VampireBlade;
 import me.cire3.legxndsmp.itemrewardsquest.items.WitchScythe;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import static org.bukkit.Bukkit.getOnlinePlayers;
 import static org.bukkit.Bukkit.getServer;
 
 public enum ItemRewardsQuest
@@ -34,6 +38,10 @@ public enum ItemRewardsQuest
 
         getServer().getPluginManager().registerEvents(new AttackEntityEvent(), plugin);
         getServer().getPluginManager().registerEvents(new AttackEntityByProjectileEvent(), plugin);
+
+        for(Player p : getOnlinePlayers()){
+            p.addAttachment(plugin);
+        }
     }
 
     public void enable(Plugin plugin){

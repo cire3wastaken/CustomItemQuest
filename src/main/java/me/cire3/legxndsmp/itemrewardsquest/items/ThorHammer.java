@@ -8,13 +8,15 @@ public class ThorHammer {
     public List<String> originalLore;
     public List<String> lore;
     public String name;
+    public double damage;
 
     public ThorHammer(Plugin plugin){
         this.originalLore = plugin.getConfig().getStringList("ThorHammer.Lore");
         this.name = plugin.getConfig().getString("ThorHammer.name");
+        this.damage = plugin.getConfig().getDouble("GhastBow.Damage");
 
         for(String s : plugin.getConfig().getStringList("ThorHammer.Lore")){
-            lore.add(s.toLowerCase());
+            this.lore.add(s.toLowerCase());
         }
     }
 }
