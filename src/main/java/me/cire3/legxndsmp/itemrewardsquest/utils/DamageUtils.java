@@ -1,6 +1,5 @@
 package me.cire3.legxndsmp.itemrewardsquest.utils;
 
-import com.sun.istack.internal.Nullable;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -57,7 +56,10 @@ public class DamageUtils {
                 (1 - Math.min(resistanceAmplifier, 5) / 5F));
     }
 
-    public static int getArmorToughness(@Nullable ItemStack item){
+    /**
+     * @param item - nullable
+     * */
+    public static int getArmorToughness(ItemStack item){
         Material material = item == null ? null : item.getType();
         if(material == null) return 0;
 
@@ -87,7 +89,10 @@ public class DamageUtils {
         return 1 + bonusEnchantDamage;
     }
 
-    public static int getArmorPoints(@Nullable ItemStack item) {
+    /**
+     * @param item - nullable
+     * */
+    public static int getArmorPoints(ItemStack item) {
         Material material = item == null ? null : item.getType();
         if(material == null) return 0;
 
