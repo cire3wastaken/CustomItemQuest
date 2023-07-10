@@ -14,3 +14,12 @@ permissions:
   itemrewardsquest.denied:
     description: Prevents this user from running itemrewardsquest commands
     default: true
+
+commands:
+  vampireblade:
+    description: Gives a specified player a vampire blade.
+    usage: /vampireblade [player]
+    permission: itemrewardsquest.giveitems
+    permission-message: You don't have itemrewardsquest.giveitems permission
+
+

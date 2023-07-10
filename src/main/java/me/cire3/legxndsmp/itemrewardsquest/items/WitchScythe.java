@@ -1,5 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
+import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuestInitializer;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
