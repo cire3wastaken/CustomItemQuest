@@ -3,12 +3,13 @@ package me.cire3.legxndsmp.itemrewardsquest.items;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuestInitializer;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WitchScythe {
     public double secondsOfEffect;
     public List<String> originalLore;
-    public List<String> lore;
+    public List<String> lore = new ArrayList<>();
     public String name;
 
     public WitchScythe(Plugin plugin){

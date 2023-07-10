@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class GhastBowCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
-        if(!commandSender.getName().equalsIgnoreCase("ghastbow")){
+        if(!command.getName().equalsIgnoreCase("ghastbow")){
             return false;
         }
         if(strings.length != 1){
@@ -22,27 +22,23 @@ public class GhastBowCommand implements CommandExecutor {
             return false;
         }
 
-        if(commandSender instanceof Player) {
-            Player sender = (Player) commandSender;
-            if(sender.hasPermission("itemrewardsquest.giveitems")){
-                ItemStack item = new ItemStack(Material.BOW);
-                ItemMeta meta = item.getItemMeta();
-                meta.setDisplayName(ColorUtils.toColor('&', ItemRewardsQuest.INSTANCE.ghastBow.name));
-                meta.setLore(ItemRewardsQuest.INSTANCE.ghastBow.originalLore);
-                item.setItemMeta(meta);
+        Player sender = (Player) commandSender;
+        if(sender.hasPermission("itemrewardsquest.giveitems")  || commandSender.isOp()){
+            ItemStack item = new ItemStack(Material.BOW);
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(ColorUtils.toColor('&', ItemRewardsQuest.INSTANCE.ghastBow.name));
+            meta.setLore(ItemRewardsQuest.INSTANCE.ghastBow.originalLore);
+            item.setItemMeta(meta);
 
-                Player target = Bukkit.getPlayer(strings[0]);
-                if (target == null) {
-                    sender.sendMessage(strings[0] + " is not online!");
-                    return false;
-                }
-
-                target.getInventory().addItem(item);
-                return true;
+            Player target = Bukkit.getPlayer(strings[0]);
+            if (target == null) {
+                sender.sendMessage(strings[0] + " is not online!");
+                return false;
             }
-            return false;
+
+            target.getInventory().addItem(item);
+            return true;
         }
         return false;
     }
-
 }

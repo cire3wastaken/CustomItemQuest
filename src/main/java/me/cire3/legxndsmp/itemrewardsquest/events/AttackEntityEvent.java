@@ -56,7 +56,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                     playerAttacker.getWorld().strikeLightning(victim.getLocation());
                     if(victim instanceof Player){
                         Player target = (Player) victim;
-                        target.setHealth(target.getHealth() - ItemRewardsQuest.INSTANCE.thorHammer.damage);
+                        target.setHealth(Math.min(target.getHealth() - ItemRewardsQuest.INSTANCE.thorHammer.damage, 20.0F));
                     }
                 }
 

@@ -2,10 +2,11 @@ package me.cire3.legxndsmp.itemrewardsquest.items;
 
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VampireBlade {
-    public List<String> lore;
+    public List<String> lore = new ArrayList<>();
     public List<String> originalLore;
     public double toBeHealed;
     public String name;

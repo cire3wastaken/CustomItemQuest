@@ -19,7 +19,7 @@ public class ReloadPluginCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
-        if(!commandSender.getName().equalsIgnoreCase("reloadItemRewardsQuest")){
+        if(!command.getName().equalsIgnoreCase("reloadItemRewardsQuest")){
             return false;
         }
         if(strings.length != 0){
@@ -27,15 +27,21 @@ public class ReloadPluginCommand implements CommandExecutor {
             return false;
         }
 
-        try {
-            plugin.reloadConfig();
-            return true;
-        } catch (Exception e){
-            commandSender.sendMessage("An error occurred, check logs");
-            plugin.getLogger().info(Arrays.toString(e.getStackTrace()));
+        if(commandSender.isOp() || commandSender instanceof Player){
+            if(commandSender.hasPermission("itemrewardsquest.reload") || commandSender.isOp()){
+                try {
+                    plugin.reloadConfig();
+                    return true;
+                } catch (Exception e){
+                    commandSender.sendMessage("An error occurred, check logs");
+                    plugin.getLogger().info(Arrays.toString(e.getStackTrace()));
 
-            return false;
+                    return false;
+                }
+            }
         }
+
+        return false;
     }
 
     public ReloadPluginCommand(ItemRewardsQuestInitializer plugin){

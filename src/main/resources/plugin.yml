@@ -10,7 +10,7 @@ permissions:
       itemrewardsquest.giveitems: true
   itemrewardsquest.giveitems:
     description: Gives access to run itemrewardsquest commands
-    default: false
+    default: op
   itemrewardsquest.denied:
     description: Prevents this user from running itemrewardsquest commands
     default: true
