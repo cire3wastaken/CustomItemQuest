@@ -21,5 +21,20 @@ commands:
     usage: /vampireblade [player]
     permission: itemrewardsquest.giveitems
     permission-message: You don't have itemrewardsquest.giveitems permission
+  ghastbow:
+    description: Gives a specified player a ghast bow.
+    usage: /ghastbow [player]
+    permission: itemrewardsquest.giveitems
+    permission-message: You don't have itemrewardsquest.giveitems permission
+  witchscythe:
+    description: Gives a specified player a witch scythe.
+    usage: /witchscythe [player]
+    permission: itemrewardsquest.giveitems
+    permission-message: You don't have itemrewardsquest.giveitems permission
+  thorhammer:
+    description: Gives a specified player a thor hammer.
+    usage: /thorhammer [player]
+    permission: itemrewardsquest.giveitems
+    permission-message: You don't have itemrewardsquest.giveitems permission
 
 
