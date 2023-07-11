@@ -75,7 +75,7 @@ public enum ItemRewardsQuest
     }
 
     private void register(ItemRewardsQuestInitializer plugin){
-        Bukkit.getLogger().info("Registering");
+        Bukkit.getLogger().info("Registering startup for ItemRewardsQuest");
         Bukkit.getServer().getPluginManager().registerEvents(new AttackEntityEvent(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new AttackEntityByProjectileEvent(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new ProjectileHitBlockEvent(), plugin);
@@ -94,6 +94,6 @@ public enum ItemRewardsQuest
         for(Player p : getOnlinePlayers()){
             p.addAttachment(plugin);
         }
-        Bukkit.getLogger().info("Registering finished");
+        Bukkit.getLogger().info("Registering for ItemRewardsQuest finished");
     }
 }
