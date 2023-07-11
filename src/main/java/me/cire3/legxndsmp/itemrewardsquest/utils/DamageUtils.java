@@ -35,6 +35,7 @@ public class DamageUtils {
     }
 
     public static float getAttackDamage(ItemStack itemStack) {
+        if(itemStack == null) return 0;
         Material item = itemStack.getType();
         float bonusEnchantDamage = 0;
         boolean hasEnchantSharpness = itemStack.getEnchantments().containsKey(Enchantment.DAMAGE_ALL);
@@ -63,7 +64,7 @@ public class DamageUtils {
      * @param item - nullable
      * */
     public static int getArmorPoints(ItemStack item) {
-        Material material = item == null ? null : item.getType();
+        Material material = (item == null ? null : item.getType());
         if(material == null) return 0;
 
         switch (material){
@@ -126,10 +127,17 @@ public class DamageUtils {
 
             int armorToughness = 0;
             for(ItemStack item : armor){
-                armorPoints = Math.max(armorPoints, DamageUtils.getArmorToughness(item));
+                armorToughness = Math.max(armorToughness, DamageUtils.getArmorToughness(item));
             }
 
             int epf = 0;
+            for(ItemStack item : armor){
+                if(item != null) {
+                    Map<Enchantment, Integer> enchants = item.getEnchantments();
+                    if (enchants.containsKey(Enchantment.PROTECTION_ENVIRONMENTAL))
+                        epf += item.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL);
+                }
+            }
 
             return new double[] {armorPoints, attackDamage, armorToughness, epf, amplifier};
         } else {
