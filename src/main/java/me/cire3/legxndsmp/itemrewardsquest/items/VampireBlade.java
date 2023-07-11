@@ -20,4 +20,14 @@ public class VampireBlade {
             this.lore.add(s.toLowerCase());
         }
     }
+
+    public void update(Plugin plugin){
+        this.originalLore = plugin.getConfig().getStringList("VampireBlade.Lore");
+        this.name = plugin.getConfig().getString("VampireBlade.Name");
+        this.toBeHealed = plugin.getConfig().getDouble("VampireBlade.Healing");
+
+        for(String s : plugin.getConfig().getStringList("VampireBlade.Lore")){
+            this.lore.add(s.toLowerCase());
+        }
+    }
 }

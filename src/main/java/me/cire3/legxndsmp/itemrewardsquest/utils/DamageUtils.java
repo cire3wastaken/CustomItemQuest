@@ -77,13 +77,23 @@ public class DamageUtils {
     public static float getAttackDamage(ItemStack itemStack) {
         Material item = itemStack.getType();
         float bonusEnchantDamage = 0;
-        boolean hasEnchant = itemStack.getEnchantments().containsKey(Enchantment.DAMAGE_ALL);
-        if(hasEnchant){
+        boolean hasEnchantSharpness = itemStack.getEnchantments().containsKey(Enchantment.DAMAGE_ALL);
+        boolean hasEnchantPower = itemStack.getEnchantments().containsKey(Enchantment.ARROW_DAMAGE);
+        if(hasEnchantSharpness){
             bonusEnchantDamage += 1F + (itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) - 1) * 0.5F;
+        }
+        if(hasEnchantPower){
+            bonusEnchantDamage += 0.25 * (itemStack.getEnchantmentLevel(Enchantment.ARROW_DAMAGE) + 1);
         }
 
         if(item.equals(Material.DIAMOND_SWORD)){
             return 7 + bonusEnchantDamage;
+        }
+        if(item.equals(Material.BOW)){
+            return 6 + bonusEnchantDamage;
+        }
+        if(item.equals(Material.GOLD_AXE)){
+
         }
 
         return 1 + bonusEnchantDamage;
@@ -126,6 +136,45 @@ public class DamageUtils {
                 return 4;
             default:
                 return 0;
+        }
+    }
+
+    public static float damageCalculator(Entity target, int attackDamage) {
+        if(target instanceof Player) {
+            Player playerTarget = (Player) target;
+            ItemStack helmet = playerTarget.getInventory().getHelmet();
+            ItemStack chestplate = playerTarget.getInventory().getChestplate();
+            ItemStack leggings = playerTarget.getInventory().getLeggings();
+            ItemStack boots = playerTarget.getInventory().getBoots();
+            ArrayList<ItemStack> armor = new ArrayList<>();
+            armor.add(helmet);
+            armor.add(chestplate);
+            armor.add(leggings);
+            armor.add(boots);
+
+            int armorPoints = 0;
+            for(ItemStack item : armor){
+                armorPoints = Math.max(armorPoints, DamageUtils.getArmorPoints(item));
+            }
+
+            int amplifier = 0;
+            for(PotionEffect effect : playerTarget.getActivePotionEffects()){
+                if(effect.getType() == PotionEffectType.DAMAGE_RESISTANCE){
+                    amplifier = Math.max(amplifier, effect.getAmplifier());
+                }
+            }
+
+            int armorToughness = 0;
+            for(ItemStack item : armor){
+                armorPoints = Math.max(armorPoints, DamageUtils.getArmorToughness(item));
+            }
+
+            int epf = 0;
+
+            return DamageUtils.calcDamage(armorPoints,
+                    attackDamage, armorToughness, epf, amplifier);
+        } else {
+            return DamageUtils.calcDamage(0, attackDamage, 0, 0, 0);
         }
     }
 }

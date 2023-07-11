@@ -31,6 +31,8 @@ public class ReloadPluginCommand implements CommandExecutor {
             if(commandSender.hasPermission("itemrewardsquest.reload") || commandSender.isOp()){
                 try {
                     plugin.reloadConfig();
+                    plugin.onDisable();
+                    plugin.onEnable();
                     return true;
                 } catch (Exception e){
                     commandSender.sendMessage("An error occurred, check logs");

@@ -14,7 +14,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class WitchScytheCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
+        if(!ItemRewardsQuest.INSTANCE.isEnabled){
+            commandSender.sendMessage("ItemRewardsQuest is currently disabled");
+            return true;
+        }
+
         if (!command.getName().equalsIgnoreCase("thorhammer")) {
+            commandSender.sendMessage("Unknown command");
             return false;
         }
         if (strings.length != 1) {
@@ -33,12 +39,13 @@ public class WitchScytheCommand implements CommandExecutor {
             Player target = Bukkit.getPlayer(strings[0]);
             if (target == null) {
                 sender.sendMessage(strings[0] + " is not online!");
-                return false;
+                return true;
             }
             target.getInventory().addItem(item);
             return true;
+        } else {
+            sender.sendMessage("You do not have ItemRewardsQuest.GiveItem permissions");
+            return true;
         }
-        sender.sendMessage("You do not have ItemRewardsQuest.GiveItem permissions");
-        return false;
     }
 }

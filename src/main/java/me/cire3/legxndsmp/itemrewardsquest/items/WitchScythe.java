@@ -21,4 +21,14 @@ public class WitchScythe {
             this.lore.add(s.toLowerCase());
         }
     }
+
+    public void update(Plugin plugin){
+        this.originalLore = plugin.getConfig().getStringList("WitchScythe.Lore");
+        this.name = plugin.getConfig().getString("WitchScythe.Name");
+        this.secondsOfEffect = plugin.getConfig().getDouble("WitchScythe.Seconds");
+
+        for(String s : plugin.getConfig().getStringList("WitchScythe.Lore")){
+            this.lore.add(s.toLowerCase());
+        }
+    }
 }

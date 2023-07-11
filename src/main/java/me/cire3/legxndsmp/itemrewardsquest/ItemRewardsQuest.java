@@ -81,6 +81,11 @@ public enum ItemRewardsQuest
         plugin.getCommand("thorhammer").setExecutor(this.thorHammerCommand);
         plugin.getCommand("witchscythe").setExecutor(this.witchScytheCommand);
 
+        this.thorHammer.update(this.plugin);
+        this.vampireBlade.update(this.plugin);
+        this.witchScythe.update(this.plugin);
+        this.ghastBow.update(this.plugin);
+
         for(Player p : getOnlinePlayers()){
             p.addAttachment(plugin);
         }

@@ -6,27 +6,43 @@
 
 # Reload plugin with /reloadItemRewardsQuest
 
+# Lore does not support color codes
+
 VampireBlade:
   Name: "&4Vampire Blade"
   Lore:
-    - "&6Ability: Gain half as much HP as you do damage."
+    - "Ability: Gain half as much HP as you do damage."
   Healing: 0.50
 
 ThorHammer:
   Name: "&bThor's Hammer"
   Lore:
-    - "&cAbility: Incur lightning upon your victims."
+    - "Ability: Incur lightning upon your victims."
   Damage: 2.0
+  IgnoreArmor: true
 
 GhastBow:
   Name: "&3Ghast Bow"
   Lore:
-    - "&eAbility: create explosions upon whom your arrow lands on"
+    - "Ability: create explosions upon whom your arrow lands on"
   Power: 4.0
   Damage: 3.0
+  IgnoreArmor: false
 
 WitchScythe:
   Name: "&aWitch's Scythe"
   Lore:
-    - "&aAbility: inflict poison on your victims"
+    - "Ability: inflict poison on your victims"
   Seconds: 2
+
+Hyperion:
+  Name: "&dHyperion"
+  Lore:
+    - "Ability: Teleport 10 blocks in the direction you are facing."
+    - "Then, implode, dealing X damage to nearby players."
+    - "Gain an absorption shield of 4 hearts, after which, lose the shield and heal for 2 hearts."
+    - "Cooldown: 10s"
+  Power: 6.0
+  Damage: 10.0
+  Radius: 6.0
+  IgnoreArmor: false

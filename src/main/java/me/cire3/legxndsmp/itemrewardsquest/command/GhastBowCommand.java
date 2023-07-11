@@ -14,7 +14,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class GhastBowCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
-        if(!command.getName().equalsIgnoreCase("ghastbow")){
+        if(!ItemRewardsQuest.INSTANCE.isEnabled){
+            commandSender.sendMessage("ItemRewardsQuest is currently disabled");
+            return true;
+        }
+
+        if(!command.getName().equalsIgnoreCase("ghastbow")) {
+            commandSender.sendMessage("Unknown command");
             return false;
         }
         if(strings.length != 1){
@@ -22,8 +28,8 @@ public class GhastBowCommand implements CommandExecutor {
             return false;
         }
 
-        Player sender = (Player) commandSender;
-        if(sender.hasPermission("itemrewardsquest.giveitems")  || commandSender.isOp()){
+
+        if(commandSender.hasPermission("itemrewardsquest.giveitems")  || commandSender.isOp()){
             ItemStack item = new ItemStack(Material.BOW);
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(ColorUtils.toColor('&', ItemRewardsQuest.INSTANCE.ghastBow.name));
@@ -32,13 +38,15 @@ public class GhastBowCommand implements CommandExecutor {
 
             Player target = Bukkit.getPlayer(strings[0]);
             if (target == null) {
-                sender.sendMessage(strings[0] + " is not online!");
-                return false;
+                commandSender.sendMessage(strings[0] + " is not online!");
+                return true;
             }
 
             target.getInventory().addItem(item);
             return true;
+        } else {
+            commandSender.sendMessage("You do not have ItemRewardsQuest.GiveItem permissions");
+            return true;
         }
-        return false;
     }
 }

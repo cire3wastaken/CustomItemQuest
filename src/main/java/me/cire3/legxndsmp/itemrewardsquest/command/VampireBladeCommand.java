@@ -15,6 +15,11 @@ import org.bukkit.plugin.Plugin;
 public class VampireBladeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
+        if(!ItemRewardsQuest.INSTANCE.isEnabled){
+            commandSender.sendMessage("ItemRewardsQuest is currently disabled");
+            return true;
+        }
+
         if(!command.getName().equalsIgnoreCase("vampireblade")){
             commandSender.sendMessage("Unknown command");
             return false;
