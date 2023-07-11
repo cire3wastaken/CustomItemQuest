@@ -1,7 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.events;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
-import me.cire3.legxndsmp.itemrewardsquest.utils.DamageUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -50,7 +49,7 @@ public class ProjectileHitBlockEvent implements Listener {
                     lowerCaseLore.add(str.toLowerCase());
                 }
 
-                if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.lore) &&
+                if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig) &&
                         playerShooter.getItemInHand().getType().equals(Material.BOW)){
                     if(hitBlock == null) return;
 
@@ -64,7 +63,7 @@ public class ProjectileHitBlockEvent implements Listener {
                         tnt.setCustomNameVisible(false);
                     } else {
                         playerShooter.getWorld().createExplosion(hitBlock.getLocation(),
-                                (float) ItemRewardsQuest.INSTANCE.ghastBow.explosionPower);
+                                (float) ItemRewardsQuest.INSTANCE.ghastBow.explosionPowerConfig);
                     }
                 }
             }

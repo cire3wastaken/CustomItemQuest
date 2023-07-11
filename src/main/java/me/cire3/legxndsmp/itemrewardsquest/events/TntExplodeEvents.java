@@ -43,7 +43,7 @@ public class TntExplodeEvents implements Listener {
             e.setCancelled(true);
             noDamageEntity.remove(entity.getUniqueId());
             if(entity instanceof LivingEntity){
-                ((LivingEntity) entity).damage(ItemRewardsQuest.INSTANCE.ghastBow.damage);
+                ((LivingEntity) entity).damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig);
             }
         }
     }

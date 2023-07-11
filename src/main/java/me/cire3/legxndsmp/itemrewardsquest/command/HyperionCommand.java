@@ -30,8 +30,8 @@ public class HyperionCommand implements CommandExecutor {
         if(commandSender.hasPermission("itemrewardsquest.giveitems")  || commandSender.isOp()){
             ItemStack item = new ItemStack(Material.IRON_SWORD);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(ColorUtils.toColor('&', ItemRewardsQuest.INSTANCE.ghastBow.name));
-            meta.setLore(ItemRewardsQuest.INSTANCE.ghastBow.originalLore);
+            meta.setDisplayName(ColorUtils.toColor('&', ItemRewardsQuest.INSTANCE.ghastBow.nameConfig));
+            meta.setLore(ItemRewardsQuest.INSTANCE.ghastBow.originalLoreConfig);
             item.setItemMeta(meta);
 
             Player target = Bukkit.getPlayer(strings[0]);

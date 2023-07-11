@@ -1,10 +1,8 @@
 package me.cire3.legxndsmp.itemrewardsquest.events;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
-import me.cire3.legxndsmp.itemrewardsquest.utils.DamageUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -13,8 +11,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.bukkit.Bukkit.getServer;
 
 public class AttackEntityByProjectileEvent implements Listener {
     //Handles ghast bow
@@ -44,7 +40,7 @@ public class AttackEntityByProjectileEvent implements Listener {
                     lowerCaseLore.add(str.toLowerCase());
                 }
 
-                if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.lore) &&
+                if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig) &&
                     playerShooter.getItemInHand().getType().equals(Material.BOW))
                 {
                     if(!ItemRewardsQuest.INSTANCE.ghastBow.explosion){
@@ -57,7 +53,7 @@ public class AttackEntityByProjectileEvent implements Listener {
                         tnt.setCustomNameVisible(false);
                     }
                 } else {
-                    playerShooter.getWorld().createExplosion(event.getEntity().getLocation(), (float) ItemRewardsQuest.INSTANCE.ghastBow.explosionPower);
+                    playerShooter.getWorld().createExplosion(event.getEntity().getLocation(), (float) ItemRewardsQuest.INSTANCE.ghastBow.explosionPowerConfig);
                 }
             }
         }

@@ -6,39 +6,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GhastBow {
-    public List<String> lore = new ArrayList<>();
-    public List<String> originalLore;
-    public String name;
-    public double damage;
-    public double explosionPower;
+    public List<String> loreConfig = new ArrayList<>();
+    public List<String> originalLoreConfig;
+    public String nameConfig;
+    public double damageConfig;
+    public double explosionPowerConfig;
     public boolean ignoreArmor;
     public boolean explosion;
 
     public GhastBow(Plugin plugin){
-        this.originalLore = plugin.getConfig().getStringList("GhastBow.Lore");
-        this.name = plugin.getConfig().getString("GhastBow.Name");
+        this.originalLoreConfig = plugin.getConfig().getStringList("GhastBow.Lore");
+        this.nameConfig = plugin.getConfig().getString("GhastBow.Name");
         this.ignoreArmor = plugin.getConfig().getBoolean("GhastBow.IgnoreArmor");
-        this.explosionPower = plugin.getConfig().getDouble("GhastBow.Power");
-        this.damage = plugin.getConfig().getDouble("GhastBow.Damage");
+        this.explosionPowerConfig = plugin.getConfig().getDouble("GhastBow.Power");
+        this.damageConfig = plugin.getConfig().getDouble("GhastBow.Damage");
         this.explosion = plugin.getConfig().getBoolean("GhastBow.Explosion");
-        this.lore = new ArrayList<>();
+        this.loreConfig = new ArrayList<>();
 
         for(String s : plugin.getConfig().getStringList("GhastBow.Lore")){
-            this.lore.add(s.toLowerCase());
+            this.loreConfig.add(s.toLowerCase());
         }
     }
 
     public void update(Plugin plugin){
-        this.originalLore = plugin.getConfig().getStringList("GhastBow.Lore");
-        this.name = plugin.getConfig().getString("GhastBow.Name");
-        this.explosionPower = plugin.getConfig().getDouble("GhastBow.Power");
+        this.originalLoreConfig = plugin.getConfig().getStringList("GhastBow.Lore");
+        this.nameConfig = plugin.getConfig().getString("GhastBow.Name");
+        this.explosionPowerConfig = plugin.getConfig().getDouble("GhastBow.Power");
         this.ignoreArmor = plugin.getConfig().getBoolean("GhastBow.IgnoreArmor");
         this.explosion = plugin.getConfig().getBoolean("GhastBow.Explosion");
-        this.damage = plugin.getConfig().getDouble("GhastBow.Damage");
-        this.lore = new ArrayList<>();
+        this.damageConfig = plugin.getConfig().getDouble("GhastBow.Damage");
+        this.loreConfig = new ArrayList<>();
 
         for(String s : plugin.getConfig().getStringList("GhastBow.Lore")){
-            this.lore.add(s.toLowerCase());
+            this.loreConfig.add(s.toLowerCase());
         }
     }
 }

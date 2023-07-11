@@ -43,7 +43,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if(hasStrength){
                 for(PotionEffect effect : playerAttacker.getActivePotionEffects()){
                     if(effect.getType().equals(PotionEffectType.INCREASE_DAMAGE)){
-                        strengthLevel = Math.max(strengthLevel, effect.getAmplifier());
+                        strengthLevel = Math.max(strengthLevel, effect.getAmplifier() + 1);
                     }
                 }
             }
@@ -62,11 +62,11 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                 playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
-                    (DamageUtils.calcDamage((int) calcs[0], calcs[1], (int) calcs[2], (int) calcs[3], (int) calcs[4])
-                        * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed * 0.5F),
+                    (Math.max(DamageUtils.calcDamage((int) calcs[0], calcs[1], 0, (int) calcs[3], (int) calcs[4])
+                        * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed * 0.75F, hasStrength ? 2.0F : 1.0F)),
                         20.0F));
-//                playerAttacker.getHealth() +
-//                    2 * DamageUtils.damageCalculator(victim, playerAttacker) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed
+//                  playerAttacker.getHealth() +
+//                      2 * DamageUtils.damageCalculator(victim, playerAttacker) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed
             }
 
             // Handles Thor Hammer
@@ -91,7 +91,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                     if(playerVictim.hasPotionEffect(PotionEffectType.POISON)){
                         playerVictim.removePotionEffect(PotionEffectType.POISON);
                     }
-                    playerVictim.addPotionEffect(new PotionEffect(PotionEffectType.POISON, (int) ItemRewardsQuest.INSTANCE.witchScythe.secondsOfEffect * 20, 2));
+                    playerVictim.addPotionEffect(new PotionEffect(PotionEffectType.POISON, (int) Math.ceil(ItemRewardsQuest.INSTANCE.witchScythe.secondsOfEffect * 20), 2));
                 }
             }
         }
