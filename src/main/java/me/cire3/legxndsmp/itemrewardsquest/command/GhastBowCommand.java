@@ -43,10 +43,9 @@ public class GhastBowCommand implements CommandExecutor {
             }
 
             target.getInventory().addItem(item);
-            return true;
         } else {
             commandSender.sendMessage("You do not have ItemRewardsQuest.GiveItem permissions");
-            return true;
         }
+        return true;
     }
 }

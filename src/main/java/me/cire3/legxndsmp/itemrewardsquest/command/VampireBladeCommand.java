@@ -29,8 +29,7 @@ public class VampireBladeCommand implements CommandExecutor {
             return false;
         }
 
-        Player sender = (Player) commandSender;
-        if(sender.hasPermission("itemrewardsquest.giveitems") || sender.isOp()){
+        if(commandSender.hasPermission("itemrewardsquest.giveitems") || commandSender.isOp()){
             ItemStack item = new ItemStack(Material.DIAMOND_SWORD);
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(ColorUtils.toColor('&', ItemRewardsQuest.INSTANCE.vampireBlade.name));
@@ -39,14 +38,14 @@ public class VampireBladeCommand implements CommandExecutor {
 
             Player target = Bukkit.getPlayer(strings[0]);
             if (target == null) {
-                sender.sendMessage(strings[0] + " is not online!");
+                commandSender.sendMessage(strings[0] + " is not online!");
                 return false;
             }
 
             target.getInventory().addItem(item);
             return true;
         }
-        sender.sendMessage("You do not have ItemRewardsQuest.GiveItem permissions");
+        commandSender.sendMessage("You do not have ItemRewardsQuest.GiveItem permissions");
         return false;
 
     }

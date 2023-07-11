@@ -28,8 +28,7 @@ public class WitchScytheCommand implements CommandExecutor {
             return false;
         }
 
-        Player sender = (Player) commandSender;
-        if (sender.hasPermission("itemrewardsquest.giveitems") || commandSender.isOp()) {
+        if (commandSender.hasPermission("itemrewardsquest.giveitems") || commandSender.isOp()) {
             ItemStack item = new ItemStack(Material.GOLD_HOE);
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(ColorUtils.toColor('&', ItemRewardsQuest.INSTANCE.witchScythe.name));
@@ -38,13 +37,13 @@ public class WitchScytheCommand implements CommandExecutor {
 
             Player target = Bukkit.getPlayer(strings[0]);
             if (target == null) {
-                sender.sendMessage(strings[0] + " is not online!");
+                commandSender.sendMessage(strings[0] + " is not online!");
                 return true;
             }
             target.getInventory().addItem(item);
             return true;
         } else {
-            sender.sendMessage("You do not have ItemRewardsQuest.GiveItem permissions");
+            commandSender.sendMessage("You do not have ItemRewardsQuest.GiveItem permissions");
             return true;
         }
     }
