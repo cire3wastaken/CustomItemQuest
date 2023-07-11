@@ -16,6 +16,7 @@ public class WitchScythe {
         this.originalLore = plugin.getConfig().getStringList("WitchScythe.Lore");
         this.secondsOfEffect = plugin.getConfig().getDouble("WitchScythe.Seconds");
         this.name = plugin.getConfig().getString("WitchScythe.name");
+        this.lore = new ArrayList<>();
 
         for(String s : plugin.getConfig().getStringList("WitchScythe.Lore")){
             this.lore.add(s.toLowerCase());
@@ -26,6 +27,7 @@ public class WitchScythe {
         this.originalLore = plugin.getConfig().getStringList("WitchScythe.Lore");
         this.name = plugin.getConfig().getString("WitchScythe.Name");
         this.secondsOfEffect = plugin.getConfig().getDouble("WitchScythe.Seconds");
+        this.lore = new ArrayList<>();
 
         for(String s : plugin.getConfig().getStringList("WitchScythe.Lore")){
             this.lore.add(s.toLowerCase());

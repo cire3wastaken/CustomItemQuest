@@ -6,6 +6,8 @@ import me.cire3.legxndsmp.itemrewardsquest.command.VampireBladeCommand;
 import me.cire3.legxndsmp.itemrewardsquest.command.WitchScytheCommand;
 import me.cire3.legxndsmp.itemrewardsquest.events.AttackEntityByProjectileEvent;
 import me.cire3.legxndsmp.itemrewardsquest.events.AttackEntityEvent;
+import me.cire3.legxndsmp.itemrewardsquest.events.ProjectileHitBlockEvent;
+import me.cire3.legxndsmp.itemrewardsquest.events.TntExplodeEvents;
 import me.cire3.legxndsmp.itemrewardsquest.items.GhastBow;
 import me.cire3.legxndsmp.itemrewardsquest.items.ThorHammer;
 import me.cire3.legxndsmp.itemrewardsquest.items.VampireBlade;
@@ -57,7 +59,7 @@ public enum ItemRewardsQuest
         this.isEnabled = true;
         this.plugin = plugin;
 
-        this.register(this.plugin);
+        this.register(plugin);
     }
 
     public void enable() {
@@ -73,8 +75,11 @@ public enum ItemRewardsQuest
     }
 
     private void register(ItemRewardsQuestInitializer plugin){
+        Bukkit.getLogger().info("Registering");
         Bukkit.getServer().getPluginManager().registerEvents(new AttackEntityEvent(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new AttackEntityByProjectileEvent(), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new ProjectileHitBlockEvent(), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new TntExplodeEvents(), plugin);
 
         plugin.getCommand("vampireblade").setExecutor(this.vampireBladeCommand);
         plugin.getCommand("ghastbow").setExecutor(this.ghastBowCommand);
@@ -89,5 +94,6 @@ public enum ItemRewardsQuest
         for(Player p : getOnlinePlayers()){
             p.addAttachment(plugin);
         }
+        Bukkit.getLogger().info("Registering finished");
     }
 }

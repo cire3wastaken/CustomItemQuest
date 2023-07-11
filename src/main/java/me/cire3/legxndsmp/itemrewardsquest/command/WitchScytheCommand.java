@@ -19,7 +19,7 @@ public class WitchScytheCommand implements CommandExecutor {
             return true;
         }
 
-        if (!command.getName().equalsIgnoreCase("thorhammer")) {
+        if (!command.getName().equalsIgnoreCase("witchscythe")) {
             commandSender.sendMessage("Unknown command");
             return false;
         }

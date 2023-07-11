@@ -12,6 +12,7 @@ public class GhastBow {
     public double damage;
     public double explosionPower;
     public boolean ignoreArmor;
+    public boolean explosion;
 
     public GhastBow(Plugin plugin){
         this.originalLore = plugin.getConfig().getStringList("GhastBow.Lore");
@@ -19,6 +20,8 @@ public class GhastBow {
         this.ignoreArmor = plugin.getConfig().getBoolean("GhastBow.IgnoreArmor");
         this.explosionPower = plugin.getConfig().getDouble("GhastBow.Power");
         this.damage = plugin.getConfig().getDouble("GhastBow.Damage");
+        this.explosion = plugin.getConfig().getBoolean("GhastBow.Explosion");
+        this.lore = new ArrayList<>();
 
         for(String s : plugin.getConfig().getStringList("GhastBow.Lore")){
             this.lore.add(s.toLowerCase());
@@ -30,7 +33,9 @@ public class GhastBow {
         this.name = plugin.getConfig().getString("GhastBow.Name");
         this.explosionPower = plugin.getConfig().getDouble("GhastBow.Power");
         this.ignoreArmor = plugin.getConfig().getBoolean("GhastBow.IgnoreArmor");
+        this.explosion = plugin.getConfig().getBoolean("GhastBow.Explosion");
         this.damage = plugin.getConfig().getDouble("GhastBow.Damage");
+        this.lore = new ArrayList<>();
 
         for(String s : plugin.getConfig().getStringList("GhastBow.Lore")){
             this.lore.add(s.toLowerCase());

@@ -28,6 +28,7 @@ GhastBow:
   Power: 4.0
   Damage: 3.0
   IgnoreArmor: false
+  Explosion: false
 
 WitchScythe:
   Name: "&aWitch's Scythe"

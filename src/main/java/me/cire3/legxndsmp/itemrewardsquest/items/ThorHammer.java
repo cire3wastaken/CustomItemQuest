@@ -16,6 +16,7 @@ public class ThorHammer {
         this.originalLore = plugin.getConfig().getStringList("ThorHammer.Lore");
         this.name = plugin.getConfig().getString("ThorHammer.name");
         this.damage = plugin.getConfig().getDouble("GhastBow.Damage");
+        this.lore = new ArrayList<>();
 
         for(String s : plugin.getConfig().getStringList("ThorHammer.Lore")){
             this.lore.add(s.toLowerCase());
@@ -27,6 +28,7 @@ public class ThorHammer {
         this.name = plugin.getConfig().getString("ThorHammer.Name");
         this.ignoreArmor = plugin.getConfig().getBoolean("ThorHammer.IgnoreArmor");
         this.damage = plugin.getConfig().getDouble("ThorHammer.Damage");
+        this.lore = new ArrayList<>();
 
         for(String s : plugin.getConfig().getStringList("ThorHammer.Lore")){
             this.lore.add(s.toLowerCase());

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VampireBlade {
-    public List<String> lore = new ArrayList<>();
+    public List<String> lore;
     public List<String> originalLore;
     public double toBeHealed;
     public String name;
@@ -15,6 +15,7 @@ public class VampireBlade {
         this.originalLore = plugin.getConfig().getStringList("VampireBlade.Lore");
         this.toBeHealed = plugin.getConfig().getDouble("VampireBlade.Healing");
         this.name = plugin.getConfig().getString("VampireBlade.Name");
+        this.lore = new ArrayList<>();
 
         for(String s : plugin.getConfig().getStringList("VampireBlade.Lore")){
             this.lore.add(s.toLowerCase());
@@ -25,6 +26,7 @@ public class VampireBlade {
         this.originalLore = plugin.getConfig().getStringList("VampireBlade.Lore");
         this.name = plugin.getConfig().getString("VampireBlade.Name");
         this.toBeHealed = plugin.getConfig().getDouble("VampireBlade.Healing");
+        this.lore = new ArrayList<>();
 
         for(String s : plugin.getConfig().getStringList("VampireBlade.Lore")){
             this.lore.add(s.toLowerCase());

@@ -1,5 +1,7 @@
 package me.cire3.legxndsmp.itemrewardsquest.utils;
 
+import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -9,9 +11,18 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 
 public class DamageUtils {
-    public static float damageCalculator(Entity target, Player attacker) {
+    public static double[] damageCalculator(Entity target, Player attacker) {
+        float bonusStrengthLevel = 0;
+        for(PotionEffect effect : attacker.getActivePotionEffects()){
+            if(effect.getType() == PotionEffectType.INCREASE_DAMAGE){
+                bonusStrengthLevel = Math.max(bonusStrengthLevel, effect.getAmplifier());
+            }
+        }
+
         if(target instanceof Player) {
             Player playerTarget = (Player) target;
             ItemStack helmet = playerTarget.getInventory().getHelmet();
@@ -24,9 +35,13 @@ public class DamageUtils {
             armor.add(leggings);
             armor.add(boots);
 
+            for(ItemStack item : armor){
+                Bukkit.getLogger().info("Armor Material: " + (item == null ? "nthn" : item.getType()));
+            }
+
             int armorPoints = 0;
             for(ItemStack item : armor){
-                armorPoints = Math.max(armorPoints, DamageUtils.getArmorPoints(item));
+                armorPoints += DamageUtils.getArmorPoints(item);
             }
 
             int amplifier = 0;
@@ -38,32 +53,45 @@ public class DamageUtils {
 
             int armorToughness = 0;
             for(ItemStack item : armor){
-                armorPoints = Math.max(armorPoints, DamageUtils.getArmorToughness(item));
+                if(item != null)
+                    armorPoints = Math.max(armorPoints, DamageUtils.getArmorToughness(item));
             }
 
             int epf = 0;
+            for(ItemStack item : armor){
+                if(item != null) {
+                    Map<Enchantment, Integer> enchants = item.getEnchantments();
+                    if (enchants.containsKey(Enchantment.PROTECTION_ENVIRONMENTAL))
+                        epf += item.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL);
+                }
+            }
 
-            return DamageUtils.calcDamage(armorPoints,
-                    getAttackDamage(attacker.getItemInHand()), armorToughness, epf, amplifier);
+            Bukkit.getLogger().info("Armor points: " +armorPoints);
+            Bukkit.getLogger().info("Attack Damage: " +getAttackDamage(attacker.getItemInHand()));
+            Bukkit.getLogger().info("Armor toughness: " + armorToughness);
+            Bukkit.getLogger().info("Epf: " + epf);
+            Bukkit.getLogger().info("Amplifier: " + amplifier);
+            Bukkit.getLogger().info("Final Damage: " + DamageUtils.calcDamage(armorPoints,
+                    getAttackDamage(attacker.getItemInHand()), armorToughness, epf, amplifier));
+            Bukkit.getLogger().info("Damage to heal: " + DamageUtils.calcDamage(armorPoints,
+                    getAttackDamage(attacker.getItemInHand()), armorToughness, epf, amplifier) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed );
+
+            return new double[]{armorPoints, getAttackDamage(attacker.getItemInHand()) * (bonusStrengthLevel * 1.30F),
+                        armorToughness, epf, amplifier};
         } else {
-            return DamageUtils.calcDamage(0, getAttackDamage(attacker.getItemInHand()), 0, 0, 0);
+            return new double[]{0, getAttackDamage(attacker.getItemInHand()) * (bonusStrengthLevel * 1.30F),
+                    0, 0, 0};
         }
     }
 
-    public static float calcDamage(int armorPoints, float weaponDamage, int armorToughness, int protectionEpf, int resistanceAmplifier){
-        return  (weaponDamage * (1 - Math.min(20, Math.max(armorPoints / 5F,
-                (armorPoints - weaponDamage)/(2 + armorToughness / 4F)))/25) * (1 - Math.min(protectionEpf, 20) / 25F) *
-                (1 - Math.min(resistanceAmplifier, 5) / 5F));
+    public static float calcDamage(int armorPoints, double weaponDamage, int armorToughness, int protectionEpf, int resistanceAmplifier){
+        return (float) (weaponDamage * (1 - Math.min(20, Math.max(armorPoints / 5F,
+            armorPoints - weaponDamage / (2 + armorToughness / 4F))) / 25) *
+                (1 - (resistanceAmplifier * 0.2)) * (1 - (Math.min(20.0, protectionEpf) / 25)));
     }
 
-    /**
-     * @param item - nullable
-     * */
     public static int getArmorToughness(ItemStack item){
-        Material material = item == null ? null : item.getType();
-        if(material == null) return 0;
-
-        switch (material){
+        switch (item.getType()){
             case DIAMOND_HELMET:
             case DIAMOND_CHESTPLATE:
             case DIAMOND_LEGGINGS:
@@ -80,7 +108,7 @@ public class DamageUtils {
         boolean hasEnchantSharpness = itemStack.getEnchantments().containsKey(Enchantment.DAMAGE_ALL);
         boolean hasEnchantPower = itemStack.getEnchantments().containsKey(Enchantment.ARROW_DAMAGE);
         if(hasEnchantSharpness){
-            bonusEnchantDamage += 1F + (itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) - 1) * 0.5F;
+            bonusEnchantDamage += (itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 1.25F);
         }
         if(hasEnchantPower){
             bonusEnchantDamage += 0.25 * (itemStack.getEnchantmentLevel(Enchantment.ARROW_DAMAGE) + 1);
@@ -139,7 +167,7 @@ public class DamageUtils {
         }
     }
 
-    public static float damageCalculator(Entity target, int attackDamage) {
+    public static double[] damageCalculator(Entity target, double attackDamage) {
         if(target instanceof Player) {
             Player playerTarget = (Player) target;
             ItemStack helmet = playerTarget.getInventory().getHelmet();
@@ -171,10 +199,9 @@ public class DamageUtils {
 
             int epf = 0;
 
-            return DamageUtils.calcDamage(armorPoints,
-                    attackDamage, armorToughness, epf, amplifier);
+            return new double[] {armorPoints, attackDamage, armorToughness, epf, amplifier};
         } else {
-            return DamageUtils.calcDamage(0, attackDamage, 0, 0, 0);
+            return new double[] {0, attackDamage, 0, 0, 0};
         }
     }
 }

@@ -4,28 +4,34 @@ import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import me.cire3.legxndsmp.itemrewardsquest.utils.DamageUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.bukkit.Bukkit.getServer;
-
-public class AttackEntityByProjectileEvent implements Listener {
-    //Handles ghast bow
-
+public class ProjectileHitBlockEvent implements Listener {
     @EventHandler
-    public void onAttackEntityByProjectile(EntityDamageByEntityEvent event) {
-        if(!ItemRewardsQuest.INSTANCE.isEnabled) return;
+    public void onProjectileHitEvent(ProjectileHitEvent event){
+        BlockIterator iterator = new BlockIterator(event.getEntity().getWorld(),
+                event.getEntity().getLocation().toVector(), event.getEntity().getVelocity().normalize(),
+                0.0D, 4);
+        Block hitBlock = null;
 
-        if (event.getDamager() instanceof Projectile) {
-            Projectile damager = (Projectile) event.getDamager();
-            LivingEntity shooter = (LivingEntity) damager.getShooter();
+        while (iterator.hasNext()) {
+            hitBlock = iterator.next();
+
+            if (hitBlock.getType() != Material.AIR) {
+                break;
+            }
+        }
+        if (event.getEntity() instanceof Arrow) {
+            LivingEntity shooter = (LivingEntity) event.getEntity().getShooter();
 
             if (shooter instanceof Player) {
                 Player playerShooter = (Player) shooter;
@@ -45,19 +51,21 @@ public class AttackEntityByProjectileEvent implements Listener {
                 }
 
                 if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.lore) &&
-                    playerShooter.getItemInHand().getType().equals(Material.BOW))
-                {
+                        playerShooter.getItemInHand().getType().equals(Material.BOW)){
+                    if(hitBlock == null) return;
+
                     if(!ItemRewardsQuest.INSTANCE.ghastBow.explosion){
                         World world = playerShooter.getWorld();
-                        Location location = event.getEntity().getLocation(); ;
+                        Location location = event.getEntity().getLocation();
 
                         TNTPrimed tnt = world.spawn(location, TNTPrimed.class);
                         tnt.setFuseTicks(1);
                         tnt.setCustomName("GhastTNT");
                         tnt.setCustomNameVisible(false);
+                    } else {
+                        playerShooter.getWorld().createExplosion(hitBlock.getLocation(),
+                                (float) ItemRewardsQuest.INSTANCE.ghastBow.explosionPower);
                     }
-                } else {
-                    playerShooter.getWorld().createExplosion(event.getEntity().getLocation(), (float) ItemRewardsQuest.INSTANCE.ghastBow.explosionPower);
                 }
             }
         }
