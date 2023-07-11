@@ -47,7 +47,20 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.vampireBlade.lore) &&
                 playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
+                boolean hasStrength = playerAttacker.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE);
+                int strengthLevel = 0;
+                if(hasStrength){
+                    for(PotionEffect effect : playerAttacker.getActivePotionEffects()){
+                        if(effect.getType().equals(PotionEffectType.INCREASE_DAMAGE)){
+                            strengthLevel = Math.max(strengthLevel, effect.getAmplifier());
+                        }
+                    }
+                }
+                float strengthIncrease = 1.0F + 1.3F * strengthLevel;
+
                 double[] calcs = DamageUtils.damageCalculator(victim, event.getFinalDamage());
+                calcs[1] = calcs[1] * strengthIncrease;
+
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
                     DamageUtils.calcDamage((int) calcs[0], calcs[1], (int) calcs[2], (int) calcs[3], (int) calcs[4])
                         * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed,
