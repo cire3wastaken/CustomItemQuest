@@ -91,7 +91,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                     if(playerVictim.hasPotionEffect(PotionEffectType.POISON)){
                         playerVictim.removePotionEffect(PotionEffectType.POISON);
                     }
-                    playerVictim.addPotionEffect(new PotionEffect(PotionEffectType.POISON, (int) ItemRewardsQuest.INSTANCE.witchScythe.secondsOfEffect * 60, 2));
+                    playerVictim.addPotionEffect(new PotionEffect(PotionEffectType.POISON, (int) ItemRewardsQuest.INSTANCE.witchScythe.secondsOfEffect * 20, 2));
                 }
             }
         }
