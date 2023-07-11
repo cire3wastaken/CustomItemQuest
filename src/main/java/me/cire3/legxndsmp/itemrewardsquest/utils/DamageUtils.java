@@ -22,6 +22,7 @@ public class DamageUtils {
     }
 
     public static int getArmorToughness(ItemStack item){
+        if(item == null) return 0;
         switch (item.getType()){
             case DIAMOND_HELMET:
             case DIAMOND_CHESTPLATE:
@@ -52,7 +53,7 @@ public class DamageUtils {
             return 6 + bonusEnchantDamage;
         }
         if(item.equals(Material.GOLD_AXE)){
-
+            return 3 + bonusEnchantDamage;
         }
 
         return 1 + bonusEnchantDamage;
