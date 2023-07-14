@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ConvertCommand implements CommandExecutor {
-    public static final String OLD_VAMPBLADE_LORE = "Ability: gain half as much HP as you do damage";
+    public static final String OLD_VAMPBLADE_LORE = "&6Ability: gain half as much HP as you do damage";
     public static final String OLD_GHASTBOW_LORE = "&eAbility: create explosions upon whom your arrow lands on";
     public static final String OLD_THORHAMMER_LORE = "&cAbility: incur lightning upon your victims";
     public static final String OLD_WITCHSCYTHE_LORE = "&aAbility: inflict poison on your victims";
