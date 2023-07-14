@@ -24,7 +24,7 @@ public class VampireBlade {
         this.toBeHealed = config.getDouble("VampireBlade.Healing");
         this.lore = new ArrayList<>();
 
-        for(String s : config.getStringList("VampireBlade.Lore")){
+        for(String s : ColorUtils.color(config.getStringList("VampireBlade.Lore"))){
             this.lore.add(s.toLowerCase());
         }
     }

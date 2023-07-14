@@ -1,6 +1,7 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuestInitializer;
+import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -36,7 +37,7 @@ public class Hyperion {
         this.ignoreArmor = config.getBoolean("Hyperion.IgnoreArmor");
         this.lore = new ArrayList<>();
 
-        for(String s : config.getStringList("Hyperion.Lore")){
+        for(String s : ColorUtils.color(config.getStringList("Hyperion.Lore"))){
             this.lore.add(s.toLowerCase());
         }
     }

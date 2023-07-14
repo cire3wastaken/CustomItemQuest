@@ -1,5 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
+import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -26,7 +27,7 @@ public class ThorHammer {
         this.damage = config.getDouble("ThorHammer.Damage");
         this.lore = new ArrayList<>();
 
-        for(String s : config.getStringList("ThorHammer.Lore")){
+        for(String s : ColorUtils.color(config.getStringList("ThorHammer.Lore"))){
             this.lore.add(s.toLowerCase());
         }
     }

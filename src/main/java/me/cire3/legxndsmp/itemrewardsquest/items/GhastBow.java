@@ -1,5 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
+import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -29,7 +30,7 @@ public class GhastBow {
         this.damageConfig = configuration.getDouble("GhastBow.Damage");
         this.loreConfig = new ArrayList<>();
 
-        for(String s : configuration.getStringList("GhastBow.Lore")){
+        for(String s : ColorUtils.color(configuration.getStringList("GhastBow.Lore"))){
             this.loreConfig.add(s.toLowerCase());
         }
     }
