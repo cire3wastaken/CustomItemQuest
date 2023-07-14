@@ -56,37 +56,35 @@ public class ConvertCommand implements CommandExecutor {
                 }
 
                 ItemMeta meta = target.getItemInHand().getItemMeta();
-                for(String lore : OLD_LORE){
-                    if(meta.getLore().contains(lore)){
-                        target.getItemInHand().setType(Material.AIR);
-                        switch(lore){
-                            case OLD_GHASTBOW_LORE:
-                            {
-                                ItemRewardsQuest.INSTANCE.ghastBowCommand.giveItem(target, new String[]{
-                                        target.getName()
-                                });
+                for(String str : meta.getLore()){
+                    for(String lore : OLD_LORE) {
+                        if (str.equalsIgnoreCase(lore)) {
+                            target.getItemInHand().setType(Material.AIR);
+                            switch (lore) {
+                                case OLD_GHASTBOW_LORE: {
+                                    ItemRewardsQuest.INSTANCE.ghastBowCommand.giveItem(target, new String[]{
+                                            target.getName()
+                                    });
+                                }
+                                case OLD_VAMPBLADE_LORE: {
+                                    ItemRewardsQuest.INSTANCE.vampireBladeCommand.giveItem(target, new String[]{
+                                            target.getName()
+                                    });
+                                }
+                                case OLD_THORHAMMER_LORE: {
+                                    ItemRewardsQuest.INSTANCE.thorHammerCommand.giveItem(target, new String[]{
+                                            target.getName()
+                                    });
+                                }
+                                case OLD_WITCHSCYTHE_LORE: {
+                                    ItemRewardsQuest.INSTANCE.witchScytheCommand.giveItem(target, new String[]{
+                                            target.getName()
+                                    });
+                                }
                             }
-                            case OLD_VAMPBLADE_LORE:
-                            {
-                                ItemRewardsQuest.INSTANCE.vampireBladeCommand.giveItem(target, new String[]{
-                                        target.getName()
-                                });
-                            }
-                            case OLD_THORHAMMER_LORE:
-                            {
-                                ItemRewardsQuest.INSTANCE.thorHammerCommand.giveItem(target, new String[]{
-                                        target.getName()
-                                });
-                            }
-                            case OLD_WITCHSCYTHE_LORE:
-                            {
-                                ItemRewardsQuest.INSTANCE.witchScytheCommand.giveItem(target, new String[]{
-                                        target.getName()
-                                });
-                            }
+                            target.sendMessage(ChatColor.GREEN + "Successfully updated the item!");
+                            break;
                         }
-                        target.sendMessage(ChatColor.GREEN + "Successfully updated the item!");
-                        break;
                     }
                 }
 
