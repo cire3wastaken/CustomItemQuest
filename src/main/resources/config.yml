@@ -37,7 +37,7 @@ ThorHammer:
 GhastBow:
   Name: "&3Ghast Bow"
   Lore:
-    - "&6Ability: RIGHT CLICK"
+    - "&6Ability: &eRIGHT CLICK"
     - "&fCreate an &cexplosion &fupon where your &7arrow lands"
   Power: 1.0
   Damage: 3.0
