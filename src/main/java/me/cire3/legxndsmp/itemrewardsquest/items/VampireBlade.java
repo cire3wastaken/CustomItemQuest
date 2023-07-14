@@ -1,5 +1,8 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
+import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -11,24 +14,17 @@ public class VampireBlade {
     public double toBeHealed;
     public String name;
 
-    public VampireBlade(Plugin plugin){
-        this.originalLore = plugin.getConfig().getStringList("VampireBlade.Lore");
-        this.toBeHealed = plugin.getConfig().getDouble("VampireBlade.Healing");
-        this.name = plugin.getConfig().getString("VampireBlade.Name");
-        this.lore = new ArrayList<>();
-
-        for(String s : plugin.getConfig().getStringList("VampireBlade.Lore")){
-            this.lore.add(s.toLowerCase());
-        }
+    public VampireBlade(FileConfiguration config){
+        this.update(config);
     }
 
-    public void update(Plugin plugin){
-        this.originalLore = plugin.getConfig().getStringList("VampireBlade.Lore");
-        this.name = plugin.getConfig().getString("VampireBlade.Name");
-        this.toBeHealed = plugin.getConfig().getDouble("VampireBlade.Healing");
+    public void update(FileConfiguration config){
+        this.originalLore = config.getStringList("VampireBlade.Lore");
+        this.name = config.getString("VampireBlade.Name");
+        this.toBeHealed = config.getDouble("VampireBlade.Healing");
         this.lore = new ArrayList<>();
 
-        for(String s : plugin.getConfig().getStringList("VampireBlade.Lore")){
+        for(String s : config.getStringList("VampireBlade.Lore")){
             this.lore.add(s.toLowerCase());
         }
     }

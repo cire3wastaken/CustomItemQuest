@@ -1,9 +1,10 @@
-package me.cire3.legxndsmp.itemrewardsquest.command;
+package me.cire3.legxndsmp.itemrewardsquest.command.server;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuestInitializer;
 import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,28 +23,21 @@ public class ReloadPluginCommand implements CommandExecutor {
         if(!command.getName().equalsIgnoreCase("reloadItemRewardsQuest")){
             return false;
         }
-        if(strings.length != 0){
-            commandSender.sendMessage("This command requires no arguments");
-            return false;
-        }
 
-        if(commandSender.isOp() || commandSender instanceof Player){
-            if(commandSender.hasPermission("itemrewardsquest.reload") || commandSender.isOp()){
-                try {
-                    plugin.reloadConfig();
-                    plugin.onDisable();
-                    plugin.onEnable();
-                    return true;
-                } catch (Exception e){
-                    commandSender.sendMessage("An error occurred, check logs");
-                    plugin.getLogger().info(Arrays.toString(e.getStackTrace()));
-
-                    return false;
-                }
+        if(commandSender.isOp() || commandSender.hasPermission("itemrewardsquest.reload")){
+            try {
+                plugin.reloadConfig();
+                plugin.onDisable();
+                plugin.onEnable();
+                commandSender.sendMessage(ChatColor.GREEN + "Successfully reloaded ItemRewardsQuest!");
+            } catch (Exception e){
+                commandSender.sendMessage(ChatColor.DARK_RED + "An error occurred");
+                plugin.getLogger().info(Arrays.toString(e.getStackTrace()));
             }
+        } else {
+            commandSender.sendMessage(ChatColor.DARK_RED + "You do not have itemrewardsquest.reload permission!");
         }
-
-        return false;
+        return true;
     }
 
     public ReloadPluginCommand(ItemRewardsQuestInitializer plugin){

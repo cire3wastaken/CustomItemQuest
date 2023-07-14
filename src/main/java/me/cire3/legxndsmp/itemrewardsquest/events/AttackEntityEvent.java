@@ -1,16 +1,14 @@
 package me.cire3.legxndsmp.itemrewardsquest.events;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
-import me.cire3.legxndsmp.itemrewardsquest.items.VampireBlade;
 import me.cire3.legxndsmp.itemrewardsquest.utils.DamageUtils;
-import org.bukkit.Bukkit;
+import me.cire3.legxndsmp.itemrewardsquest.utils.PlayerUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -22,11 +20,17 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
     public void onEntityAttack(EntityDamageByEntityEvent event) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled) return;
 
-        Entity attacker = event.getDamager();
-        Entity victim = event.getEntity();
+        if(event.getDamager() instanceof Player) {
+            Player playerAttacker = (Player) event.getDamager();
+            if(PlayerUtils.isInNonPvpRegion(playerAttacker) ||
+                    PlayerUtils.isInProtectedRegion(playerAttacker))
+            {
+                playerAttacker.sendMessage(ChatColor.RED + "You can not use that item here!");
+                return;
+            }
 
-        if(attacker instanceof Player) {
-            Player playerAttacker = (Player) attacker;
+            Entity victim = event.getEntity();
+
             //null checks
             if(playerAttacker.getItemInHand() == null){
                 return;
@@ -38,19 +42,8 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                 return;
             }
 
-            boolean hasStrength = playerAttacker.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE);
-            int strengthLevel = 0;
-            if(hasStrength){
-                for(PotionEffect effect : playerAttacker.getActivePotionEffects()){
-                    if(effect.getType().equals(PotionEffectType.INCREASE_DAMAGE)){
-                        strengthLevel = Math.max(strengthLevel, effect.getAmplifier() + 1);
-                    }
-                }
-            }
-            float strengthIncrease = 1.0F + 1.3F * strengthLevel;
-
-            double[] calcs = DamageUtils.damageCalculator(victim, event.getFinalDamage() - 2);
-            calcs[1] = calcs[1] * strengthIncrease;
+            double[] c = DamageUtils.damageCalculator(victim, event.getFinalDamage() - 2);
+            c[1] = c[1] * DamageUtils.strengthIncrease(playerAttacker);
 
             List<String> lowerCaseLore = new ArrayList<>();
             for(String str : playerAttacker.getItemInHand().getItemMeta().getLore()){
@@ -62,9 +55,11 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                 playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
-                    (Math.max(DamageUtils.calcDamage((int) calcs[0], calcs[1], 0, (int) calcs[3], (int) calcs[4])
-                        * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed * 0.75F, hasStrength ? 2.0F : 1.0F)),
-                        20.0F));
+                    (Math.max(DamageUtils.calcDamage((int) c[0], c[1], 0, (int) c[3],
+                        (int) c[4]) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed,
+                            playerAttacker.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE) ?
+                                (Math.random() >= 0.5 ? 2.0F : 1.0F) :
+                                    (Math.random() >= 0.5 ? 1.5F : 1.0F))), 20.0F));
 //                  playerAttacker.getHealth() +
 //                      2 * DamageUtils.damageCalculator(victim, playerAttacker) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed
             }
@@ -76,8 +71,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                 playerAttacker.getWorld().strikeLightning(victim.getLocation());
                 if(victim instanceof Player){
                     Player target = (Player) victim;
-                    target.setHealth(Math.max(target.getHealth() - ItemRewardsQuest.INSTANCE.thorHammer.damage, 0.0F));
-                    target.setFireTicks((int) (Math.random() * 100));
+                    target.setFireTicks(((int) Math.floor(ItemRewardsQuest.INSTANCE.thorHammer.fireTicks)));
                 }
             }
 
@@ -91,7 +85,8 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                     if(playerVictim.hasPotionEffect(PotionEffectType.POISON)){
                         playerVictim.removePotionEffect(PotionEffectType.POISON);
                     }
-                    playerVictim.addPotionEffect(new PotionEffect(PotionEffectType.POISON, (int) Math.ceil(ItemRewardsQuest.INSTANCE.witchScythe.secondsOfEffect * 20), 2));
+                    playerVictim.addPotionEffect(new PotionEffect(PotionEffectType.POISON,
+                        (int) Math.ceil(ItemRewardsQuest.INSTANCE.witchScythe.secondsOfEffect * 20), 4));
                 }
             }
         }

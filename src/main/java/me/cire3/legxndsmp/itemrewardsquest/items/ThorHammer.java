@@ -1,5 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -11,26 +12,21 @@ public class ThorHammer {
     public boolean ignoreArmor;
     public String name;
     public double damage;
+    public double fireTicks;
 
-    public ThorHammer(Plugin plugin){
-        this.originalLore = plugin.getConfig().getStringList("ThorHammer.Lore");
-        this.name = plugin.getConfig().getString("ThorHammer.name");
-        this.damage = plugin.getConfig().getDouble("GhastBow.Damage");
-        this.lore = new ArrayList<>();
-
-        for(String s : plugin.getConfig().getStringList("ThorHammer.Lore")){
-            this.lore.add(s.toLowerCase());
-        }
+    public ThorHammer(FileConfiguration config){
+        this.update(config);
     }
 
-    public void update(Plugin plugin){
-        this.originalLore = plugin.getConfig().getStringList("ThorHammer.Lore");
-        this.name = plugin.getConfig().getString("ThorHammer.Name");
-        this.ignoreArmor = plugin.getConfig().getBoolean("ThorHammer.IgnoreArmor");
-        this.damage = plugin.getConfig().getDouble("ThorHammer.Damage");
+    public void update(FileConfiguration config){
+        this.originalLore = config.getStringList("ThorHammer.Lore");
+        this.name = config.getString("ThorHammer.Name");
+        this.ignoreArmor = config.getBoolean("ThorHammer.IgnoreArmor");
+        this.fireTicks = config.getDouble("ThorHammer.FireSeconds") * 20;
+        this.damage = config.getDouble("ThorHammer.Damage");
         this.lore = new ArrayList<>();
 
-        for(String s : plugin.getConfig().getStringList("ThorHammer.Lore")){
+        for(String s : config.getStringList("ThorHammer.Lore")){
             this.lore.add(s.toLowerCase());
         }
     }

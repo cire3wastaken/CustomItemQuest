@@ -2,6 +2,7 @@ name: ItemRewardsQuests # the plugins name as it should appear in the plugin lis
 version: 1.0 # the plugin's version
 author: cire3
 main: me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuestInitializer
+depend: [WorldGuard]
 
 permissions:
   itemrewardsquest.*:
@@ -16,6 +17,12 @@ permissions:
     default: true
   itemrewardsquest.reload:
     description: Allows this user to reload the plugin
+    default: op
+  itemrewardsquest.updateitems:
+    description: Allows this user to update their items
+    default: true
+  itemrewardsquest.addregions:
+    description: Allows this user to add protected regions
     default: op
 
 commands:
@@ -39,9 +46,17 @@ commands:
     usage: /thorhammer [player]
     permission: itemrewardsquest.giveitems
     permission-message: You don't have itemrewardsquest.giveitems permission
+  hyperionblade:
+    description: Gives a specified player a hyperion.
+    usage: /hyperionblade [player]
+    permission: itemrewardsquest.giveitems
+    permission-message: You don't have itemrewardsquest.giveitems permission
   reloaditemrewardsquest:
     description: Reloads config files and the plugin
     usage: /reloaditemrewardsquest
     permission: itemrewardsquest.reload
-
-
+  updateitem:
+    description: Update old item to new one
+    usage: /updateitem
+    permission: itemrewardsquest.updateitems
+    permission-message: You don't have itemrewardsquest.updateitems permission

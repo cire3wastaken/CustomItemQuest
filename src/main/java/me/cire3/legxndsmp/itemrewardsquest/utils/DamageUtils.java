@@ -21,6 +21,10 @@ public class DamageUtils {
                 (1 - (resistanceAmplifier * 0.2)) * (1 - (Math.min(20.0, protectionEpf) / 25)));
     }
 
+    public static float calcDamage(double[] argc){
+        return calcDamage((int) argc[0], argc[1], (int) argc[2], (int) argc[3], (int) argc[4]);
+    }
+
     public static int getArmorToughness(ItemStack item){
         if(item == null) return 0;
         switch (item.getType()){
@@ -35,8 +39,7 @@ public class DamageUtils {
     }
 
     public static float getAttackDamage(ItemStack itemStack) {
-        if(itemStack == null) return 0;
-        Material item = itemStack.getType();
+        if(itemStack == null) return 1;
         float bonusEnchantDamage = 0;
         boolean hasEnchantSharpness = itemStack.getEnchantments().containsKey(Enchantment.DAMAGE_ALL);
         boolean hasEnchantPower = itemStack.getEnchantments().containsKey(Enchantment.ARROW_DAMAGE);
@@ -46,18 +49,20 @@ public class DamageUtils {
         if(hasEnchantPower){
             bonusEnchantDamage += 0.25 * (itemStack.getEnchantmentLevel(Enchantment.ARROW_DAMAGE) + 1);
         }
+        return bonusEnchantDamage;
+    }
 
-        if(item.equals(Material.DIAMOND_SWORD)){
-            return 7 + bonusEnchantDamage;
+    public static float strengthIncrease(Player player){
+        boolean hasStrength = player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE);
+        int strengthLevel = 0;
+        if(hasStrength){
+            for(PotionEffect effect : player.getActivePotionEffects()){
+                if(effect.getType().equals(PotionEffectType.INCREASE_DAMAGE)){
+                    strengthLevel = Math.max(strengthLevel, effect.getAmplifier() + 1);
+                }
+            }
         }
-        if(item.equals(Material.BOW)){
-            return 6 + bonusEnchantDamage;
-        }
-        if(item.equals(Material.GOLD_AXE)){
-            return 3 + bonusEnchantDamage;
-        }
-
-        return 1 + bonusEnchantDamage;
+        return Math.max(1.0F, 1.3F * strengthLevel);
     }
 
     /**

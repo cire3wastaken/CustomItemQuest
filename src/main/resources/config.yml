@@ -1,31 +1,45 @@
-# Item: Supported Items Below
-# All Tools, use MATERIAL_TOOL to denote
-# Eg: DIAMOND_PICKAXE
+# WARNING:
+# DO NOT MODIFY LORE, OR BE PREPARED TO GIVE KIDS A NEW VAMPBLADE,
+# EVENTS CHECK FOR LORE, SPIGOT DOES NOT HAVE ANY WAY TO CREATE CUSTOM IDS
 
-# Item TODO
+# *.Power:
+# 1 - Normal (tnt)
+# 2 - Large (bed in non overworld)
+# 3 - Huge (end crystal)
 
-# Reload plugin with /reloadItemRewardsQuest
 
-# Lore does not support color codes
+# GhastBow.Explosion: Should the explosion break blocks
+
+# WitchScythe.Seconds - Seconds of poison
+
+# Hyperion.Power : visible explosion power
+# Hyperion.Damage : Damage to do to Living Entities within Hyperion.Radius
+# Hyperion.Cooldown : item cooldown
+# Hyperion.Duration : length of absorption shield in seconds
+# Hyperion.Amount : percentage of items final damage to give as absorption hp
 
 VampireBlade:
   Name: "&4Vampire Blade"
   Lore:
-    - "Ability: Gain half as much HP as you do damage."
+    - "&6Ability: &eLEFT CLICK"
+    - "&aHeal &fhalf the &cfinal damage &fyou do to others."
   Healing: 0.50
 
 ThorHammer:
   Name: "&bThor's Hammer"
   Lore:
-    - "Ability: Incur lightning upon your victims."
+    - "&6Ability: &eLEFT CLICK"
+    - "&fStrike &elightning &fon your target"
   Damage: 2.0
   IgnoreArmor: true
+  FireSeconds: 10
 
 GhastBow:
   Name: "&3Ghast Bow"
   Lore:
-    - "Ability: create explosions upon whom your arrow lands on"
-  Power: 4.0
+    - "&6Ability: RIGHT CLICK"
+    - "&fCreate an &cexplosion &fupon where your &7arrow lands"
+  Power: 1.0
   Damage: 3.0
   IgnoreArmor: false
   Explosion: false
@@ -33,17 +47,21 @@ GhastBow:
 WitchScythe:
   Name: "&aWitch's Scythe"
   Lore:
-    - "Ability: inflict poison on your victims"
-  Seconds: 2
+    - "&6Ability: &eLEFT CLICK"
+    - "&fInflict &apoison &fon your victims"
+  Seconds: 5
 
 Hyperion:
   Name: "&dHyperion"
   Lore:
-    - "Ability: Teleport 10 blocks in the direction you are facing."
-    - "Then, implode, dealing X damage to nearby players."
-    - "Gain an absorption shield of 4 hearts, after which, lose the shield and heal for 2 hearts."
-    - "Cooldown: 10s"
-  Power: 6.0
+    - "&6Item Ability: &eRIGHT CLICK"
+    - "&fTeleports &a10 blocks &fahead of you. Then implode dealing damage to nearby enemies."
+    - "&fAlso applies 25% of this item's final damage as a &6❤ Absorption &fshield."
+    - "&6Cooldown: 30s"
+  Power: 3.0
   Damage: 10.0
   Radius: 6.0
   IgnoreArmor: false
+  Cooldown: 30.0
+  Duration: 5
+  Amount: 0.25

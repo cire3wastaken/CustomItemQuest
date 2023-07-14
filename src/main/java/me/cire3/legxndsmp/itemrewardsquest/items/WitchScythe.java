@@ -1,6 +1,7 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuestInitializer;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -12,24 +13,17 @@ public class WitchScythe {
     public List<String> lore = new ArrayList<>();
     public String name;
 
-    public WitchScythe(Plugin plugin){
-        this.originalLore = plugin.getConfig().getStringList("WitchScythe.Lore");
-        this.secondsOfEffect = plugin.getConfig().getDouble("WitchScythe.Seconds");
-        this.name = plugin.getConfig().getString("WitchScythe.name");
-        this.lore = new ArrayList<>();
-
-        for(String s : plugin.getConfig().getStringList("WitchScythe.Lore")){
-            this.lore.add(s.toLowerCase());
-        }
+    public WitchScythe(FileConfiguration configuration){
+        this.update(configuration);
     }
 
-    public void update(Plugin plugin){
-        this.originalLore = plugin.getConfig().getStringList("WitchScythe.Lore");
-        this.name = plugin.getConfig().getString("WitchScythe.Name");
-        this.secondsOfEffect = plugin.getConfig().getDouble("WitchScythe.Seconds");
+    public void update(FileConfiguration fileConfiguration){
+        this.originalLore = fileConfiguration.getStringList("WitchScythe.Lore");
+        this.name = fileConfiguration.getString("WitchScythe.Name");
+        this.secondsOfEffect = fileConfiguration.getDouble("WitchScythe.Seconds");
         this.lore = new ArrayList<>();
 
-        for(String s : plugin.getConfig().getStringList("WitchScythe.Lore")){
+        for(String s : fileConfiguration.getStringList("WitchScythe.Lore")){
             this.lore.add(s.toLowerCase());
         }
     }

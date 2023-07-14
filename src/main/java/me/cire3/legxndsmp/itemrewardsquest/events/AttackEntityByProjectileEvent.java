@@ -1,9 +1,8 @@
 package me.cire3.legxndsmp.itemrewardsquest.events;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import me.cire3.legxndsmp.itemrewardsquest.utils.PlayerUtils;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,10 +20,16 @@ public class AttackEntityByProjectileEvent implements Listener {
 
         if (event.getDamager() instanceof Projectile) {
             Projectile damager = (Projectile) event.getDamager();
-            LivingEntity shooter = (LivingEntity) damager.getShooter();
 
-            if (shooter instanceof Player) {
-                Player playerShooter = (Player) shooter;
+            if (damager.getShooter() instanceof Player) {
+                Player playerShooter = (Player) damager.getShooter();
+                if(PlayerUtils.isInNonPvpRegion(playerShooter) ||
+                    PlayerUtils.isInProtectedRegion(playerShooter))
+                {
+                    playerShooter.sendMessage(ChatColor.RED + "You can not use that item here!");
+                    return;
+                }
+
                 if(playerShooter.getItemInHand() == null){
                     return;
                 }
@@ -43,17 +48,31 @@ public class AttackEntityByProjectileEvent implements Listener {
                 if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig) &&
                     playerShooter.getItemInHand().getType().equals(Material.BOW))
                 {
-                    if(!ItemRewardsQuest.INSTANCE.ghastBow.explosion){
-                        World world = playerShooter.getWorld();
-                        Location location = event.getEntity().getLocation(); ;
+                    World world = playerShooter.getWorld();
+                    Location location = event.getEntity().getLocation();
 
-                        TNTPrimed tnt = world.spawn(location, TNTPrimed.class);
-                        tnt.setFuseTicks(1);
-                        tnt.setCustomName("GhastTNT");
-                        tnt.setCustomNameVisible(false);
+                    float power;
+                    Effect effect;
+
+                    switch((int) ItemRewardsQuest.INSTANCE.ghastBow.explosionPowerConfig){
+                        case 2: power = 5; effect = Effect.EXPLOSION_LARGE; break;
+                        case 3: power = 6; effect = Effect.EXPLOSION_HUGE; break;
+                        default: effect = Effect.EXPLOSION; power = 4; break;
                     }
-                } else {
-                    playerShooter.getWorld().createExplosion(event.getEntity().getLocation(), (float) ItemRewardsQuest.INSTANCE.ghastBow.explosionPowerConfig);
+
+                    if(!ItemRewardsQuest.INSTANCE.ghastBow.explosion){
+                        world.playEffect(location, effect, 3);
+                        world.playSound(location, Sound.EXPLODE, 1F, 1F);
+
+                        for (Entity nearby: world.getNearbyEntities(location, power, power, power)) {
+                            if (nearby instanceof LivingEntity) {
+                                LivingEntity entity = (LivingEntity) nearby;
+                                entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig);
+                            }
+                        }
+                    } else {
+                        playerShooter.getWorld().createExplosion(event.getEntity().getLocation(), power);
+                    }
                 }
             }
         }

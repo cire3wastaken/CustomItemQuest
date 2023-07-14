@@ -1,5 +1,7 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -14,30 +16,20 @@ public class GhastBow {
     public boolean ignoreArmor;
     public boolean explosion;
 
-    public GhastBow(Plugin plugin){
-        this.originalLoreConfig = plugin.getConfig().getStringList("GhastBow.Lore");
-        this.nameConfig = plugin.getConfig().getString("GhastBow.Name");
-        this.ignoreArmor = plugin.getConfig().getBoolean("GhastBow.IgnoreArmor");
-        this.explosionPowerConfig = plugin.getConfig().getDouble("GhastBow.Power");
-        this.damageConfig = plugin.getConfig().getDouble("GhastBow.Damage");
-        this.explosion = plugin.getConfig().getBoolean("GhastBow.Explosion");
-        this.loreConfig = new ArrayList<>();
-
-        for(String s : plugin.getConfig().getStringList("GhastBow.Lore")){
-            this.loreConfig.add(s.toLowerCase());
-        }
+    public GhastBow(FileConfiguration configuration){
+        this.update(configuration);
     }
 
-    public void update(Plugin plugin){
-        this.originalLoreConfig = plugin.getConfig().getStringList("GhastBow.Lore");
-        this.nameConfig = plugin.getConfig().getString("GhastBow.Name");
-        this.explosionPowerConfig = plugin.getConfig().getDouble("GhastBow.Power");
-        this.ignoreArmor = plugin.getConfig().getBoolean("GhastBow.IgnoreArmor");
-        this.explosion = plugin.getConfig().getBoolean("GhastBow.Explosion");
-        this.damageConfig = plugin.getConfig().getDouble("GhastBow.Damage");
+    public void update(FileConfiguration configuration){
+        this.originalLoreConfig = configuration.getStringList("GhastBow.Lore");
+        this.nameConfig = configuration.getString("GhastBow.Name");
+        this.explosionPowerConfig = configuration.getDouble("GhastBow.Power");
+        this.ignoreArmor = configuration.getBoolean("GhastBow.IgnoreArmor");
+        this.explosion = configuration.getBoolean("GhastBow.Explosion");
+        this.damageConfig = configuration.getDouble("GhastBow.Damage");
         this.loreConfig = new ArrayList<>();
 
-        for(String s : plugin.getConfig().getStringList("GhastBow.Lore")){
+        for(String s : configuration.getStringList("GhastBow.Lore")){
             this.loreConfig.add(s.toLowerCase());
         }
     }
