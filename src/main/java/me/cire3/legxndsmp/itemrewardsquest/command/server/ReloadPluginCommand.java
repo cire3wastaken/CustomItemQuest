@@ -29,6 +29,7 @@ public class ReloadPluginCommand implements CommandExecutor {
                 plugin.reloadConfig();
                 plugin.onDisable();
                 plugin.onEnable();
+                ItemRewardsQuest.INSTANCE.init(plugin);
                 commandSender.sendMessage(ChatColor.GREEN + "Successfully reloaded ItemRewardsQuest!");
             } catch (Exception e){
                 commandSender.sendMessage(ChatColor.DARK_RED + "An error occurred");

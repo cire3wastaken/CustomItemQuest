@@ -65,3 +65,6 @@ Hyperion:
   Cooldown: 30.0
   Duration: 5
   Amount: 0.25
+
+Plugin:
+  Version: 1.0.0

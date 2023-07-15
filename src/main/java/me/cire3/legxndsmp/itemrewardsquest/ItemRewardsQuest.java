@@ -7,6 +7,7 @@ import me.cire3.legxndsmp.itemrewardsquest.events.*;
 import me.cire3.legxndsmp.itemrewardsquest.items.*;
 import me.cire3.legxndsmp.itemrewardsquest.utils.FileUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -22,9 +23,11 @@ public enum ItemRewardsQuest
 {
     INSTANCE;
 
-    public static final String PLUGIN_VERSION = "0.0.0";
     public static final String VERSION_FILE_URL = "https://raw.githubusercontent.com/cire3wastaken/CustomItemQuest/master/version.txt";
     public static final String GITHUB_REPO = "https://github.com/cire3wastaken/CustomItemQuest/tree/master";
+    public static final String PLUGIN_VERSION = "1.0.0";
+    public static final String OUTDATED_MESSAGE = ChatColor.DARK_RED + "ItemRewardsQuest is not up to date! Build it yourself from "
+            + GITHUB_REPO + " or download it from Releases!";
 
     public final Set<String> protectedRegions = new HashSet<>();
 
@@ -54,7 +57,7 @@ public enum ItemRewardsQuest
         this.plugin = plugin;
 
         this.configFile = new File(plugin.getDataFolder(), "config.yml");
-        if(configFile.exists()){
+        if(!configFile.exists()){
             this.configuration = plugin.getConfig();
             plugin.saveDefaultConfig();
         } else {
@@ -63,8 +66,7 @@ public enum ItemRewardsQuest
 
         if(!this.isUpToDate()){
             this.outdated = true;
-            Bukkit.getLogger().log(Level.WARNING,
-                    "ItemRewardsQuest is not up to date! Build it yourself from " + GITHUB_REPO + " or download it from Releases!");
+            Bukkit.getLogger().info(OUTDATED_MESSAGE);
         }
 
         this.vampireBladeCommand = new VampireBladeCommand();
@@ -85,6 +87,7 @@ public enum ItemRewardsQuest
 
         plugin.saveConfig();
         this.register(plugin);
+        this.updateConfig();
     }
 
     public void enable() {
@@ -93,8 +96,7 @@ public enum ItemRewardsQuest
         this.isEnabled = true;
 
         if(this.outdated){
-            Bukkit.getLogger().log(Level.WARNING,
-                    "ItemRewardsQuest is not up to date! Build it yourself from " + GITHUB_REPO + " or download it from Releases!");
+            Bukkit.getLogger().info(OUTDATED_MESSAGE);
         }
     }
 
@@ -104,8 +106,7 @@ public enum ItemRewardsQuest
         this.isEnabled = false;
 
         if(this.outdated){
-            Bukkit.getLogger().log(Level.WARNING,
-                    "ItemRewardsQuest is not up to date! Build it yourself from " + GITHUB_REPO + " or download it from Releases!");
+            Bukkit.getLogger().info(OUTDATED_MESSAGE);
         }
     }
 
@@ -146,7 +147,10 @@ public enum ItemRewardsQuest
         try {
             FileUtils.downloadUsingStream(VERSION_FILE_URL, downloaded);
         } catch (IOException e) {
-            Bukkit.getLogger().log(Level.SEVERE, "Failed to download version.txt, please manually verify this is up to date!");
+            Bukkit.getLogger().log(Level.SEVERE, "Failed to download version.txt, please manually verify this is up to date!" +
+                GITHUB_REPO);
+            Bukkit.getLogger().info(ChatColor.DARK_RED + "Failed to download version.txt, please manually verify this is up to date!" +
+                GITHUB_REPO);
             e.printStackTrace();
             return false;
         }
@@ -154,8 +158,57 @@ public enum ItemRewardsQuest
             return false;
         }
 
-        return FileUtils.getVersion(downloaded).equals(FileUtils.getVersion(current)) &&
-                !FileUtils.getVersion(downloaded).equalsIgnoreCase(String.valueOf(Integer.MAX_VALUE)) &&
-                !FileUtils.getVersion(current).equalsIgnoreCase(String.valueOf(Integer.MAX_VALUE));
+        double[] versionDownloaded = this.versionParse(FileUtils.getVersion(downloaded));
+        double[] versionCurrent = this.versionParse(FileUtils.getVersion(current));
+
+        if(versionCurrent == null || versionDownloaded == null){
+            return false;
+        }
+
+        for(int i = 0; i < versionDownloaded.length && i < versionCurrent.length; i++){
+            double downloadedVer = versionDownloaded[i];
+            double currentVer = versionCurrent[i];
+            if(downloadedVer > currentVer){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void updateConfig(){
+        File current = new File(this.plugin.getDataFolder(), "versionCurrent.txt");
+
+        double[] versionCurrent = this.versionParse(FileUtils.getVersion(current));
+        double[] versionConfig = this.versionParse(this.configuration.getString("Plugin.Version"));
+
+        if(versionCurrent == null || versionConfig == null){
+            return;
+        }
+
+        for(int i = 0; i < versionConfig.length && i < versionCurrent.length; i++){
+            if(versionConfig[i] < versionCurrent[i]){
+                if(this.configFile.delete()){
+                    this.plugin.saveDefaultConfig();
+                } else {
+                    Bukkit.getLogger().info(ChatColor.DARK_RED + "Failed to update config.yml, force disabling ItemRewardsQuest to prevent glitches!\n" +
+                        "Grab the latest config.yml from " + GITHUB_REPO + " and replace the current one!");
+                    this.plugin.onDisable();
+                }
+                return;
+            }
+        }
+    }
+
+    public double[] versionParse(String ver){
+        if(ver.split("\\.").length != 3){
+            Bukkit.getLogger().info(ChatColor.DARK_RED + "Unknown version format, please manually check if this is up to date!" +
+                GITHUB_REPO);
+            return null;
+        }
+        return new double[]{
+            Double.parseDouble(ver.split("\\.")[0]),
+            Double.parseDouble(ver.split("\\.")[1]),
+            Double.parseDouble(ver.split("\\.")[2])
+        };
     }
 }

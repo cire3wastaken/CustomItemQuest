@@ -1,6 +1,7 @@
 package me.cire3.legxndsmp.itemrewardsquest.command.player;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
+import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -15,10 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ConvertCommand implements CommandExecutor {
-    public static final String OLD_VAMPBLADE_LORE = "&6Ability: gain half as much HP as you do damage";
-    public static final String OLD_GHASTBOW_LORE = "&eAbility: create explosions upon whom your arrow lands on";
-    public static final String OLD_THORHAMMER_LORE = "&cAbility: incur lightning upon your victims";
-    public static final String OLD_WITCHSCYTHE_LORE = "&aAbility: inflict poison on your victims";
+    public static final String OLD_VAMPBLADE_LORE = ColorUtils.color("&6Ability: gain half as much HP as you do damage");
+    public static final String OLD_GHASTBOW_LORE = ColorUtils.color("&eAbility: create explosions upon whom your arrow lands on");
+    public static final String OLD_THORHAMMER_LORE = ColorUtils.color("&cAbility: incur lightning upon your victims");
+    public static final String OLD_WITCHSCYTHE_LORE = ColorUtils.color("&aAbility: inflict poison on your victims");
 
     public static final List<String> OLD_LORE = Arrays.asList(OLD_GHASTBOW_LORE, OLD_THORHAMMER_LORE,
             OLD_VAMPBLADE_LORE, OLD_WITCHSCYTHE_LORE);
@@ -60,28 +61,24 @@ public class ConvertCommand implements CommandExecutor {
                     for(String lore : OLD_LORE) {
                         if (str.equalsIgnoreCase(lore)) {
                             target.getItemInHand().setType(Material.AIR);
-                            switch (lore) {
-                                case OLD_GHASTBOW_LORE: {
-                                    ItemRewardsQuest.INSTANCE.ghastBowCommand.giveItem(target, new String[]{
-                                            target.getName()
-                                    });
-                                }
-                                case OLD_VAMPBLADE_LORE: {
-                                    ItemRewardsQuest.INSTANCE.vampireBladeCommand.giveItem(target, new String[]{
-                                            target.getName()
-                                    });
-                                }
-                                case OLD_THORHAMMER_LORE: {
-                                    ItemRewardsQuest.INSTANCE.thorHammerCommand.giveItem(target, new String[]{
-                                            target.getName()
-                                    });
-                                }
-                                case OLD_WITCHSCYTHE_LORE: {
-                                    ItemRewardsQuest.INSTANCE.witchScytheCommand.giveItem(target, new String[]{
-                                            target.getName()
-                                    });
-                                }
+                            if(lore.equalsIgnoreCase(OLD_GHASTBOW_LORE)) {
+                                ItemRewardsQuest.INSTANCE.ghastBowCommand.giveItem(target, new String[]{
+                                    target.getName()}
+                                );
+                            } else if(lore.equalsIgnoreCase(OLD_VAMPBLADE_LORE)) {
+                                ItemRewardsQuest.INSTANCE.vampireBladeCommand.giveItem(target, new String[]{
+                                    target.getName()}
+                                );
+                            } else if(lore.equalsIgnoreCase(OLD_THORHAMMER_LORE)) {
+                                ItemRewardsQuest.INSTANCE.thorHammerCommand.giveItem(target, new String[]{
+                                    target.getName()}
+                                );
+                            } else if(lore.equalsIgnoreCase(OLD_WITCHSCYTHE_LORE)) {
+                                ItemRewardsQuest.INSTANCE.witchScytheCommand.giveItem(target, new String[]{
+                                        target.getName()}
+                                );
                             }
+
                             target.sendMessage(ChatColor.GREEN + "Successfully updated the item!");
                             break;
                         }
