@@ -15,12 +15,26 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
+
 public class ReloadPluginCommand implements CommandExecutor {
     private final ItemRewardsQuestInitializer plugin;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
+        if(!ItemRewardsQuest.INSTANCE.isEnabled){
+            commandSender.sendMessage(ChatColor.DARK_RED + DISABLED_MESSAGE);
+            return true;
+        }
+
         if(!command.getName().equalsIgnoreCase("reloadItemRewardsQuest")){
+            commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + "Unknown command");
+            return false;
+        }
+
+        if(strings.length != 0){
+            commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX +
+                    "This command requires no arguments!");
             return false;
         }
 
@@ -30,13 +44,13 @@ public class ReloadPluginCommand implements CommandExecutor {
                 plugin.onDisable();
                 plugin.onEnable();
                 ItemRewardsQuest.INSTANCE.init(plugin);
-                commandSender.sendMessage(ChatColor.GREEN + "Successfully reloaded ItemRewardsQuest!");
+                commandSender.sendMessage(ChatColor.GREEN + CHAT_PREFIX + "Successfully reloaded ItemRewardsQuest!");
             } catch (Exception e){
-                commandSender.sendMessage(ChatColor.DARK_RED + "An error occurred");
-                plugin.getLogger().info(Arrays.toString(e.getStackTrace()));
+                commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + "An error occurred");
+                e.printStackTrace();
             }
         } else {
-            commandSender.sendMessage(ChatColor.DARK_RED + "You do not have itemrewardsquest.reload permission!");
+            commandSender.sendMessage(ChatColor.DARK_RED + PERMISSION_DENIED);
         }
         return true;
     }

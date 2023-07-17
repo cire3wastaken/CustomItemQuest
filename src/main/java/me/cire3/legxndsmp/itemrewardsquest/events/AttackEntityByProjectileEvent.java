@@ -23,7 +23,7 @@ public class AttackEntityByProjectileEvent implements Listener {
 
             if (damager.getShooter() instanceof Player) {
                 Player playerShooter = (Player) damager.getShooter();
-                if(PlayerUtils.isInNonPvpRegion(playerShooter) ||
+                if(PlayerUtils.isInPvpRegion(playerShooter) ||
                     PlayerUtils.isInProtectedRegion(playerShooter))
                 {
                     playerShooter.sendMessage(ChatColor.RED + "You can not use that item here!");

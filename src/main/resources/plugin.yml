@@ -60,3 +60,13 @@ commands:
     usage: /updateitem
     permission: itemrewardsquest.updateitems
     permission-message: You don't have itemrewardsquest.updateitems permission
+  addprotectedregion:
+    description: Add a protected region
+    usage: /addprotectedregion [region] [world name]
+    permission: itemrewardsquest.addregions
+    permission-message: You don't have itemrewardsquest.addregions permission
+  removeprotectedregion:
+    description: Removes a protected region
+    usage: /removeprotectedregion [region] [world name]
+    permission: itemrewardsquest.addregions
+    permission-message: You don't have itemrewardsquest.addregions permission

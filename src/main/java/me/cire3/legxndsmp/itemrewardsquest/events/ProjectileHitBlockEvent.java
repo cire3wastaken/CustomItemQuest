@@ -13,6 +13,8 @@ import org.bukkit.util.BlockIterator;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
+
 public class ProjectileHitBlockEvent implements Listener {
     @EventHandler
     public void onProjectileHitEvent(ProjectileHitEvent event){
@@ -33,10 +35,10 @@ public class ProjectileHitBlockEvent implements Listener {
 
             if (shooter instanceof Player) {
                 Player playerShooter = (Player) shooter;
-                if(PlayerUtils.isInNonPvpRegion(playerShooter) ||
+                if(PlayerUtils.isInPvpRegion(playerShooter) ||
                     PlayerUtils.isInProtectedRegion(playerShooter))
                 {
-                    playerShooter.sendMessage(ChatColor.RED + "You can not use that item here!");
+                    playerShooter.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
                     return;
                 }
 
@@ -72,7 +74,10 @@ public class ProjectileHitBlockEvent implements Listener {
                     }
 
                     if(!ItemRewardsQuest.INSTANCE.ghastBow.explosion){
-                        world.playEffect(location, effect, 3);
+                        for(int i = 0; i < 15; i++){
+                            world.playEffect(location, effect, 3);
+                        }
+
                         world.playSound(location, Sound.EXPLODE, 1F, 1F);
 
                         for (Entity nearby: world.getNearbyEntities(location, power, power, power)) {

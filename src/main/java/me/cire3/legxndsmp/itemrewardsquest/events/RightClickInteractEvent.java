@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class RightClickInteractEvent implements Listener {
-    HashMap<String,Long> cooldownsForPlayer = new HashMap<>();
+    HashMap<String, Long> cooldownsForPlayer = new HashMap<>();
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
@@ -54,7 +54,7 @@ public class RightClickInteractEvent implements Listener {
         if(this.hasCooldown(player)){
             int timeLeft = (int) Math.ceil(this.cooldownsForPlayer.get(player.getName()) / 1000.0F);
             player.sendMessage(
-                ChatColor.DARK_RED + "You can use this item's ability again in " + timeLeft + "s.");
+                ChatColor.RED + "You can use this item's ability again in " + timeLeft + "s.");
             return;
         }
 
@@ -70,8 +70,8 @@ public class RightClickInteractEvent implements Listener {
         if(alreadyHadAbsorption) player.removePotionEffect(PotionEffectType.ABSORPTION);
 
         int amplifier = (int)
-            Math.floor((DamageUtils.getAttackDamage(player.getItemInHand()) + 6) * DamageUtils.strengthIncrease(player)
-            * ItemRewardsQuest.INSTANCE.hyperion.percentage / 4F);
+            Math.floor(((DamageUtils.getAttackDamage(player.getItemInHand()) + 6) * DamageUtils.strengthIncrease(player)
+            * ItemRewardsQuest.INSTANCE.hyperion.percentage) / 4F);
 
         player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,
             (int) ItemRewardsQuest.INSTANCE.hyperion.shieldDurationTicks, amplifier + level));
@@ -81,12 +81,7 @@ public class RightClickInteractEvent implements Listener {
         for(LivingEntity entity : PlayerUtils.getNearbyLivingEntities(player,
                 ItemRewardsQuest.INSTANCE.hyperion.explosionRadius))
         {
-            double[] c = DamageUtils.damageCalculator(entity,
-                (DamageUtils.getAttackDamage(event.getItem()) + 6) * DamageUtils.strengthIncrease(player));
-
-            entity.setHealth(entity.getHealth() - (ItemRewardsQuest.INSTANCE.hyperion.ignoreArmor ?
-                    ItemRewardsQuest.INSTANCE.hyperion.damage : DamageUtils.calcDamage((int) c[0], c[1], 0,
-                    (int) c[3], (int) c[4])));
+            entity.damage(ItemRewardsQuest.INSTANCE.hyperion.damage);
         }
 
         // and cancel the event so that the item cannot really be used / placed
@@ -95,11 +90,11 @@ public class RightClickInteractEvent implements Listener {
     }
 
     public boolean hasCooldown(Player player){
-        return !(cooldownsForPlayer.get(player.getName()) < (System.currentTimeMillis() -
+        return !(this.cooldownsForPlayer.get(player.getName()) < (System.currentTimeMillis() -
             ItemRewardsQuest.INSTANCE.hyperion.cooldownSeconds * 1000));
     }
 
     public void activateCooldown(Player player){
-        cooldownsForPlayer.put(player.getName(), System.currentTimeMillis());
+        this.cooldownsForPlayer.put(player.getName(), System.currentTimeMillis());
     }
 }

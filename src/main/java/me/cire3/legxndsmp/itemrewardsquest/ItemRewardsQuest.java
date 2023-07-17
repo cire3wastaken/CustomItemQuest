@@ -2,7 +2,9 @@ package me.cire3.legxndsmp.itemrewardsquest;
 
 import me.cire3.legxndsmp.itemrewardsquest.command.item.*;
 import me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand;
+import me.cire3.legxndsmp.itemrewardsquest.command.server.AddProtectedRegionCommand;
 import me.cire3.legxndsmp.itemrewardsquest.command.server.ReloadPluginCommand;
+import me.cire3.legxndsmp.itemrewardsquest.command.server.RemoveProtectedRegionCommand;
 import me.cire3.legxndsmp.itemrewardsquest.events.*;
 import me.cire3.legxndsmp.itemrewardsquest.items.*;
 import me.cire3.legxndsmp.itemrewardsquest.utils.FileUtils;
@@ -15,7 +17,7 @@ import org.bukkit.event.HandlerList;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -23,13 +25,17 @@ public enum ItemRewardsQuest
 {
     INSTANCE;
 
+    public static final String CHAT_PREFIX = "[ItemRewardsQuest] >> ";
+    public static final String DISABLED_MESSAGE = CHAT_PREFIX + "ItemRewardsQuest is currently disabled";
+    public static final String PERMISSION_DENIED = CHAT_PREFIX + "You do not have permissions!";
+
     public static final String VERSION_FILE_URL = "https://raw.githubusercontent.com/cire3wastaken/CustomItemQuest/master/version.txt";
     public static final String GITHUB_REPO = "https://github.com/cire3wastaken/CustomItemQuest/tree/master";
     public static final String PLUGIN_VERSION = "1.0.0";
-    public static final String OUTDATED_MESSAGE = ChatColor.DARK_RED + "ItemRewardsQuest is not up to date! Build it yourself from "
-            + GITHUB_REPO + " or download it from Releases!";
+    public static final String OUTDATED_MESSAGE = ChatColor.DARK_RED + CHAT_PREFIX +
+            "ItemRewardsQuest is not up to date! Build it yourself from " + GITHUB_REPO + " or download it from Releases!";
 
-    public final Set<String> protectedRegions = new HashSet<>();
+    public final HashMap<String, Set<String>> protectedRegionsByWorld = new HashMap<>();
 
     public boolean isEnabled;
 
@@ -46,6 +52,8 @@ public enum ItemRewardsQuest
     public HypeCommand hypeCommand;
     public ReloadPluginCommand reloadPluginCommand;
     public ConvertCommand convertCommand;
+    public AddProtectedRegionCommand addProtectedRegionCommand;
+    public RemoveProtectedRegionCommand removeProtectedRegionCommand;
 
     public File configFile;
     public FileConfiguration configuration;
@@ -56,13 +64,7 @@ public enum ItemRewardsQuest
     public void init(ItemRewardsQuestInitializer plugin) {
         this.plugin = plugin;
 
-        this.configFile = new File(plugin.getDataFolder(), "config.yml");
-        if(!configFile.exists()){
-            this.configuration = plugin.getConfig();
-            plugin.saveDefaultConfig();
-        } else {
-            this.configuration = YamlConfiguration.loadConfiguration(this.configFile);
-        }
+        this.defineConfig();
 
         if(!this.isUpToDate()){
             this.outdated = true;
@@ -76,6 +78,8 @@ public enum ItemRewardsQuest
         this.hypeCommand = new HypeCommand();
         this.reloadPluginCommand = new ReloadPluginCommand(plugin);
         this.convertCommand = new ConvertCommand();
+        this.addProtectedRegionCommand = new AddProtectedRegionCommand();
+        this.removeProtectedRegionCommand = new RemoveProtectedRegionCommand();
 
         this.hyperion = new Hyperion(this.configuration);
         this.witchScythe = new WitchScythe(this.configuration);
@@ -91,6 +95,8 @@ public enum ItemRewardsQuest
     }
 
     public void enable() {
+        this.defineConfig();
+
         this.register(this.plugin);
 
         this.isEnabled = true;
@@ -111,7 +117,7 @@ public enum ItemRewardsQuest
     }
 
     private void register(ItemRewardsQuestInitializer plugin){
-        Bukkit.getLogger().info("Registering startup for ItemRewardsQuest");
+        Bukkit.getLogger().info(ChatColor.BLUE + CHAT_PREFIX + "Registering startup for ItemRewardsQuest");
         Bukkit.getServer().getPluginManager().registerEvents(new AttackEntityEvent(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new AttackEntityByProjectileEvent(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new ProjectileHitBlockEvent(), plugin);
@@ -124,6 +130,8 @@ public enum ItemRewardsQuest
         plugin.getCommand("witchscythe").setExecutor(this.witchScytheCommand);
         plugin.getCommand("reloaditemrewardsquest").setExecutor(this.reloadPluginCommand);
         plugin.getCommand("updateitem").setExecutor(this.convertCommand);
+        plugin.getCommand("addprotectedregion").setExecutor(this.addProtectedRegionCommand);
+        plugin.getCommand("removeprotectedregion").setExecutor(this.removeProtectedRegionCommand);
 
         this.thorHammer.update(configuration);
         this.vampireBlade.update(configuration);
@@ -133,7 +141,7 @@ public enum ItemRewardsQuest
         for(Player p : Bukkit.getOnlinePlayers()){
             p.addAttachment(plugin);
         }
-        Bukkit.getLogger().info("Registering for ItemRewardsQuest finished");
+        Bukkit.getLogger().info(ChatColor.GREEN + CHAT_PREFIX + "Registering for ItemRewardsQuest finished");
     }
 
     private boolean isUpToDate() {
@@ -147,10 +155,10 @@ public enum ItemRewardsQuest
         try {
             FileUtils.downloadUsingStream(VERSION_FILE_URL, downloaded);
         } catch (IOException e) {
-            Bukkit.getLogger().log(Level.SEVERE, "Failed to download version.txt, please manually verify this is up to date!" +
-                GITHUB_REPO);
-            Bukkit.getLogger().info(ChatColor.DARK_RED + "Failed to download version.txt, please manually verify this is up to date!" +
-                GITHUB_REPO);
+            Bukkit.getLogger().log(Level.SEVERE,
+                "Failed to download version.txt, please manually verify this is up to date!" + GITHUB_REPO);
+            Bukkit.getLogger().info(ChatColor.DARK_RED + CHAT_PREFIX +
+                "Failed to download version.txt, please manually verify this is up to date!" + GITHUB_REPO);
             e.printStackTrace();
             return false;
         }
@@ -190,7 +198,8 @@ public enum ItemRewardsQuest
                 if(this.configFile.delete()){
                     this.plugin.saveDefaultConfig();
                 } else {
-                    Bukkit.getLogger().info(ChatColor.DARK_RED + "Failed to update config.yml, force disabling ItemRewardsQuest to prevent glitches!\n" +
+                    Bukkit.getLogger().info(ChatColor.DARK_RED + CHAT_PREFIX +
+                        "Failed to update config.yml, force disabling ItemRewardsQuest to prevent glitches!\n" +
                         "Grab the latest config.yml from " + GITHUB_REPO + " and replace the current one!");
                     this.plugin.onDisable();
                 }
@@ -201,8 +210,8 @@ public enum ItemRewardsQuest
 
     public double[] versionParse(String ver){
         if(ver.split("\\.").length != 3){
-            Bukkit.getLogger().info(ChatColor.DARK_RED + "Unknown version format, please manually check if this is up to date!" +
-                GITHUB_REPO);
+            Bukkit.getLogger().info(ChatColor.DARK_RED + CHAT_PREFIX +
+                "Unknown version format, please manually check if this is up to date!" + GITHUB_REPO);
             return null;
         }
         return new double[]{
@@ -210,5 +219,15 @@ public enum ItemRewardsQuest
             Double.parseDouble(ver.split("\\.")[1]),
             Double.parseDouble(ver.split("\\.")[2])
         };
+    }
+
+    public void defineConfig(){
+        this.configFile = new File(plugin.getDataFolder(), "config.yml");
+        if(!configFile.exists()){
+            this.configuration = plugin.getConfig();
+            plugin.saveDefaultConfig();
+        } else {
+            this.configuration = YamlConfiguration.loadConfiguration(this.configFile);
+        }
     }
 }

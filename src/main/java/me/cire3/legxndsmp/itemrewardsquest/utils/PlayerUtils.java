@@ -7,7 +7,6 @@ import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import org.bukkit.Material;
@@ -15,7 +14,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginAwareness;
 import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
@@ -46,26 +44,32 @@ public class PlayerUtils {
         return nearby;
     }
 
-    public static boolean isInNonPvpRegion(Player p){
+    public static boolean isInPvpRegion(Player p){
         RegionContainer container = WGBukkit.getPlugin().getRegionContainer();
         RegionQuery query = container.createQuery();
+        ApplicableRegionSet set = query.getApplicableRegions(p.getLocation());
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(p);
 
-        return query.testState(p.getLocation(), p, DefaultFlag.PVP);
+        return !set.testState(localPlayer, DefaultFlag.PVP);
     }
 
     public static boolean isInProtectedRegion(Player p){
+        String worldName = p.getWorld().getName().toLowerCase();
         RegionContainer container = WGBukkit.getPlugin().getRegionContainer();
         RegionQuery query = container.createQuery();
+        ApplicableRegionSet set = query.getApplicableRegions(p.getLocation());
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(p);
 
-        ApplicableRegionSet set = WGBukkit.getPlugin().getRegionManager(p.getWorld()).getApplicableRegions(p.getLocation());
-        for (ProtectedRegion region : set){
-            if(ItemRewardsQuest.INSTANCE.protectedRegions.contains(region.getId())){
-                return true;
+        if(ItemRewardsQuest.INSTANCE.protectedRegionsByWorld.containsKey(worldName)){
+            for (ProtectedRegion region : set){
+                if(ItemRewardsQuest.INSTANCE.protectedRegionsByWorld.get(worldName).contains(region.getId().toLowerCase())) {
+                    return true;
+                }
             }
         }
 
-        return query.testState(p.getLocation(), p, DefaultFlag.BLOCK_BREAK) &&
-                query.testState(p.getLocation(), p, DefaultFlag.BLOCK_PLACE) &&
-                query.testState(p.getLocation(), p, DefaultFlag.BUILD);
+        return set.testState(localPlayer, DefaultFlag.BLOCK_BREAK) &&
+                set.testState(localPlayer, DefaultFlag.BLOCK_PLACE) &&
+                set.testState(localPlayer, DefaultFlag.BUILD);
     }
 }

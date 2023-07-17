@@ -22,7 +22,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
 
         if(event.getDamager() instanceof Player) {
             Player playerAttacker = (Player) event.getDamager();
-            if(PlayerUtils.isInNonPvpRegion(playerAttacker) ||
+            if(PlayerUtils.isInPvpRegion(playerAttacker) ||
                     PlayerUtils.isInProtectedRegion(playerAttacker))
             {
                 playerAttacker.sendMessage(ChatColor.RED + "You can not use that item here!");
@@ -55,11 +55,11 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                 playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
-                    (Math.max(DamageUtils.calcDamage((int) c[0], c[1], 0, (int) c[3],
+                    Math.min(Math.max(DamageUtils.calcDamage((int) c[0], c[1], 0, (int) c[3],
                         (int) c[4]) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed,
                             playerAttacker.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE) ?
                                 (Math.random() >= 0.5 ? 2.0F : 1.0F) :
-                                    (Math.random() >= 0.5 ? 1.5F : 1.0F))), 20.0F));
+                                    (Math.random() >= 0.5 ? 1.5F : 1.0F)), 6.0F), 20.0F));
 //                  playerAttacker.getHealth() +
 //                      2 * DamageUtils.damageCalculator(victim, playerAttacker) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed
             }

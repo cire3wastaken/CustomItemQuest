@@ -11,31 +11,32 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
 
 public class VampireBladeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled){
-            commandSender.sendMessage(ChatColor.DARK_RED + "ItemRewardsQuest is currently disabled");
+            commandSender.sendMessage(ChatColor.DARK_RED + DISABLED_MESSAGE);
             return true;
         }
 
         if(!command.getName().equalsIgnoreCase("vampireblade")){
-            commandSender.sendMessage(ChatColor.DARK_RED + "Unknown command");
+            commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + "Unknown command");
             return false;
         }
         if(strings.length != 1){
-            commandSender.sendMessage(ChatColor.DARK_RED + "Specify one argument (player)");
+            commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + "Specify one argument (player)");
             return false;
         }
 
         if(commandSender.hasPermission("itemrewardsquest.giveitems") || commandSender.isOp()){
             this.giveItem(commandSender, strings);
+            commandSender.sendMessage(ChatColor.GREEN + CHAT_PREFIX + "Successfully gave " +
+                strings[0] + " a Vampire Blade!");
         } else {
-            commandSender.sendMessage(ChatColor.DARK_RED + "You do not have ItemRewardsQuest.GiveItem permissions");
+            commandSender.sendMessage(ChatColor.DARK_RED + PERMISSION_DENIED);
         }
         return true;
     }
@@ -49,11 +50,10 @@ public class VampireBladeCommand implements CommandExecutor {
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            commandSender.sendMessage(ChatColor.DARK_RED + args[0] + " is not online!");
+            commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + args[0] + " is not online!");
             return;
         }
 
         target.getInventory().addItem(item);
-        commandSender.sendMessage(ChatColor.GREEN + "Successfully gave " + args[0] + " a Vampire Blade!");
     }
 }

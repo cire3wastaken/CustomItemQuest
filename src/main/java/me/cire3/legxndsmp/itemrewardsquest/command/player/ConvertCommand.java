@@ -1,6 +1,7 @@
 package me.cire3.legxndsmp.itemrewardsquest.command.player;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
+import me.cire3.legxndsmp.itemrewardsquest.events.RightClickInteractEvent;
 import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
+
 public class ConvertCommand implements CommandExecutor {
     public static final String OLD_VAMPBLADE_LORE = ColorUtils.color("&6Ability: gain half as much HP as you do damage");
     public static final String OLD_GHASTBOW_LORE = ColorUtils.color("&eAbility: create explosions upon whom your arrow lands on");
@@ -27,7 +30,7 @@ public class ConvertCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled){
-            commandSender.sendMessage(ChatColor.DARK_RED + "ItemRewardsQuest is currently disabled");
+            commandSender.sendMessage(ChatColor.DARK_RED + DISABLED_MESSAGE);
             return true;
         }
 
@@ -44,15 +47,18 @@ public class ConvertCommand implements CommandExecutor {
             if(commandSender instanceof Player){
                 Player target = (Player) commandSender;
                 if(target.getItemInHand() == null){
-                    commandSender.sendMessage(ChatColor.DARK_RED + "Please hold an custom item to update!");
+                    commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX +
+                        "Please hold an custom item to update!");
                     return true;
                 }
                 if(!target.getItemInHand().hasItemMeta()){
-                    commandSender.sendMessage(ChatColor.DARK_RED + "Please hold an custom item to update!");
+                    commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX +
+                        "Please hold an custom item to update!");
                     return true;
                 }
                 if(!target.getItemInHand().getItemMeta().hasLore()){
-                    commandSender.sendMessage(ChatColor.DARK_RED + "Please hold an custom item to update!");
+                    commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX +
+                        "Please hold an custom item to update!");
                     return true;
                 }
 
@@ -60,7 +66,7 @@ public class ConvertCommand implements CommandExecutor {
                 for(String str : meta.getLore()){
                     for(String lore : OLD_LORE) {
                         if (str.equalsIgnoreCase(lore)) {
-                            target.getItemInHand().setType(Material.AIR);
+                            target.setItemInHand(null);
                             if(lore.equalsIgnoreCase(OLD_GHASTBOW_LORE)) {
                                 ItemRewardsQuest.INSTANCE.ghastBowCommand.giveItem(target, new String[]{
                                     target.getName()}
@@ -79,16 +85,17 @@ public class ConvertCommand implements CommandExecutor {
                                 );
                             }
 
-                            target.sendMessage(ChatColor.GREEN + "Successfully updated the item!");
-                            break;
+                            target.sendMessage(ChatColor.GREEN + CHAT_PREFIX + "Successfully updated the item!");
+                            return true;
                         }
                     }
                 }
 
-                commandSender.sendMessage(ChatColor.DARK_RED + "Failed to update item, ensure you are holding a custom item");
+                commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX +
+                        "Failed to update item, ensure you are holding a custom item!");
             }
         } else {
-            commandSender.sendMessage(ChatColor.DARK_RED + "You do not have ItemRewardsQuest.updateitems permissions");
+            commandSender.sendMessage(ChatColor.DARK_RED + PERMISSION_DENIED);
         }
         return true;
     }
