@@ -15,6 +15,8 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
+
 public class AttackEntityEvent implements org.bukkit.event.Listener {
     @EventHandler
     public void onEntityAttack(EntityDamageByEntityEvent event) {
@@ -22,10 +24,9 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
 
         if(event.getDamager() instanceof Player) {
             Player playerAttacker = (Player) event.getDamager();
-            if(PlayerUtils.isInPvpRegion(playerAttacker) ||
-                    PlayerUtils.isInProtectedRegion(playerAttacker))
+            if(!PlayerUtils.shouldUse(playerAttacker))
             {
-                playerAttacker.sendMessage(ChatColor.RED + "You can not use that item here!");
+                playerAttacker.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
                 return;
             }
 

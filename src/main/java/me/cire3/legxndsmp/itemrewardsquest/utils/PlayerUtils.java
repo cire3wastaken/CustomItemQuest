@@ -1,5 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.utils;
 
+import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.RegionQuery;
@@ -7,6 +8,8 @@ import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag.State;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import org.bukkit.Material;
@@ -17,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PlayerUtils {
     public static Block[] getTargetBlock(Player player, int range) {
@@ -42,6 +46,35 @@ public class PlayerUtils {
             }
         }
         return nearby;
+    }
+
+    public static boolean test(Player p){
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(p);
+        Vector vec = localPlayer.getPosition();
+        RegionManager manager = WorldGuardPlugin.inst().getRegionManager(p.getWorld());
+        ApplicableRegionSet set = manager.getApplicableRegions(vec);
+
+        for(ProtectedRegion region : set){
+            if(Objects.equals(region.getFlag(DefaultFlag.PVP), State.DENY) ||
+                Objects.equals(region.getFlag(DefaultFlag.BUILD), State.DENY) ||
+                Objects.equals(region.getFlag(DefaultFlag.BLOCK_BREAK), State.DENY) ||
+                Objects.equals(region.getFlag(DefaultFlag.BLOCK_PLACE), State.DENY))
+            {
+                return false;
+            }
+        }
+
+        String worldName = p.getWorld().getName().toLowerCase();
+
+        if(ItemRewardsQuest.INSTANCE.protectedRegionsByWorld.containsKey(worldName)){
+            for(ProtectedRegion region : set) {
+                if (ItemRewardsQuest.INSTANCE.protectedRegionsByWorld.get(worldName).contains(region.getId().toLowerCase())){
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public static boolean isInPvpRegion(Player p){
@@ -71,5 +104,34 @@ public class PlayerUtils {
         return set.testState(localPlayer, DefaultFlag.BLOCK_BREAK) &&
                 set.testState(localPlayer, DefaultFlag.BLOCK_PLACE) &&
                 set.testState(localPlayer, DefaultFlag.BUILD);
+    }
+
+    public static boolean shouldUse(Player p){
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(p);
+        Vector vec = localPlayer.getPosition();
+        RegionManager manager = WorldGuardPlugin.inst().getRegionManager(p.getWorld());
+        ApplicableRegionSet set = manager.getApplicableRegions(vec);
+
+        for(ProtectedRegion region : set){
+            if(Objects.equals(region.getFlag(DefaultFlag.PVP), State.DENY) ||
+                    Objects.equals(region.getFlag(DefaultFlag.BUILD), State.DENY) ||
+                    Objects.equals(region.getFlag(DefaultFlag.BLOCK_BREAK), State.DENY) ||
+                    Objects.equals(region.getFlag(DefaultFlag.BLOCK_PLACE), State.DENY))
+            {
+                return false;
+            }
+        }
+
+        String worldName = p.getWorld().getName().toLowerCase();
+
+        if(ItemRewardsQuest.INSTANCE.protectedRegionsByWorld.containsKey(worldName)){
+            for(ProtectedRegion region : set) {
+                if (ItemRewardsQuest.INSTANCE.protectedRegionsByWorld.get(worldName).contains(region.getId().toLowerCase())){
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

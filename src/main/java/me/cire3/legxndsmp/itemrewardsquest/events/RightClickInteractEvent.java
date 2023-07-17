@@ -19,8 +19,10 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.HashMap;
 import java.util.Set;
 
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
+
 public class RightClickInteractEvent implements Listener {
-    HashMap<String, Long> cooldownsForPlayer = new HashMap<>();
+    public final HashMap<String, Long> cooldownsForPlayer = new HashMap<>();
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
@@ -54,7 +56,7 @@ public class RightClickInteractEvent implements Listener {
         if(this.hasCooldown(player)){
             int timeLeft = (int) Math.ceil(this.cooldownsForPlayer.get(player.getName()) / 1000.0F);
             player.sendMessage(
-                ChatColor.RED + "You can use this item's ability again in " + timeLeft + "s.");
+                ChatColor.RED + CHAT_PREFIX + "You can use this item's ability again in " + timeLeft + "s.");
             return;
         }
 
@@ -75,7 +77,8 @@ public class RightClickInteractEvent implements Listener {
 
         player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,
             (int) ItemRewardsQuest.INSTANCE.hyperion.shieldDurationTicks, amplifier + level));
-        player.sendMessage(ChatColor.GOLD + "Your Hyperion has given you a shield for " + amplifier * 4 + " HP!");
+        player.sendMessage(ChatColor.GOLD + CHAT_PREFIX +
+                "Your Hyperion has given you a shield for " + amplifier * 4 + " HP!");
         this.activateCooldown(player);
 
         for(LivingEntity entity : PlayerUtils.getNearbyLivingEntities(player,

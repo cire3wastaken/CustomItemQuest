@@ -11,6 +11,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
+
 public class AttackEntityByProjectileEvent implements Listener {
     //Handles ghast bow
 
@@ -23,10 +25,9 @@ public class AttackEntityByProjectileEvent implements Listener {
 
             if (damager.getShooter() instanceof Player) {
                 Player playerShooter = (Player) damager.getShooter();
-                if(PlayerUtils.isInPvpRegion(playerShooter) ||
-                    PlayerUtils.isInProtectedRegion(playerShooter))
+                if(!PlayerUtils.shouldUse(playerShooter))
                 {
-                    playerShooter.sendMessage(ChatColor.RED + "You can not use that item here!");
+                    playerShooter.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
                     return;
                 }
 

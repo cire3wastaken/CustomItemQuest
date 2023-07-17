@@ -35,8 +35,7 @@ public class ProjectileHitBlockEvent implements Listener {
 
             if (shooter instanceof Player) {
                 Player playerShooter = (Player) shooter;
-                if(PlayerUtils.isInPvpRegion(playerShooter) ||
-                    PlayerUtils.isInProtectedRegion(playerShooter))
+                if(!PlayerUtils.shouldUse(playerShooter))
                 {
                     playerShooter.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
                     return;
