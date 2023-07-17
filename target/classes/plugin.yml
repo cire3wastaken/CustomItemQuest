@@ -1,0 +1,87 @@
+name: ItemRewardsQuests # the plugins name as it should appear in the plugin list /pl
+version: 1.0 # the plugin's version
+author: cire3
+main: me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuestInitializer
+depend: [WorldGuard]
+
+permissions:
+  itemrewardsquest.*:
+    description: Gives access to all itemrewardsquest commands
+    children:
+      itemrewardsquest.giveitems: true
+  itemrewardsquest.giveitems:
+    description: Gives access to run itemrewardsquest commands
+    default: op
+  itemrewardsquest.denied:
+    description: Prevents this user from running itemrewardsquest commands
+    default: true
+  itemrewardsquest.reload:
+    description: Allows this user to reload the plugin
+    default: op
+  itemrewardsquest.updateitems:
+    description: Allows this user to update their items
+    default: true
+  itemrewardsquest.addregions:
+    description: Allows this user to add protected regions
+    default: op
+
+commands:
+  vampireblade:
+    description: Gives a specified player a vampire blade.
+    usage: /vampireblade [player]
+    permission: itemrewardsquest.giveitems
+    permission-message: You don't have itemrewardsquest.giveitems permission
+  ghastbow:
+    description: Gives a specified player a ghast bow.
+    usage: /ghastbow [player]
+    permission: itemrewardsquest.giveitems
+    permission-message: You don't have itemrewardsquest.giveitems permission
+  witchscythe:
+    description: Gives a specified player a witch scythe.
+    usage: /witchscythe [player]
+    permission: itemrewardsquest.giveitems
+    permission-message: You don't have itemrewardsquest.giveitems permission
+  thorhammer:
+    description: Gives a specified player a thor hammer.
+    usage: /thorhammer [player]
+    permission: itemrewardsquest.giveitems
+    permission-message: You don't have itemrewardsquest.giveitems permission
+  hyperionblade:
+    description: Gives a specified player a hyperion.
+    usage: /hyperionblade [player]
+    permission: itemrewardsquest.giveitems
+    permission-message: You don't have itemrewardsquest.giveitems permission
+  reloaditemrewardsquest:
+    description: Reloads config files and the plugin
+    usage: /reloaditemrewardsquest
+    permission: itemrewardsquest.reload
+  updateitem:
+    description: Update old item to new one
+    usage: /updateitem
+    permission: itemrewardsquest.updateitems
+    permission-message: You don't have itemrewardsquest.updateitems permission
+  addprotectedregion:
+    description: Add a protected region
+    usage: /addprotectedregion [region] [world name]
+    permission: itemrewardsquest.addregions
+    permission-message: You don't have itemrewardsquest.addregions permission
+  removeprotectedregion:
+    description: Removes a protected region
+    usage: /removeprotectedregion [region] [world name]
+    permission: itemrewardsquest.addregions
+    permission-message: You don't have itemrewardsquest.addregions permission
+  addwhitelistedregion:
+    description: Add a whilelisted region
+    usage: /addwhitelistedregion [region] [worldname]
+    permission: itemrewardsquest.addregions
+    permission-message: You don't have itemrewardsquest.addregions permission
+  removewhitelistedregion:
+    description: Remove a whilelisted region
+    usage: /removewhitelistedregion [region] [worldname]
+    permission: itemrewardsquest.addregions
+    permission-message: You don't have itemrewardsquest.addregions permission
+  getworld:
+    description: Get an applicable world name for region manipulation commands [IRQ]
+    usage: /getworld
+    permission: itemrewardsquest.addregions
+    permission-message: You don't have itemrewardsquest.addregions permission
