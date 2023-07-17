@@ -2,9 +2,7 @@ package me.cire3.legxndsmp.itemrewardsquest;
 
 import me.cire3.legxndsmp.itemrewardsquest.command.item.*;
 import me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand;
-import me.cire3.legxndsmp.itemrewardsquest.command.server.AddProtectedRegionCommand;
-import me.cire3.legxndsmp.itemrewardsquest.command.server.ReloadPluginCommand;
-import me.cire3.legxndsmp.itemrewardsquest.command.server.RemoveProtectedRegionCommand;
+import me.cire3.legxndsmp.itemrewardsquest.command.server.*;
 import me.cire3.legxndsmp.itemrewardsquest.events.*;
 import me.cire3.legxndsmp.itemrewardsquest.items.*;
 import me.cire3.legxndsmp.itemrewardsquest.utils.FileUtils;
@@ -35,7 +33,8 @@ public enum ItemRewardsQuest
     public static final String OUTDATED_MESSAGE = ChatColor.DARK_RED + CHAT_PREFIX +
             "ItemRewardsQuest is not up to date! Build it yourself from " + GITHUB_REPO + " or download it from Releases!";
 
-    public final HashMap<String, Set<String>> protectedRegionsByWorld = new HashMap<>();
+    public final HashMap<String, Set<String>> protectedRegions = new HashMap<>();
+    public final HashMap<String, Set<String>> whitelistedRegions = new HashMap<>();
 
     public boolean isEnabled;
 
@@ -54,6 +53,9 @@ public enum ItemRewardsQuest
     public ConvertCommand convertCommand;
     public AddProtectedRegionCommand addProtectedRegionCommand;
     public RemoveProtectedRegionCommand removeProtectedRegionCommand;
+    public AddWhitelistedRegionCommand addWhitelistedRegionCommand;
+    public RemoveWhitelistedRegionCommand removeWhitelistedRegionCommand;
+    public GetWorldCommand getWorldCommand;
 
     public File configFile;
     public FileConfiguration configuration;

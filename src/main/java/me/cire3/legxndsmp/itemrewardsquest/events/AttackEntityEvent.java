@@ -24,11 +24,6 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
 
         if(event.getDamager() instanceof Player) {
             Player playerAttacker = (Player) event.getDamager();
-            if(!PlayerUtils.shouldUse(playerAttacker))
-            {
-                playerAttacker.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
-                return;
-            }
 
             Entity victim = event.getEntity();
 
@@ -55,6 +50,12 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.vampireBlade.lore) &&
                 playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
+                if(!PlayerUtils.shouldUse(playerAttacker))
+                {
+                    playerAttacker.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
+                    return;
+                }
+
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
                     Math.min(Math.max(DamageUtils.calcDamage((int) c[0], c[1], 0, (int) c[3],
                         (int) c[4]) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed,
@@ -69,6 +70,12 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.thorHammer.lore) &&
                 playerAttacker.getItemInHand().getType().equals(Material.GOLD_AXE))
             {
+                if(!PlayerUtils.shouldUse(playerAttacker))
+                {
+                    playerAttacker.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
+                    return;
+                }
+
                 playerAttacker.getWorld().strikeLightning(victim.getLocation());
                 if(victim instanceof Player){
                     Player target = (Player) victim;
@@ -80,6 +87,12 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.witchScythe.lore) &&
                 playerAttacker.getItemInHand().getType().equals(Material.GOLD_HOE))
             {
+                if(!PlayerUtils.shouldUse(playerAttacker))
+                {
+                    playerAttacker.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
+                    return;
+                }
+
                 if(victim instanceof Player){
                     Player playerVictim = (Player) victim;
 

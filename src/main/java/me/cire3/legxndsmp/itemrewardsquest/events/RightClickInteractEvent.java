@@ -50,6 +50,12 @@ public class RightClickInteractEvent implements Listener {
             return;
         }
 
+        if(!PlayerUtils.shouldUse(player))
+        {
+            player.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
+            return;
+        }
+
         int level = 0;
         boolean alreadyHadAbsorption = false;
 

@@ -35,11 +35,6 @@ public class ProjectileHitBlockEvent implements Listener {
 
             if (shooter instanceof Player) {
                 Player playerShooter = (Player) shooter;
-                if(!PlayerUtils.shouldUse(playerShooter))
-                {
-                    playerShooter.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
-                    return;
-                }
 
                 if(playerShooter.getItemInHand() == null){
                     return;
@@ -58,6 +53,12 @@ public class ProjectileHitBlockEvent implements Listener {
 
                 if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig) &&
                         playerShooter.getItemInHand().getType().equals(Material.BOW)){
+                    if(!PlayerUtils.shouldUse(playerShooter))
+                    {
+                        playerShooter.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
+                        return;
+                    }
+
                     if(hitBlock == null) return;
 
                     World world = playerShooter.getWorld();

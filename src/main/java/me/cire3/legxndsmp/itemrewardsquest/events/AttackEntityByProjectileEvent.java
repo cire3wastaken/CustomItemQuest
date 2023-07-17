@@ -25,11 +25,6 @@ public class AttackEntityByProjectileEvent implements Listener {
 
             if (damager.getShooter() instanceof Player) {
                 Player playerShooter = (Player) damager.getShooter();
-                if(!PlayerUtils.shouldUse(playerShooter))
-                {
-                    playerShooter.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
-                    return;
-                }
 
                 if(playerShooter.getItemInHand() == null){
                     return;
@@ -49,6 +44,12 @@ public class AttackEntityByProjectileEvent implements Listener {
                 if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig) &&
                     playerShooter.getItemInHand().getType().equals(Material.BOW))
                 {
+                    if(!PlayerUtils.shouldUse(playerShooter))
+                    {
+                        playerShooter.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
+                        return;
+                    }
+
                     World world = playerShooter.getWorld();
                     Location location = event.getEntity().getLocation();
 

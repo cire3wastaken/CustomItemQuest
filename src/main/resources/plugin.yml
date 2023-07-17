@@ -70,3 +70,18 @@ commands:
     usage: /removeprotectedregion [region] [world name]
     permission: itemrewardsquest.addregions
     permission-message: You don't have itemrewardsquest.addregions permission
+  addwhitelistedregion:
+    description: Add a whilelisted region
+    usage: /addwhitelistedregion [region] [worldname]
+    permission: itemrewardsquest.addregions
+    permission-message: You don't have itemrewardsquest.addregions permission
+  removewhitelistedregion:
+    description: Remove a whilelisted region
+    usage: /removewhitelistedregion [region] [worldname]
+    permission: itemrewardsquest.addregions
+    permission-message: You don't have itemrewardsquest.addregions permission
+  getworld:
+    description: Get an applicable world name for region manipulation commands [IRQ]
+    usage: /getworld
+    permission: itemrewardsquest.addregions
+    permission-message: You don't have itemrewardsquest.addregions permission

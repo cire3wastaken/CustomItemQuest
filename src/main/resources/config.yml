@@ -1,5 +1,5 @@
 # WARNING:
-# DO NOT MODIFY LORE, OR BE PREPARED TO GIVE KIDS A NEW VAMPBLADE,
+# DO NOT MODIFY LORE, UNLESS YOU HAVE THE OLD LORE STORED, SO YOU CAN USE /UPDATEITEM
 # EVENTS CHECK FOR LORE, SPIGOT DOES NOT HAVE ANY WAY TO CREATE CUSTOM IDS
 
 # *.Power:
@@ -67,8 +67,12 @@ Hyperion:
   Amount: 0.25
 
 Protected:
-  WorldForItemRewardsQuestTest:
-    - "test"
+  Blacklist:
+    WorldForItemRewardsQuestTest:
+      - "test"
+  Whitelist:
+    WorldForItemRewardsQuestTest:
+      - "pvp"
 
 Plugin:
   Version: 1.0.0
