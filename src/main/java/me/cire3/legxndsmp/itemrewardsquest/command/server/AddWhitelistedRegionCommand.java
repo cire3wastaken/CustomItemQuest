@@ -20,7 +20,7 @@ public class AddWhitelistedRegionCommand implements CommandExecutor {
             return true;
         }
 
-        if(!command.getName().equalsIgnoreCase("addprotectedregion")) {
+        if(!command.getName().equalsIgnoreCase("addwhitelistedregion")) {
             commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + "Unknown command");
             return false;
         }
