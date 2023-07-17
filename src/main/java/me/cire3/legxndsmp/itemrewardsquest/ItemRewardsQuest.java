@@ -82,6 +82,9 @@ public enum ItemRewardsQuest
         this.convertCommand = new ConvertCommand();
         this.addProtectedRegionCommand = new AddProtectedRegionCommand();
         this.removeProtectedRegionCommand = new RemoveProtectedRegionCommand();
+        this.addWhitelistedRegionCommand = new AddWhitelistedRegionCommand();
+        this.removeWhitelistedRegionCommand = new RemoveWhitelistedRegionCommand();
+        this.getWorldCommand = new GetWorldCommand();
 
         this.hyperion = new Hyperion(this.configuration);
         this.witchScythe = new WitchScythe(this.configuration);
@@ -134,6 +137,9 @@ public enum ItemRewardsQuest
         plugin.getCommand("updateitem").setExecutor(this.convertCommand);
         plugin.getCommand("addprotectedregion").setExecutor(this.addProtectedRegionCommand);
         plugin.getCommand("removeprotectedregion").setExecutor(this.removeProtectedRegionCommand);
+        plugin.getCommand("addwhitelistedregion").setExecutor(this.addProtectedRegionCommand);
+        plugin.getCommand("removewhitelistedregion").setExecutor(this.removeWhitelistedRegionCommand);
+        plugin.getCommand("getworld").setExecutor(this.getWorldCommand);
 
         this.thorHammer.update(configuration);
         this.vampireBlade.update(configuration);
