@@ -35,7 +35,7 @@ public class RemoveWhitelistedRegionCommand implements CommandExecutor {
                     k -> new HashSet<>());
 
             if(ItemRewardsQuest.INSTANCE.whitelistedRegions.get(strings[1]).remove(strings[0].toLowerCase())){
-                List<String> temp = ItemRewardsQuest.INSTANCE.configuration.getStringList("Protected.Whitelist" +
+                List<String> temp = ItemRewardsQuest.INSTANCE.configuration.getStringList("Protected.Whitelist." +
                         strings[1].toLowerCase());
 
                 temp.remove(strings[0].toLowerCase());

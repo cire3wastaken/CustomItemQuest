@@ -37,7 +37,7 @@ public class RemoveProtectedRegionCommand implements CommandExecutor {
             }
 
             if(ItemRewardsQuest.INSTANCE.protectedRegions.get(strings[1].toLowerCase()).remove(strings[0].toLowerCase())){
-                List<String> temp = ItemRewardsQuest.INSTANCE.configuration.getStringList("Protected.Blacklist" +
+                List<String> temp = ItemRewardsQuest.INSTANCE.configuration.getStringList("Protected.Blacklist." +
                     strings[1].toLowerCase());
 
                 temp.remove(strings[0].toLowerCase());

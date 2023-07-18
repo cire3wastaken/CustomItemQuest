@@ -35,7 +35,7 @@ public class AddProtectedRegionCommand implements CommandExecutor {
 
             if(ItemRewardsQuest.INSTANCE.protectedRegions.get(strings[1]).add(strings[0].toLowerCase())){
 
-                ItemRewardsQuest.INSTANCE.configuration.set("Protected.Blacklist" + strings[1].toLowerCase(),
+                ItemRewardsQuest.INSTANCE.configuration.set("Protected.Blacklist." + strings[1].toLowerCase(),
                     strings[0].toLowerCase());
 
                 try {

@@ -34,7 +34,7 @@ public class AddWhitelistedRegionCommand implements CommandExecutor {
                     k -> new HashSet<>());
 
             if(ItemRewardsQuest.INSTANCE.whitelistedRegions.get(strings[1]).add(strings[0].toLowerCase())){
-                ItemRewardsQuest.INSTANCE.configuration.set("Protected.Whitelist" + strings[1].toLowerCase(),
+                ItemRewardsQuest.INSTANCE.configuration.set("Protected.Whitelist." + strings[1].toLowerCase(),
                         strings[0].toLowerCase());
 
                 try {
