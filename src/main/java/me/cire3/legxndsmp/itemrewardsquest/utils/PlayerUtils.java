@@ -129,10 +129,7 @@ public class PlayerUtils {
         }
 
         for(ProtectedRegion region : set){
-            if(Objects.equals(region.getFlag(DefaultFlag.PVP), State.DENY) ||
-                    Objects.equals(region.getFlag(DefaultFlag.BUILD), State.DENY) ||
-                    Objects.equals(region.getFlag(DefaultFlag.BLOCK_BREAK), State.DENY) ||
-                    Objects.equals(region.getFlag(DefaultFlag.BLOCK_PLACE), State.DENY))
+            if(Objects.equals(region.getFlag(DefaultFlag.PVP), State.DENY))
             {
                 return false;
             }

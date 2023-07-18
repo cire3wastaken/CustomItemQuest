@@ -15,9 +15,9 @@ import org.bukkit.event.HandlerList;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public enum ItemRewardsQuest
 {
@@ -34,8 +34,10 @@ public enum ItemRewardsQuest
     public static final String OUTDATED_MESSAGE = ChatColor.DARK_RED + CHAT_PREFIX +
             "ItemRewardsQuest is not up to date! Build it yourself from " + GITHUB_REPO + " or download it from Releases!";
 
-    public final HashMap<String, Set<String>> protectedRegions = new HashMap<>();
-    public final HashMap<String, Set<String>> whitelistedRegions = new HashMap<>();
+    public final Map<String, Set<String>> protectedRegions = new HashMap<>();
+    public final Map<String, Set<String>> whitelistedRegions = new HashMap<>();
+
+    public final HashMap<String, Long> tillNextMessage = new HashMap<>();
 
     public boolean isEnabled;
 
@@ -102,6 +104,7 @@ public enum ItemRewardsQuest
         plugin.saveConfig();
         this.register(plugin);
         this.updateConfig();
+        this.loadRegions();
     }
 
     public void enable() {
@@ -198,7 +201,7 @@ public enum ItemRewardsQuest
         return true;
     }
 
-    private void updateConfig(){
+    public void updateConfig(){
         File current = new File(this.plugin.getDataFolder(), "versionCurrent.txt");
 
         double[] versionCurrent = this.versionParse(FileUtils.getVersion(current));
@@ -245,6 +248,23 @@ public enum ItemRewardsQuest
             this.plugin.saveDefaultConfig();
         } else {
             this.configuration = YamlConfiguration.loadConfiguration(this.configFile);
+        }
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void loadRegions(){
+        Map<String, List<String>> whitelisted = ((Map<String, List<String>>) this.configuration.get("Protected.Whitelist"));
+        Map<String, List<String>> blacklisted = ((Map<String, List<String>>) this.configuration.get("Protected.Blacklist"));
+
+        this.whitelistedRegions.clear();
+        this.protectedRegions.clear();
+
+        for(String key : whitelisted.keySet()){
+            this.whitelistedRegions.put(key, new HashSet<>(whitelisted.get(key)));
+        }
+
+        for(String key : blacklisted.keySet()){
+            this.protectedRegions.put(key, new HashSet<>(whitelisted.get(key)));
         }
     }
 }

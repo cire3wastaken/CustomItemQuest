@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
