@@ -112,16 +112,6 @@ public class PlayerUtils {
         RegionManager manager = WorldGuardPlugin.inst().getRegionManager(p.getWorld());
         ApplicableRegionSet set = manager.getApplicableRegions(vec);
 
-        for(ProtectedRegion region : set){
-            if(Objects.equals(region.getFlag(DefaultFlag.PVP), State.DENY) ||
-                    Objects.equals(region.getFlag(DefaultFlag.BUILD), State.DENY) ||
-                    Objects.equals(region.getFlag(DefaultFlag.BLOCK_BREAK), State.DENY) ||
-                    Objects.equals(region.getFlag(DefaultFlag.BLOCK_PLACE), State.DENY))
-            {
-                return false;
-            }
-        }
-
         String worldName = p.getWorld().getName().toLowerCase();
 
         if(ItemRewardsQuest.INSTANCE.protectedRegions.containsKey(worldName)){
@@ -135,6 +125,16 @@ public class PlayerUtils {
                 if (ItemRewardsQuest.INSTANCE.protectedRegions.get(worldName).contains(region.getId().toLowerCase())){
                     return false;
                 }
+            }
+        }
+
+        for(ProtectedRegion region : set){
+            if(Objects.equals(region.getFlag(DefaultFlag.PVP), State.DENY) ||
+                    Objects.equals(region.getFlag(DefaultFlag.BUILD), State.DENY) ||
+                    Objects.equals(region.getFlag(DefaultFlag.BLOCK_BREAK), State.DENY) ||
+                    Objects.equals(region.getFlag(DefaultFlag.BLOCK_PLACE), State.DENY))
+            {
+                return false;
             }
         }
 
