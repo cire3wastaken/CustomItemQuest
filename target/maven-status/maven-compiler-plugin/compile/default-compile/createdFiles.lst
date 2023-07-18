@@ -20,8 +20,10 @@ me\cire3\legxndsmp\itemrewardsquest\utils\FileUtils.class
 me\cire3\legxndsmp\itemrewardsquest\command\item\WitchScytheCommand.class
 me\cire3\legxndsmp\itemrewardsquest\items\VampireBlade.class
 me\cire3\legxndsmp\itemrewardsquest\command\item\ThorHammerCommand.class
+me\cire3\legxndsmp\itemrewardsquest\command\server\ListProtectedRegionsCommand.class
 me\cire3\legxndsmp\itemrewardsquest\events\AttackEntityEvent.class
 me\cire3\legxndsmp\itemrewardsquest\command\item\GhastBowCommand.class
+me\cire3\legxndsmp\itemrewardsquest\command\server\ListWhitelistedRegionsCommand.class
 me\cire3\legxndsmp\itemrewardsquest\command\item\VampireBladeCommand.class
 me\cire3\legxndsmp\itemrewardsquest\ItemRewardsQuest.class
 me\cire3\legxndsmp\itemrewardsquest\items\GhastBow.class
