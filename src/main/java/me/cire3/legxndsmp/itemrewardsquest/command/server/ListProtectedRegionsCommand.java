@@ -5,11 +5,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+
+import java.util.List;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
 
-public class GetWorldCommand implements CommandExecutor {
+public class ListProtectedRegionsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled){
@@ -17,22 +18,19 @@ public class GetWorldCommand implements CommandExecutor {
             return true;
         }
 
-        if(!command.getName().equalsIgnoreCase("getworld")) {
+        if(!command.getName().equalsIgnoreCase("listprotectedregions")){
             commandSender.sendMessage(ChatColor.RED + UNKNOWN_COMMAND);
-            return false;
-        }
-        if(strings.length != 0){
-            commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "This command requires no arguments!");
             return false;
         }
 
         if(commandSender.hasPermission("itemrewardsquest.addregions") || commandSender.isOp()){
-            if(commandSender instanceof Player){
-                commandSender.sendMessage(ChatColor.GREEN + CHAT_PREFIX + "World name is '" +
-                    ((Player) commandSender).getWorld().getName().toLowerCase() + "'");
-            } else {
-                commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "Only players can run this!");
-            }
+            commandSender.sendMessage(ChatColor.BOLD.toString() + ChatColor.GREEN.toString() + CHAT_PREFIX +
+                    "Blacklisted Regions in Memory: ");
+            ItemRewardsQuest.INSTANCE.protectedRegions.forEach((name, set) -> {
+                for(String reg : set){
+                    commandSender.sendMessage(ChatColor.YELLOW + name + ": " + reg.toLowerCase());
+                }
+            });
         } else {
             commandSender.sendMessage(ChatColor.RED + PERMISSION_DENIED);
         }

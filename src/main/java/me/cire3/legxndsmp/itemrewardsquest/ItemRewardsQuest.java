@@ -24,8 +24,9 @@ public enum ItemRewardsQuest
     INSTANCE;
 
     public static final String CHAT_PREFIX = "[ItemRewardsQuest] >> ";
-    public static final String DISABLED_MESSAGE = CHAT_PREFIX + "ItemRewardsQuest is currently disabled";
+    public static final String DISABLED_MESSAGE = CHAT_PREFIX + "ItemRewardsQuest is currently disabled!";
     public static final String PERMISSION_DENIED = CHAT_PREFIX + "You do not have permissions!";
+    public static final String UNKNOWN_COMMAND = CHAT_PREFIX + "Unknown command!";
 
     public static final String VERSION_FILE_URL = "https://raw.githubusercontent.com/cire3wastaken/CustomItemQuest/master/version.txt";
     public static final String GITHUB_REPO = "https://github.com/cire3wastaken/CustomItemQuest/tree/master";
@@ -55,6 +56,8 @@ public enum ItemRewardsQuest
     public RemoveProtectedRegionCommand removeProtectedRegionCommand;
     public AddWhitelistedRegionCommand addWhitelistedRegionCommand;
     public RemoveWhitelistedRegionCommand removeWhitelistedRegionCommand;
+    public ListProtectedRegionsCommand listProtectedRegionsCommand;
+    public ListWhitelistedRegionsCommand listWhitelistedRegionsCommand;
     public GetWorldCommand getWorldCommand;
 
     public File configFile;
@@ -84,6 +87,8 @@ public enum ItemRewardsQuest
         this.removeProtectedRegionCommand = new RemoveProtectedRegionCommand();
         this.addWhitelistedRegionCommand = new AddWhitelistedRegionCommand();
         this.removeWhitelistedRegionCommand = new RemoveWhitelistedRegionCommand();
+        this.listProtectedRegionsCommand = new ListProtectedRegionsCommand();
+        this.listWhitelistedRegionsCommand = new ListWhitelistedRegionsCommand();
         this.getWorldCommand = new GetWorldCommand();
 
         this.hyperion = new Hyperion(this.configuration);
@@ -139,6 +144,8 @@ public enum ItemRewardsQuest
         plugin.getCommand("removeprotectedregion").setExecutor(this.removeProtectedRegionCommand);
         plugin.getCommand("addwhitelistedregion").setExecutor(this.addWhitelistedRegionCommand);
         plugin.getCommand("removewhitelistedregion").setExecutor(this.removeWhitelistedRegionCommand);
+        plugin.getCommand("listprotectedregions").setExecutor(this.listProtectedRegionsCommand);
+        plugin.getCommand("listwhitelistedregions").setExecutor(this.listWhitelistedRegionsCommand);
         plugin.getCommand("getworld").setExecutor(this.getWorldCommand);
 
         this.thorHammer.update(configuration);
@@ -230,10 +237,10 @@ public enum ItemRewardsQuest
     }
 
     public void defineConfig(){
-        this.configFile = new File(plugin.getDataFolder(), "config.yml");
+        this.configFile = new File(this.plugin.getDataFolder(), "config.yml");
         if(!configFile.exists()){
-            this.configuration = plugin.getConfig();
-            plugin.saveDefaultConfig();
+            this.configuration = this.plugin.getConfig();
+            this.plugin.saveDefaultConfig();
         } else {
             this.configuration = YamlConfiguration.loadConfiguration(this.configFile);
         }

@@ -18,16 +18,16 @@ public class VampireBladeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled){
-            commandSender.sendMessage(ChatColor.DARK_RED + DISABLED_MESSAGE);
+            commandSender.sendMessage(ChatColor.RED + DISABLED_MESSAGE);
             return true;
         }
 
         if(!command.getName().equalsIgnoreCase("vampireblade")){
-            commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + "Unknown command");
+            commandSender.sendMessage(ChatColor.RED + UNKNOWN_COMMAND);
             return false;
         }
         if(strings.length != 1){
-            commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + "Specify one argument (player)");
+            commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "Specify one argument (player)");
             return false;
         }
 
@@ -36,7 +36,7 @@ public class VampireBladeCommand implements CommandExecutor {
             commandSender.sendMessage(ChatColor.GREEN + CHAT_PREFIX + "Successfully gave " +
                 strings[0] + " a Vampire Blade!");
         } else {
-            commandSender.sendMessage(ChatColor.DARK_RED + PERMISSION_DENIED);
+            commandSender.sendMessage(ChatColor.RED + PERMISSION_DENIED);
         }
         return true;
     }
@@ -50,7 +50,7 @@ public class VampireBladeCommand implements CommandExecutor {
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + args[0] + " is not online!");
+            commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + args[0] + " is not online!");
             return;
         }
 

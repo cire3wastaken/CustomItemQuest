@@ -18,15 +18,15 @@ public class ThorHammerCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled){
-            commandSender.sendMessage(ChatColor.DARK_RED + DISABLED_MESSAGE);
+            commandSender.sendMessage(ChatColor.RED + DISABLED_MESSAGE);
             return true;
         }
         if(!command.getName().equalsIgnoreCase("thorhammer")){
-            commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + "Unknown Command");
+            commandSender.sendMessage(ChatColor.RED + UNKNOWN_COMMAND);
             return false;
         }
         if(strings.length != 1){
-            commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + "Specify one argument (player)");
+            commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "Specify one argument (player)");
             return false;
         }
         if (commandSender.hasPermission("itemrewardsquest.giveitems") || commandSender.isOp()) {
@@ -34,7 +34,7 @@ public class ThorHammerCommand implements CommandExecutor {
             commandSender.sendMessage(ChatColor.GREEN + CHAT_PREFIX + "Successfully gave " +
                 strings[0] + " a Thor Hammer!");
         } else {
-            commandSender.sendMessage(ChatColor.DARK_RED + PERMISSION_DENIED);
+            commandSender.sendMessage(ChatColor.RED + PERMISSION_DENIED);
         }
         return true;
     }
@@ -48,7 +48,7 @@ public class ThorHammerCommand implements CommandExecutor {
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            commandSender.sendMessage(ChatColor.DARK_RED + CHAT_PREFIX + args[0] + " is not online!");
+            commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + args[0] + " is not online!");
             return;
         }
         target.getInventory().addItem(item);
