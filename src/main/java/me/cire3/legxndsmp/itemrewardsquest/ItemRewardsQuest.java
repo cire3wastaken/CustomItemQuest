@@ -253,7 +253,7 @@ public enum ItemRewardsQuest
 
     @SuppressWarnings({"unchecked"})
     public void loadRegions(){
-        Map<String, List<String>> whitelisted = ((Map<String, List<String>>) this.configuration.get("Protected.Whitelist"));
+        /*Map<String, List<String>> whitelisted = ((Map<String, List<String>>) this.configuration.get("Protected.Whitelist"));
         Map<String, List<String>> blacklisted = ((Map<String, List<String>>) this.configuration.get("Protected.Blacklist"));
 
         this.whitelistedRegions.clear();
@@ -265,6 +265,6 @@ public enum ItemRewardsQuest
 
         for(String key : blacklisted.keySet()){
             this.protectedRegions.put(key, new HashSet<>(whitelisted.get(key)));
-        }
+        }*/
     }
 }
