@@ -214,11 +214,13 @@ public enum ItemRewardsQuest
                     this.plugin.saveDefaultConfig();
                 } else {
                     Bukkit.getLogger().info(ChatColor.DARK_RED + CHAT_PREFIX +
-                        "Failed to update config.yml, force disabling ItemRewardsQuest to prevent glitches!\n" +
-                        "Grab the latest config.yml from " + GITHUB_REPO + " and replace the current one!");
+                            "Failed to update config.yml, force disabling ItemRewardsQuest to prevent glitches!\n" +
+                            "Grab the latest config.yml from " + GITHUB_REPO + " and replace the current one!");
                     this.plugin.onDisable();
                 }
                 return;
+            } else if (versionConfig[i] > versionCurrent[i]){
+                break;
             }
         }
     }
@@ -226,13 +228,13 @@ public enum ItemRewardsQuest
     public double[] versionParse(String ver){
         if(ver.split("\\.").length != 3){
             Bukkit.getLogger().info(ChatColor.DARK_RED + CHAT_PREFIX +
-                "Unknown version format, please manually check if this is up to date!" + GITHUB_REPO);
+                    "Unknown version format, please manually check if this is up to date!" + GITHUB_REPO);
             return null;
         }
         return new double[]{
-            Double.parseDouble(ver.split("\\.")[0]),
-            Double.parseDouble(ver.split("\\.")[1]),
-            Double.parseDouble(ver.split("\\.")[2])
+                Double.parseDouble(ver.split("\\.")[0]),
+                Double.parseDouble(ver.split("\\.")[1]),
+                Double.parseDouble(ver.split("\\.")[2])
         };
     }
 
