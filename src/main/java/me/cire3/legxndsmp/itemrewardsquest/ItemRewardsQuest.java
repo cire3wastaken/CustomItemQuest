@@ -137,7 +137,7 @@ public enum ItemRewardsQuest
         plugin.getCommand("updateitem").setExecutor(this.convertCommand);
         plugin.getCommand("addprotectedregion").setExecutor(this.addProtectedRegionCommand);
         plugin.getCommand("removeprotectedregion").setExecutor(this.removeProtectedRegionCommand);
-        plugin.getCommand("addwhitelistedregion").setExecutor(this.addProtectedRegionCommand);
+        plugin.getCommand("addwhitelistedregion").setExecutor(this.addWhitelistedRegionCommand);
         plugin.getCommand("removewhitelistedregion").setExecutor(this.removeWhitelistedRegionCommand);
         plugin.getCommand("getworld").setExecutor(this.getWorldCommand);
 
