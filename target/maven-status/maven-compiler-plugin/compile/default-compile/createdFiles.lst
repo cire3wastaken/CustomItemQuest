@@ -7,6 +7,7 @@ me\cire3\legxndsmp\itemrewardsquest\command\server\AddWhitelistedRegionCommand.c
 me\cire3\legxndsmp\itemrewardsquest\command\server\ReloadPluginCommand.class
 me\cire3\legxndsmp\itemrewardsquest\items\Hyperion.class
 me\cire3\legxndsmp\itemrewardsquest\command\player\ConvertCommand.class
+me\cire3\legxndsmp\itemrewardsquest\events\PlayerJoinServerEvent.class
 me\cire3\legxndsmp\itemrewardsquest\utils\PlayerUtils.class
 me\cire3\legxndsmp\itemrewardsquest\ItemRewardsQuestInitializer.class
 me\cire3\legxndsmp\itemrewardsquest\command\server\RemoveWhitelistedRegionCommand.class

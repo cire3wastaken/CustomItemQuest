@@ -6,6 +6,7 @@ import me.cire3.legxndsmp.itemrewardsquest.utils.PlayerUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -53,7 +54,10 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             {
                 if(!PlayerUtils.shouldUse(playerAttacker))
                 {
+                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+
                     playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                    ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
                     return;
                 }
 
@@ -73,13 +77,22 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             {
                 if(!PlayerUtils.shouldUse(playerAttacker))
                 {
+                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+
                     playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                    ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
                     return;
                 }
 
-                playerAttacker.getWorld().strikeLightning(victim.getLocation());
-                if(victim instanceof Player){
-                    Player target = (Player) victim;
+                playerAttacker.getWorld().strikeLightningEffect(victim.getLocation());
+                if(victim instanceof LivingEntity){
+                    LivingEntity target = (LivingEntity) victim;
+
+                    if(ItemRewardsQuest.INSTANCE.thorHammer.ignoreArmor){
+                        target.setHealth(Math.max(target.getHealth() - ItemRewardsQuest.INSTANCE.thorHammer.damage, 0));
+                    } else {
+                        target.damage(ItemRewardsQuest.INSTANCE.thorHammer.damage);
+                    }
                     target.setFireTicks(((int) Math.floor(ItemRewardsQuest.INSTANCE.thorHammer.fireTicks)));
                 }
             }
@@ -90,7 +103,10 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             {
                 if(!PlayerUtils.shouldUse(playerAttacker))
                 {
+                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+
                     playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                    ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
                     return;
                 }
 

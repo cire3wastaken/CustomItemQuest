@@ -27,7 +27,8 @@ public class GhastBow {
         this.explosionPowerConfig = configuration.getDouble("GhastBow.Power");
         this.ignoreArmor = configuration.getBoolean("GhastBow.IgnoreArmor");
         this.explosion = configuration.getBoolean("GhastBow.Explosion");
-        this.damageConfig = configuration.getDouble("GhastBow.Damage");
+
+       this.damageConfig = configuration.getDouble("GhastBow.Damage");
         this.loreConfig = new ArrayList<>();
 
         for(String s : ColorUtils.color(configuration.getStringList("GhastBow.Lore"))){

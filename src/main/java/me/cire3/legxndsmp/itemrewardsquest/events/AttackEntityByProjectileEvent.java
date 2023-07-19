@@ -47,7 +47,10 @@ public class AttackEntityByProjectileEvent implements Listener {
                 {
                     if(!PlayerUtils.shouldUse(playerShooter))
                     {
+                        if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
+
                         playerShooter.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                        ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
                         return;
                     }
 

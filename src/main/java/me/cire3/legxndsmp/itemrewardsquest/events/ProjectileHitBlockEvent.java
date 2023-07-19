@@ -11,7 +11,9 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CAN_NOT_USE;
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
@@ -56,7 +58,10 @@ public class ProjectileHitBlockEvent implements Listener {
                         playerShooter.getItemInHand().getType().equals(Material.BOW)){
                     if(!PlayerUtils.shouldUse(playerShooter))
                     {
+                        if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
+
                         playerShooter.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                        ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
                         return;
                     }
 
@@ -80,8 +85,10 @@ public class ProjectileHitBlockEvent implements Listener {
                         }
 
                         world.playSound(location, Sound.EXPLODE, 1F, 1F);
+                        Collection<Entity> collection =  world.getNearbyEntities(location, power, power, power);
+                        collection.remove(playerShooter);
 
-                        for (Entity nearby: world.getNearbyEntities(location, power, power, power)) {
+                        for (Entity nearby: collection) {
                             if (nearby instanceof LivingEntity) {
                                 LivingEntity entity = (LivingEntity) nearby;
 

@@ -30,7 +30,7 @@ ThorHammer:
   Lore:
     - "&6Ability: &eLEFT CLICK"
     - "&fStrike &elightning &fon your target"
-  Damage: 2.0
+  Damage: 3.0
   IgnoreArmor: true
   FireSeconds: 10
 
@@ -49,7 +49,7 @@ WitchScythe:
   Lore:
     - "&6Ability: &eLEFT CLICK"
     - "&fInflict &apoison &fon your victims"
-  Seconds: 5
+  Seconds: 3
 
 Hyperion:
   Name: "&dHyperion"
@@ -68,11 +68,8 @@ Hyperion:
 
 Protected:
   Blacklist:
-    WorldForItemRewardsQuestTest:
-      - "test"
   Whitelist:
-    WorldForItemRewardsQuestTest:
-      - "pvp"
+  Worldlist:
 
 Plugin:
   Version: 1.0.0

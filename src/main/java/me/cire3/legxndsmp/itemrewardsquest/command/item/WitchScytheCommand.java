@@ -9,9 +9,12 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Map;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
 
@@ -42,17 +45,36 @@ public class WitchScytheCommand implements CommandExecutor {
     }
 
     public void giveItem(CommandSender commandSender, String[] args){
+        this.giveItem(commandSender, args, null);
+    }
+
+    public void giveItem(CommandSender commandSender, String[] args, ItemMeta metaToSave){
         ItemStack item = new ItemStack(Material.GOLD_HOE);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ColorUtils.color(ItemRewardsQuest.INSTANCE.witchScythe.name));
         meta.setLore(ColorUtils.color(ItemRewardsQuest.INSTANCE.witchScythe.originalLore));
-        item.setItemMeta(meta);
 
-        Player target = Bukkit.getPlayer(args[0]);
+        Player target = Bukkit.getPlayerExact(args[0]);
         if (target == null) {
             commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + args[0] + " is not online!");
             return;
         }
+
+        if(metaToSave != null){
+            Map<Enchantment, Integer> enchants = metaToSave.getEnchants();
+            if(enchants != null){
+                enchants.forEach((enchant, level) -> {
+                    meta.addEnchant(enchant, level, false);
+                });
+            }
+
+            String name = metaToSave.getDisplayName();
+            if(name != null){
+                meta.setDisplayName(name);
+            }
+        }
+
+        item.setItemMeta(meta);
         target.getInventory().addItem(item);
     }
 }

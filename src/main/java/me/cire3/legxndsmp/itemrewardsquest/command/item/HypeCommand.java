@@ -38,7 +38,7 @@ public class HypeCommand implements CommandExecutor {
             meta.setLore(ColorUtils.color(ItemRewardsQuest.INSTANCE.hyperion.originalLore));
             item.setItemMeta(meta);
 
-            Player target = Bukkit.getPlayer(strings[0]);
+            Player target = Bukkit.getPlayerExact(strings[0]);
             if (target == null) {
                 commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + strings[0] + " is not online!");
                 return true;

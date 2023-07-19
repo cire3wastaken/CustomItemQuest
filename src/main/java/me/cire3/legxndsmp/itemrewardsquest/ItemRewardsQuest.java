@@ -215,7 +215,7 @@ public enum ItemRewardsQuest
         for(int i = 0; i < versionConfig.length && i < versionCurrent.length; i++){
             if(versionConfig[i] < versionCurrent[i]){
                 if(this.configFile.delete()){
-                    this.plugin.saveDefaultConfig();
+                    this.plugin.saveResource("config.yml", false);
                 } else {
                     Bukkit.getLogger().info(ChatColor.DARK_RED + CHAT_PREFIX +
                             "Failed to update config.yml, force disabling ItemRewardsQuest to prevent glitches!\n" +
@@ -230,9 +230,15 @@ public enum ItemRewardsQuest
     }
 
     public double[] versionParse(String ver){
+        if(ver == null){
+            Bukkit.getLogger().info(ChatColor.DARK_RED + CHAT_PREFIX +
+                    "Unknown version format, please manually check if this is up to date! " + GITHUB_REPO);
+            return null;
+        }
+
         if(ver.split("\\.").length != 3){
             Bukkit.getLogger().info(ChatColor.DARK_RED + CHAT_PREFIX +
-                    "Unknown version format, please manually check if this is up to date!" + GITHUB_REPO);
+                    "Unknown version format, please manually check if this is up to date! " + GITHUB_REPO);
             return null;
         }
         return new double[]{
@@ -286,5 +292,14 @@ public enum ItemRewardsQuest
             Bukkit.getLogger().log(Level.SEVERE, "Unknown error, check logs!");
             e.printStackTrace();
         }
+    }
+
+    public void activateCooldown(Player player){
+        this.tillNextMessage.put(player.getName(), System.currentTimeMillis());
+    }
+
+    public boolean hasCooldown(Player player){
+        return !(this.tillNextMessage.get(player.getName()) < (System.currentTimeMillis() -
+                ItemRewardsQuest.INSTANCE.hyperion.cooldownSeconds * 1000));
     }
 }

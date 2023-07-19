@@ -48,17 +48,17 @@ public class ConvertCommand implements CommandExecutor {
                 Player target = (Player) commandSender;
                 if(target.getItemInHand() == null){
                     commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                        "Please hold an custom item to update!");
+                        "Please hold an old item to update!");
                     return true;
                 }
                 if(!target.getItemInHand().hasItemMeta()){
                     commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                        "Please hold an custom item to update!");
+                        "Please hold an old item to update!");
                     return true;
                 }
                 if(!target.getItemInHand().getItemMeta().hasLore()){
                     commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                        "Please hold an custom item to update!");
+                        "Please hold an old item to update!");
                     return true;
                 }
 
@@ -69,19 +69,19 @@ public class ConvertCommand implements CommandExecutor {
                             target.setItemInHand(null);
                             if(lore.equalsIgnoreCase(OLD_GHASTBOW_LORE)) {
                                 ItemRewardsQuest.INSTANCE.ghastBowCommand.giveItem(target, new String[]{
-                                    target.getName()}
+                                    target.getName()}, meta
                                 );
                             } else if(lore.equalsIgnoreCase(OLD_VAMPBLADE_LORE)) {
                                 ItemRewardsQuest.INSTANCE.vampireBladeCommand.giveItem(target, new String[]{
-                                    target.getName()}
+                                    target.getName()}, meta
                                 );
                             } else if(lore.equalsIgnoreCase(OLD_THORHAMMER_LORE)) {
                                 ItemRewardsQuest.INSTANCE.thorHammerCommand.giveItem(target, new String[]{
-                                    target.getName()}
+                                    target.getName()}, meta
                                 );
                             } else if(lore.equalsIgnoreCase(OLD_WITCHSCYTHE_LORE)) {
                                 ItemRewardsQuest.INSTANCE.witchScytheCommand.giveItem(target, new String[]{
-                                        target.getName()}
+                                        target.getName()}, meta
                                 );
                             }
 
@@ -92,7 +92,7 @@ public class ConvertCommand implements CommandExecutor {
                 }
 
                 commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                        "Failed to update item, ensure you are holding a custom item!");
+                        "Failed to update item, ensure you are holding an old item!");
             }
         } else {
             commandSender.sendMessage(ChatColor.RED + PERMISSION_DENIED);
