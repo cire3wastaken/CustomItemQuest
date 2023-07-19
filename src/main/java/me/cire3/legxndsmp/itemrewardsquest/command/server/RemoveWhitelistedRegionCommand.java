@@ -38,9 +38,17 @@ public class RemoveWhitelistedRegionCommand implements CommandExecutor {
 
             if(ItemRewardsQuest.INSTANCE.whitelistedRegions.get(strings[1]).remove(strings[0].toLowerCase())){
                 List<String> temp = ItemRewardsQuest.INSTANCE.configuration.getStringList("Protected.Whitelist." +
-                        strings[1].toLowerCase());
+                    strings[1].toLowerCase());
+
+                if(temp == null){
+                    commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "Whitelisted region '" +
+                            strings[0] + "' in world '" + strings[1] + "' doesn't exist, do you mean /addwhitelistedregion?");
+                    return true;
+                }
 
                 temp.remove(strings[0].toLowerCase());
+
+                ItemRewardsQuest.INSTANCE.configuration.set("Protected.Whitelist." + strings[1].toLowerCase(), temp);
 
                 try {
                     ItemRewardsQuest.INSTANCE.configuration.save(ItemRewardsQuest.INSTANCE.configFile);

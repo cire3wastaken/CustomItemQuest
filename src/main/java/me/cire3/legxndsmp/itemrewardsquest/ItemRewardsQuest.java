@@ -27,11 +27,12 @@ public enum ItemRewardsQuest
     public static final String DISABLED_MESSAGE = CHAT_PREFIX + "ItemRewardsQuest is currently disabled!";
     public static final String PERMISSION_DENIED = CHAT_PREFIX + "You do not have permissions!";
     public static final String UNKNOWN_COMMAND = CHAT_PREFIX + "Unknown command!";
+    public static final String CAN_NOT_USE = CHAT_PREFIX + "You can not use this item here!";
 
     public static final String VERSION_FILE_URL = "https://raw.githubusercontent.com/cire3wastaken/CustomItemQuest/master/version.txt";
     public static final String GITHUB_REPO = "https://github.com/cire3wastaken/CustomItemQuest/tree/master";
     public static final String PLUGIN_VERSION = "1.0.0";
-    public static final String OUTDATED_MESSAGE = ChatColor.DARK_RED + CHAT_PREFIX +
+    public static final String OUTDATED_MESSAGE = ChatColor.RED + CHAT_PREFIX +
             "ItemRewardsQuest is not up to date! Build it yourself from " + GITHUB_REPO + " or download it from Releases!";
 
     public final Map<String, Set<String>> protectedRegions = new HashMap<>();
@@ -251,20 +252,39 @@ public enum ItemRewardsQuest
         }
     }
 
-    @SuppressWarnings({"unchecked"})
     public void loadRegions(){
-        /*Map<String, List<String>> whitelisted = ((Map<String, List<String>>) this.configuration.get("Protected.Whitelist"));
-        Map<String, List<String>> blacklisted = ((Map<String, List<String>>) this.configuration.get("Protected.Blacklist"));
+        try {
+            List<String> worlds = this.configuration.getStringList("Protected.Worldlist");
+            for (String worldName : worlds) {
+                List<String> whitelisted = this.configuration.getStringList("Protected.Whitelist." +
+                        worldName.toLowerCase());
 
-        this.whitelistedRegions.clear();
-        this.protectedRegions.clear();
+                List<String> blacklisted = this.configuration.getStringList("Protected.Blacklist." +
+                        worldName.toLowerCase());
 
-        for(String key : whitelisted.keySet()){
-            this.whitelistedRegions.put(key, new HashSet<>(whitelisted.get(key)));
+                if (whitelisted != null) {
+                    for (String region : whitelisted) {
+                        this.whitelistedRegions.computeIfAbsent(worldName, k -> new HashSet<>());
+                        Set<String> temp = this.whitelistedRegions.get(worldName);
+                        temp.add(region.toLowerCase());
+
+                        this.whitelistedRegions.put(worldName, temp);
+                    }
+                }
+
+                if (blacklisted != null) {
+                    for (String region : blacklisted) {
+                        this.protectedRegions.computeIfAbsent(worldName, k -> new HashSet<>());
+                        Set<String> temp = this.protectedRegions.get(worldName);
+                        temp.add(region.toLowerCase());
+
+                        this.protectedRegions.put(worldName, temp);
+                    }
+                }
+            }
+        } catch (Exception e){
+            Bukkit.getLogger().log(Level.SEVERE, "Unknown error, check logs!");
+            e.printStackTrace();
         }
-
-        for(String key : blacklisted.keySet()){
-            this.protectedRegions.put(key, new HashSet<>(whitelisted.get(key)));
-        }*/
     }
 }

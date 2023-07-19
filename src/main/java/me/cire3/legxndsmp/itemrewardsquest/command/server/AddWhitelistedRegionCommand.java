@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
 
@@ -36,6 +37,10 @@ public class AddWhitelistedRegionCommand implements CommandExecutor {
             if(ItemRewardsQuest.INSTANCE.whitelistedRegions.get(strings[1]).add(strings[0].toLowerCase())){
                 ItemRewardsQuest.INSTANCE.configuration.set("Protected.Whitelist." + strings[1].toLowerCase(),
                         strings[0].toLowerCase());
+
+                List<String> worlds = ItemRewardsQuest.INSTANCE.configuration.getStringList("Protected.Worldlist");
+                if(!worlds.contains(strings[1].toLowerCase()))
+                    ItemRewardsQuest.INSTANCE.configuration.set("Protected.Worldlist", worlds.add(strings[1].toLowerCase()));
 
                 try {
                     ItemRewardsQuest.INSTANCE.configuration.save(ItemRewardsQuest.INSTANCE.configFile);

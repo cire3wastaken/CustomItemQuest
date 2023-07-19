@@ -13,6 +13,7 @@ import org.bukkit.util.BlockIterator;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CAN_NOT_USE;
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
 
 public class ProjectileHitBlockEvent implements Listener {
@@ -55,7 +56,7 @@ public class ProjectileHitBlockEvent implements Listener {
                         playerShooter.getItemInHand().getType().equals(Material.BOW)){
                     if(!PlayerUtils.shouldUse(playerShooter))
                     {
-                        playerShooter.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
+                        playerShooter.sendMessage(ChatColor.RED + CAN_NOT_USE);
                         return;
                     }
 
@@ -83,11 +84,13 @@ public class ProjectileHitBlockEvent implements Listener {
                         for (Entity nearby: world.getNearbyEntities(location, power, power, power)) {
                             if (nearby instanceof LivingEntity) {
                                 LivingEntity entity = (LivingEntity) nearby;
-                                entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig);
+
+                                entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig *
+                                        (entity.getLocation().distanceSquared(hitBlock.getLocation()) / 100F));
                             }
                         }
                     } else {
-                        playerShooter.getWorld().createExplosion(event.getEntity().getLocation(), power);
+                        playerShooter.getWorld().createExplosion(hitBlock.getLocation(), power);
                     }
                 }
             }

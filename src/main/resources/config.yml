@@ -68,11 +68,8 @@ Hyperion:
 
 Protected:
   Blacklist:
-    WorldForItemRewardsQuestTest:
-      - "test"
   Whitelist:
-    WorldForItemRewardsQuestTest:
-      - "pvp"
+  Worldlist:
 
 Plugin:
   Version: 1.0.0

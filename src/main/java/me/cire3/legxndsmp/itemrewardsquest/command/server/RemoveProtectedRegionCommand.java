@@ -41,9 +41,15 @@ public class RemoveProtectedRegionCommand implements CommandExecutor {
                 List<String> temp = ItemRewardsQuest.INSTANCE.configuration.getStringList("Protected.Blacklist." +
                     strings[1].toLowerCase());
 
+                if(temp == null){
+                    commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "Blacklisted region '" +
+                            strings[0] + "' in world '" + strings[1] + "' doesn't exist, do you mean /addprotectedregion?");
+                    return true;
+                }
+
                 temp.remove(strings[0].toLowerCase());
 
-                ItemRewardsQuest.INSTANCE.configuration.set("Protected.Blacklist" + strings[1].toLowerCase(), temp);
+                ItemRewardsQuest.INSTANCE.configuration.set("Protected.Blacklist." + strings[1].toLowerCase(), temp);
 
                 try {
                     ItemRewardsQuest.INSTANCE.configuration.save(ItemRewardsQuest.INSTANCE.configFile);

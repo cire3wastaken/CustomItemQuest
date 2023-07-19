@@ -15,6 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CAN_NOT_USE;
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
 
 public class AttackEntityEvent implements org.bukkit.event.Listener {
@@ -52,7 +53,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             {
                 if(!PlayerUtils.shouldUse(playerAttacker))
                 {
-                    playerAttacker.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
+                    playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
                     return;
                 }
 
@@ -72,7 +73,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             {
                 if(!PlayerUtils.shouldUse(playerAttacker))
                 {
-                    playerAttacker.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
+                    playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
                     return;
                 }
 
@@ -89,7 +90,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             {
                 if(!PlayerUtils.shouldUse(playerAttacker))
                 {
-                    playerAttacker.sendMessage(ChatColor.RED + CHAT_PREFIX + "You can not use that item here!");
+                    playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
                     return;
                 }
 
