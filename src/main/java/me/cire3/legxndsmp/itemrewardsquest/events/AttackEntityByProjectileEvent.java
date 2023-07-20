@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CAN_NOT_USE;
@@ -70,7 +71,10 @@ public class AttackEntityByProjectileEvent implements Listener {
                         world.playEffect(location, effect, 3);
                         world.playSound(location, Sound.EXPLODE, 1F, 1F);
 
-                        for (Entity nearby: world.getNearbyEntities(location, power, power, power)) {
+                        Collection<Entity> collection =  world.getNearbyEntities(location, power, power, power);
+                        collection.remove(playerShooter);
+
+                        for (Entity nearby: collection) {
                             if (nearby instanceof LivingEntity) {
                                 LivingEntity entity = (LivingEntity) nearby;
                                 entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig *
