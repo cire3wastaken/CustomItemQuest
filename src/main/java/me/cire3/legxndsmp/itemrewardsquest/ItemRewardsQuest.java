@@ -136,6 +136,7 @@ public enum ItemRewardsQuest
         Bukkit.getServer().getPluginManager().registerEvents(new AttackEntityByProjectileEvent(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new ProjectileHitBlockEvent(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new RightClickInteractEvent(), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinServerEvent(), plugin);
 
         plugin.getCommand("vampireblade").setExecutor(this.vampireBladeCommand);
         plugin.getCommand("ghastbow").setExecutor(this.ghastBowCommand);
