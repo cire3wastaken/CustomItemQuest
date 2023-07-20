@@ -295,11 +295,11 @@ public enum ItemRewardsQuest
     }
 
     public void activateCooldown(Player player){
+        this.tillNextMessage.remove(player.getName());
         this.tillNextMessage.put(player.getName(), System.currentTimeMillis());
     }
 
     public boolean hasCooldown(Player player){
-        return !(this.tillNextMessage.get(player.getName()) < (System.currentTimeMillis() -
-                ItemRewardsQuest.INSTANCE.hyperion.cooldownSeconds * 1000));
+        return !(this.tillNextMessage.get(player.getName()) < (System.currentTimeMillis() - 5000));
     }
 }

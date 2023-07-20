@@ -104,6 +104,7 @@ public class RightClickInteractEvent implements Listener {
     }
 
     public void activateCooldown(Player player){
+        this.cooldownsForPlayer.remove(player.getName());
         this.cooldownsForPlayer.put(player.getName(), System.currentTimeMillis());
     }
 }
