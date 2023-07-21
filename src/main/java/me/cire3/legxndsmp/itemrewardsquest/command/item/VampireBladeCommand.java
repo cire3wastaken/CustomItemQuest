@@ -49,7 +49,7 @@ public class VampireBladeCommand implements CommandExecutor {
     }
 
     public void giveItem(CommandSender commandSender, String[] args, ItemMeta metaToSave){
-        ItemStack item = new ItemStack(Material.DIAMOND);
+        ItemStack item = new ItemStack(Material.DIAMOND_SWORD);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ColorUtils.color(ItemRewardsQuest.INSTANCE.vampireBlade.name));
         meta.setLore(ColorUtils.color(ItemRewardsQuest.INSTANCE.vampireBlade.originalLore));
