@@ -9,7 +9,8 @@ public class PlayerJoinServerEvent implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         if(event.getPlayer().isOp()){
-            event.getPlayer().sendMessage(ItemRewardsQuest.OUTDATED_MESSAGE);
+            if(ItemRewardsQuest.INSTANCE.status())
+                event.getPlayer().sendMessage(ItemRewardsQuest.OUTDATED_MESSAGE);
         }
     }
 }

@@ -7,7 +7,9 @@ C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\j
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\items\Hyperion.java
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\utils\FileUtils.java
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\command\server\GetWorldCommand.java
+C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\events\PlayerJoinServerEvent.java
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\items\ThorHammer.java
+C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\command\server\ListProtectedRegionsCommand.java
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\utils\PlayerUtils.java
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\command\item\GhastBowCommand.java
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\items\VampireBlade.java
@@ -21,6 +23,7 @@ C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\j
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\items\GhastBow.java
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\utils\DamageUtils.java
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\command\player\ConvertCommand.java
+C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\command\server\ListWhitelistedRegionsCommand.java
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\command\item\VampireBladeCommand.java
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\events\AttackEntityEvent.java
 C:\Users\ilent\OneDrive\Desktop\cire\dev\mc\LegxndSmp\CustomItemQuest\src\main\java\me\cire3\legxndsmp\itemrewardsquest\command\server\ReloadPluginCommand.java

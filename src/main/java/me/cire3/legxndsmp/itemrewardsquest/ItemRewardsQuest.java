@@ -303,4 +303,8 @@ public enum ItemRewardsQuest
     public boolean hasCooldown(Player player){
         return !(this.tillNextMessage.get(player.getName()) < (System.currentTimeMillis() - 5000));
     }
+
+    public boolean status(){
+        return this.outdated;
+    }
 }
