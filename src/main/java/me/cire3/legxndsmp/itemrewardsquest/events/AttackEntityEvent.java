@@ -18,8 +18,10 @@ import java.util.List;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CAN_NOT_USE;
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
+import static me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand.*;
 
 public class AttackEntityEvent implements org.bukkit.event.Listener {
+
     @EventHandler
     public void onEntityAttack(EntityDamageByEntityEvent event) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled) return;
@@ -50,7 +52,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
 
             // Handles vamp blade
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.vampireBlade.lore) &&
-                playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
+                    playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
                 if(!PlayerUtils.shouldUse(playerAttacker) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
                 {
@@ -63,17 +65,15 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
 
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
                     Math.min(Math.max(DamageUtils.calcDamage((int) c[0], c[1], 0, (int) c[3],
-                        (int) c[4]) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed,
-                            playerAttacker.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE) ?
-                                (Math.random() >= 0.5 ? 2.0F : 1.0F) :
-                                    (Math.random() >= 0.5 ? 1.5F : 1.0F)), 6.0F), 20.0F));
-//                  playerAttacker.getHealth() +
-//                      2 * DamageUtils.damageCalculator(victim, playerAttacker) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed
+                            (int) c[4]) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed,
+                        playerAttacker.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE) ?
+                            (Math.random() >= 0.5 ? 2.0F : 1.0F) :
+                                (Math.random() >= 0.5 ? 1.5F : 1.0F)), 6.0F), 20.0F));
             }
 
             // Handles Thor Hammer
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.thorHammer.lore) &&
-                playerAttacker.getItemInHand().getType().equals(Material.GOLD_AXE))
+                    playerAttacker.getItemInHand().getType().equals(Material.GOLD_AXE))
             {
                 if(!PlayerUtils.shouldUse(playerAttacker) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
                 {
@@ -99,7 +99,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
 
             // Handles witch scythe
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.witchScythe.lore) &&
-                playerAttacker.getItemInHand().getType().equals(Material.GOLD_HOE))
+                    playerAttacker.getItemInHand().getType().equals(Material.GOLD_HOE))
             {
                 if(!PlayerUtils.shouldUse(playerAttacker) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
                 {
@@ -117,9 +117,20 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                         playerVictim.removePotionEffect(PotionEffectType.POISON);
                     }
                     playerVictim.addPotionEffect(new PotionEffect(PotionEffectType.POISON,
-                        (int) Math.ceil(ItemRewardsQuest.INSTANCE.witchScythe.secondsOfEffect * 20), 4));
+                            (int) Math.ceil(ItemRewardsQuest.INSTANCE.witchScythe.secondsOfEffect * 20), 4));
                 }
+            }
+
+            if(playerAttacker.getItemInHand().getItemMeta().getLore().contains(OLD_GHASTBOW_LORE) ||
+                    playerAttacker.getItemInHand().getItemMeta().getLore().contains(OLD_THORHAMMER_LORE) ||
+                    playerAttacker.getItemInHand().getItemMeta().getLore().contains(OLD_WITCHSCYTHE_LORE) ||
+                    playerAttacker.getItemInHand().getItemMeta().getLore().contains(OLD_VAMPBLADE_LORE) )
+            {
+                playerAttacker.sendMessage(ChatColor.RED + CHAT_PREFIX +
+                    "This items abilities are nullified due to being outdated. " +
+                        "Use /updateitem while holding it to update it.");
             }
         }
     }
 }
+
