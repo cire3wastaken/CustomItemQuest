@@ -46,7 +46,7 @@ public class AttackEntityByProjectileEvent implements Listener {
                 if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig) &&
                     playerShooter.getItemInHand().getType().equals(Material.BOW))
                 {
-                    if(!PlayerUtils.shouldUse(playerShooter))
+                    if(!PlayerUtils.shouldUse(playerShooter) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
                     {
                         if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
 

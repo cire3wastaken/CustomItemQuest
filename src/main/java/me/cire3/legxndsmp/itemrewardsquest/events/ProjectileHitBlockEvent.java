@@ -56,7 +56,9 @@ public class ProjectileHitBlockEvent implements Listener {
 
                 if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig) &&
                         playerShooter.getItemInHand().getType().equals(Material.BOW)){
-                    if(!PlayerUtils.shouldUse(playerShooter))
+                    if(hitBlock == null) return;
+
+                    if(!PlayerUtils.shouldUse(playerShooter)|| !PlayerUtils.shouldUse(hitBlock.getLocation()))
                     {
                         if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
 
@@ -64,8 +66,6 @@ public class ProjectileHitBlockEvent implements Listener {
                         ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
                         return;
                     }
-
-                    if(hitBlock == null) return;
 
                     World world = playerShooter.getWorld();
                     Location location = event.getEntity().getLocation();

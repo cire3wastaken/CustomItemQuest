@@ -52,7 +52,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.vampireBlade.lore) &&
                 playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
-                if(!PlayerUtils.shouldUse(playerAttacker))
+                if(!PlayerUtils.shouldUse(playerAttacker) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
                 {
                     if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
 
@@ -75,7 +75,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.thorHammer.lore) &&
                 playerAttacker.getItemInHand().getType().equals(Material.GOLD_AXE))
             {
-                if(!PlayerUtils.shouldUse(playerAttacker))
+                if(!PlayerUtils.shouldUse(playerAttacker) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
                 {
                     if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
 
@@ -101,7 +101,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.witchScythe.lore) &&
                 playerAttacker.getItemInHand().getType().equals(Material.GOLD_HOE))
             {
-                if(!PlayerUtils.shouldUse(playerAttacker))
+                if(!PlayerUtils.shouldUse(playerAttacker) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
                 {
                     if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
 

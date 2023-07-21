@@ -12,6 +12,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -113,6 +114,37 @@ public class PlayerUtils {
         ApplicableRegionSet set = manager.getApplicableRegions(vec);
 
         String worldName = p.getWorld().getName().toLowerCase();
+
+        if(ItemRewardsQuest.INSTANCE.protectedRegions.containsKey(worldName)){
+            for(ProtectedRegion region : set) {
+                if(ItemRewardsQuest.INSTANCE.whitelistedRegions.containsKey(worldName)){
+                    if(ItemRewardsQuest.INSTANCE.whitelistedRegions.get(worldName).contains(region.getId().toLowerCase())){
+                        return true;
+                    }
+                }
+
+                if (ItemRewardsQuest.INSTANCE.protectedRegions.get(worldName).contains(region.getId().toLowerCase())){
+                    return false;
+                }
+            }
+        }
+
+        for(ProtectedRegion region : set){
+            if(Objects.equals(region.getFlag(DefaultFlag.PVP), State.DENY))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean shouldUse(Location loc){
+        RegionContainer container = WGBukkit.getPlugin().getRegionContainer();
+        RegionQuery query = container.createQuery();
+        ApplicableRegionSet set = query.getApplicableRegions(loc);
+
+        String worldName = loc.getWorld().getName().toLowerCase();
 
         if(ItemRewardsQuest.INSTANCE.protectedRegions.containsKey(worldName)){
             for(ProtectedRegion region : set) {

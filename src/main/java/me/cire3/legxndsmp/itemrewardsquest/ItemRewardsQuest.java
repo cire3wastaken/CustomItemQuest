@@ -301,6 +301,10 @@ public enum ItemRewardsQuest
     }
 
     public boolean hasCooldown(Player player){
+        if(!this.tillNextMessage.containsKey(player.getName())){
+            return false;
+        }
+
         return !(this.tillNextMessage.get(player.getName()) < (System.currentTimeMillis() - 5000));
     }
 
