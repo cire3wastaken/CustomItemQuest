@@ -20,6 +20,12 @@ import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CAN_NOT_USE;
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
 
 public class AttackEntityEvent implements org.bukkit.event.Listener {
+
+    public static final String OLD_VAMPBLADE_LORE = ColorUtils.color("&6Ability: gain half as much HP as you do damage");
+    public static final String OLD_GHASTBOW_LORE = ColorUtils.color("&eAbility: create explosions upon whom your arrow lands on"); 
+    public static final String OLD_THORHAMMER_LORE = ColorUtils.color("&cAbility: incur lightning upon your victims"); 
+    public static final String OLD_WITCHSCYTHE_LORE = ColorUtils.color("&aAbility: inflict poison on your victims");
+    
     @EventHandler
     public void onEntityAttack(EntityDamageByEntityEvent event) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled) return;
@@ -119,6 +125,10 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                     playerVictim.addPotionEffect(new PotionEffect(PotionEffectType.POISON,
                         (int) Math.ceil(ItemRewardsQuest.INSTANCE.witchScythe.secondsOfEffect * 20), 4));
                 }
+            }
+
+            if(loreCaseLore.equals(OLD_VAMPBLADE_LORE) || loreCaseLore.equals(OLD_GHASTBOW_LORE) || loreCaseLore.equals(OLD_THORHAMMER_LORE) ||  loreCaseLore.equals(OLD_WITCHSCYTHE_LORE) ){
+                playerAttacker.sendMessage(ChatColor.RED + CHAT_PREFIX + "This items abilities no longer work due to it being outdated. Use the /updateitem command while holding it to update it.");
             }
         }
     }
