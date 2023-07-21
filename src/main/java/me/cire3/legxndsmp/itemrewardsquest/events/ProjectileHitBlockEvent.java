@@ -93,7 +93,7 @@ public class ProjectileHitBlockEvent implements Listener {
                                 LivingEntity entity = (LivingEntity) nearby;
 
                                 entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig *
-                                        (entity.getLocation().distanceSquared(hitBlock.getLocation()) / 100F));
+                                        (100F - entity.getLocation().distanceSquared(hitBlock.getLocation()) / 100F));
                             }
                         }
                     } else {

@@ -78,7 +78,7 @@ public class AttackEntityByProjectileEvent implements Listener {
                             if (nearby instanceof LivingEntity) {
                                 LivingEntity entity = (LivingEntity) nearby;
                                 entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig *
-                                        (entity.getLocation().distanceSquared(event.getEntity().getLocation()) / 100F));
+                                        (100F - entity.getLocation().distanceSquared(event.getEntity().getLocation()) / 100F));
                             }
                         }
                     } else {
