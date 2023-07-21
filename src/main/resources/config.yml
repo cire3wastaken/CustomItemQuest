@@ -68,8 +68,12 @@ Hyperion:
 
 Protected:
   Blacklist:
+    survival:
+      spawn
   Whitelist:
-  Worldlist:
+    survival:
+      pvparena
+  Worldlist: survival
 
 Plugin:
   Version: 1.0.0

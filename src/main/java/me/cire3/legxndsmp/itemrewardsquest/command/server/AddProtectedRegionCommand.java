@@ -39,8 +39,10 @@ public class AddProtectedRegionCommand implements CommandExecutor {
                     strings[0].toLowerCase());
 
                 List<String> worlds = ItemRewardsQuest.INSTANCE.configuration.getStringList("Protected.Worldlist");
-                if(!worlds.contains(strings[1].toLowerCase()))
-                    ItemRewardsQuest.INSTANCE.configuration.set("Protected.Worldlist", worlds.add(strings[1].toLowerCase()));
+                if(!worlds.contains(strings[1].toLowerCase())) {
+                    worlds.add(strings[1].toLowerCase());
+                    ItemRewardsQuest.INSTANCE.configuration.set("Protected.Worldlist", worlds);
+                }
 
                 try {
                     ItemRewardsQuest.INSTANCE.configuration.save(ItemRewardsQuest.INSTANCE.configFile);
