@@ -15,8 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CAN_NOT_USE;
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
 
 public class ProjectileHitBlockEvent implements Listener {
     @EventHandler
@@ -39,6 +38,14 @@ public class ProjectileHitBlockEvent implements Listener {
             if (shooter instanceof Player) {
                 Player playerShooter = (Player) shooter;
 
+                if(ItemRewardsQuest.INSTANCE.blacklistedPlayers.contains(playerShooter.getName())){
+                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
+
+                    playerShooter.sendMessage(ChatColor.RED + BLACKLISTED);
+                    ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
+                    return;
+                }
+
                 if(playerShooter.getItemInHand() == null){
                     return;
                 }
@@ -58,11 +65,19 @@ public class ProjectileHitBlockEvent implements Listener {
                         playerShooter.getItemInHand().getType().equals(Material.BOW)){
                     if(hitBlock == null) return;
 
-                    if(!PlayerUtils.shouldUse(playerShooter))
+                    if(!PlayerUtils.shouldUse(playerShooter) || !PlayerUtils.shouldUse(hitBlock.getLocation()))
                     {
                         if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
 
                         playerShooter.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                        ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
+                        return;
+                    }
+
+                    if(ItemRewardsQuest.INSTANCE.isBlacklisted(playerShooter)){
+                        if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
+
+                        playerShooter.sendMessage(ChatColor.RED + BLACKLISTED);
                         ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
                         return;
                     }
@@ -90,6 +105,12 @@ public class ProjectileHitBlockEvent implements Listener {
 
                         for (Entity nearby: collection) {
                             if (nearby instanceof LivingEntity) {
+                                if(nearby instanceof Player){
+                                    if(!PlayerUtils.shouldUse((Player) nearby)){
+                                        continue;
+                                    }
+                                }
+
                                 LivingEntity entity = (LivingEntity) nearby;
                                 entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig *
                                         ((100F - entity.getLocation().distanceSquared(event.getEntity().getLocation())) / 100F));

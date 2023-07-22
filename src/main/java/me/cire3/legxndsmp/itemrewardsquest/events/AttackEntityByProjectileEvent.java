@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CAN_NOT_USE;
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
 
 public class AttackEntityByProjectileEvent implements Listener {
     //Handles ghast bow
@@ -27,6 +26,23 @@ public class AttackEntityByProjectileEvent implements Listener {
 
             if (damager.getShooter() instanceof Player) {
                 Player playerShooter = (Player) damager.getShooter();
+
+                if(!PlayerUtils.shouldUse(playerShooter) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
+                {
+                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
+
+                    playerShooter.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                    ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
+                    return;
+                }
+
+                if(ItemRewardsQuest.INSTANCE.isBlacklisted(playerShooter)){
+                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
+
+                    playerShooter.sendMessage(ChatColor.RED + BLACKLISTED);
+                    ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
+                    return;
+                }
 
                 if(playerShooter.getItemInHand() == null){
                     return;
@@ -46,15 +62,6 @@ public class AttackEntityByProjectileEvent implements Listener {
                 if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig) &&
                     playerShooter.getItemInHand().getType().equals(Material.BOW))
                 {
-                    if(!PlayerUtils.shouldUse(playerShooter))
-                    {
-                        if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
-
-                        playerShooter.sendMessage(ChatColor.RED + CAN_NOT_USE);
-                        ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
-                        return;
-                    }
-
                     World world = playerShooter.getWorld();
                     Location location = event.getEntity().getLocation();
 
@@ -76,6 +83,12 @@ public class AttackEntityByProjectileEvent implements Listener {
 
                         for (Entity nearby: collection) {
                             if (nearby instanceof LivingEntity) {
+                                if(nearby instanceof Player){
+                                    if(!PlayerUtils.shouldUse((Player) nearby)){
+                                        continue;
+                                    }
+                                }
+
                                 LivingEntity entity = (LivingEntity) nearby;
                                 entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig *
                                         ((100F - entity.getLocation().distanceSquared(event.getEntity().getLocation())) / 100F));

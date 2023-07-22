@@ -1,5 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.utils;
 
+import com.sk89q.jnbt.NBTUtils;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
@@ -111,6 +112,10 @@ public class PlayerUtils {
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(p);
         Vector vec = localPlayer.getPosition();
         RegionManager manager = WorldGuardPlugin.inst().getRegionManager(p.getWorld());
+        if(manager == null){
+            return true;
+        }
+
         ApplicableRegionSet set = manager.getApplicableRegions(vec);
 
         String worldName = p.getWorld().getName().toLowerCase();

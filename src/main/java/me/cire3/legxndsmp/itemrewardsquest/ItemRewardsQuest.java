@@ -1,7 +1,10 @@
 package me.cire3.legxndsmp.itemrewardsquest;
 
 import me.cire3.legxndsmp.itemrewardsquest.command.item.*;
+import me.cire3.legxndsmp.itemrewardsquest.command.player.BlacklistPlayerCommand;
 import me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand;
+import me.cire3.legxndsmp.itemrewardsquest.command.player.FreePlayerCommand;
+import me.cire3.legxndsmp.itemrewardsquest.command.player.ListBlacklistedPlayersCommand;
 import me.cire3.legxndsmp.itemrewardsquest.command.server.*;
 import me.cire3.legxndsmp.itemrewardsquest.events.*;
 import me.cire3.legxndsmp.itemrewardsquest.items.*;
@@ -17,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 public enum ItemRewardsQuest
 {
@@ -28,6 +30,7 @@ public enum ItemRewardsQuest
     public static final String PERMISSION_DENIED = CHAT_PREFIX + "You do not have permissions!";
     public static final String UNKNOWN_COMMAND = CHAT_PREFIX + "Unknown command!";
     public static final String CAN_NOT_USE = CHAT_PREFIX + "You can not use this item here!";
+    public static final String BLACKLISTED = CHAT_PREFIX + "You are blacklisted from using custom items!";
 
     public static final String VERSION_FILE_URL = "https://raw.githubusercontent.com/cire3wastaken/CustomItemQuest/master/version.txt";
     public static final String GITHUB_REPO = "https://github.com/cire3wastaken/CustomItemQuest/tree/master";
@@ -37,8 +40,9 @@ public enum ItemRewardsQuest
 
     public final Map<String, Set<String>> protectedRegions = new HashMap<>();
     public final Map<String, Set<String>> whitelistedRegions = new HashMap<>();
+    public final Set<String> blacklistedPlayers = new HashSet<>();
 
-    public final HashMap<String, Long> tillNextMessage = new HashMap<>();
+    public final Map<String, Long> tillNextMessage = new HashMap<>();
 
     public boolean isEnabled;
 
@@ -62,6 +66,9 @@ public enum ItemRewardsQuest
     public ListProtectedRegionsCommand listProtectedRegionsCommand;
     public ListWhitelistedRegionsCommand listWhitelistedRegionsCommand;
     public GetWorldCommand getWorldCommand;
+    public BlacklistPlayerCommand blacklistPlayerCommand;
+    public FreePlayerCommand freePlayerCommand;
+    public ListBlacklistedPlayersCommand listBlacklistedPlayersCommand;
 
     public File configFile;
     public FileConfiguration configuration;
@@ -93,6 +100,9 @@ public enum ItemRewardsQuest
         this.listProtectedRegionsCommand = new ListProtectedRegionsCommand();
         this.listWhitelistedRegionsCommand = new ListWhitelistedRegionsCommand();
         this.getWorldCommand = new GetWorldCommand();
+        this.listBlacklistedPlayersCommand = new ListBlacklistedPlayersCommand();
+        this.blacklistPlayerCommand = new BlacklistPlayerCommand();
+        this.freePlayerCommand = new FreePlayerCommand();
 
         this.hyperion = new Hyperion(this.configuration);
         this.witchScythe = new WitchScythe(this.configuration);
@@ -262,12 +272,13 @@ public enum ItemRewardsQuest
     public void loadRegions(){
         try {
             List<String> worlds = this.configuration.getStringList("Protected.Worldlist");
-            for (String worldName : worlds) {
+            for (String name : worlds) {
+                String worldName = name.toLowerCase();
                 List<String> whitelisted = this.configuration.getStringList("Protected.Whitelist." +
-                        worldName.toLowerCase());
+                        worldName);
 
                 List<String> blacklisted = this.configuration.getStringList("Protected.Blacklist." +
-                        worldName.toLowerCase());
+                        worldName);
 
                 if (whitelisted != null) {
                     for (String region : whitelisted) {
@@ -293,6 +304,11 @@ public enum ItemRewardsQuest
             Bukkit.getLogger().log(Level.SEVERE, "Unknown error, check logs!");
             e.printStackTrace();
         }
+
+        this.protectedRegions.computeIfAbsent("survival", k -> new HashSet<>());
+        this.whitelistedRegions.computeIfAbsent("survival", k -> new HashSet<>());
+        this.protectedRegions.get("survival").add("spawn");
+        this.whitelistedRegions.get("survival").add("pvparena");
     }
 
     public void activateCooldown(Player player){
@@ -306,6 +322,10 @@ public enum ItemRewardsQuest
         }
 
         return !(this.tillNextMessage.get(player.getName()) < (System.currentTimeMillis() - 5000));
+    }
+
+    public boolean isBlacklisted(Player p){
+        return this.blacklistedPlayers.contains(p.getName());
     }
 
     public boolean status(){

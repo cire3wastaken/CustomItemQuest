@@ -16,8 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.List;
 
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CAN_NOT_USE;
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
+import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
 import static me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand.*;
 
 public class AttackEntityEvent implements org.bukkit.event.Listener {
@@ -29,6 +28,22 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
         if(event.getDamager() instanceof Player) {
             Player playerAttacker = (Player) event.getDamager();
 
+            if(!PlayerUtils.shouldUse(playerAttacker) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
+            {
+                if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+
+                playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
+                return;
+            }
+
+            if(ItemRewardsQuest.INSTANCE.isBlacklisted(playerAttacker)){
+                if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+
+                playerAttacker.sendMessage(ChatColor.RED + BLACKLISTED);
+                ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
+                return;
+            }
             Entity victim = event.getEntity();
 
             //null checks
@@ -51,6 +66,12 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                 return;
             }
 
+            if(victim instanceof Player){
+                if(!PlayerUtils.shouldUse((Player) victim)){
+                    return;
+                }
+            }
+
             double[] c = DamageUtils.damageCalculator(victim, event.getFinalDamage() - 2);
             c[1] = c[1] * DamageUtils.strengthIncrease(playerAttacker);
 
@@ -63,7 +84,6 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.vampireBlade.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
-
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
                     Math.min(Math.max(DamageUtils.calcDamage((int) c[0], c[1], 0, (int) c[3],
                             (int) c[4]) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed,
@@ -93,8 +113,8 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.witchScythe.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.GOLD_HOE))
             {
-                if(victim instanceof Player){
-                    Player playerVictim = (Player) victim;
+                if(victim instanceof LivingEntity){
+                    LivingEntity playerVictim = (LivingEntity) victim;
 
                     if(playerVictim.hasPotionEffect(PotionEffectType.POISON)){
                         playerVictim.removePotionEffect(PotionEffectType.POISON);

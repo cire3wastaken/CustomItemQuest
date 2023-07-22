@@ -53,7 +53,7 @@ public class GhastBowCommand implements CommandExecutor {
         ItemStack item = new ItemStack(Material.BOW);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ColorUtils.color(ItemRewardsQuest.INSTANCE.ghastBow.nameConfig));
-        meta.setLore(ColorUtils.color(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig));
+        meta.setLore(ColorUtils.color(INSTANCE.ghastBow.originalLoreConfig));
 
         Player target = Bukkit.getPlayerExact(args[0]);
         if (target == null) {

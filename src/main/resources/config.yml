@@ -73,7 +73,8 @@ Protected:
   Whitelist:
     survival:
       pvparena
-  Worldlist: survival
+  Worldlist:
+    - survival
 
 Plugin:
   Version: 1.0.0

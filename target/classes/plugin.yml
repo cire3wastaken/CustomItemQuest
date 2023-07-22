@@ -24,74 +24,93 @@ permissions:
   itemrewardsquest.addregions:
     description: Allows this user to add protected regions
     default: op
+  itemrewardsquest.manageplayers:
+    description: Allows this user to manage players
+    default: op
 
 commands:
   vampireblade:
     description: Gives a specified player a vampire blade.
     usage: /vampireblade [player]
     permission: itemrewardsquest.giveitems
-    permission-message: You don't have itemrewardsquest.giveitems permission
+    permission-message: You don't have permissions to run this!
   ghastbow:
     description: Gives a specified player a ghast bow.
     usage: /ghastbow [player]
     permission: itemrewardsquest.giveitems
-    permission-message: You don't have itemrewardsquest.giveitems permission
+    permission-message: You don't have permissions to run this!
   witchscythe:
     description: Gives a specified player a witch scythe.
     usage: /witchscythe [player]
     permission: itemrewardsquest.giveitems
-    permission-message: You don't have itemrewardsquest.giveitems permission
+    permission-message: You don't have permissions to run this!
   thorhammer:
     description: Gives a specified player a thor hammer.
     usage: /thorhammer [player]
     permission: itemrewardsquest.giveitems
-    permission-message: You don't have itemrewardsquest.giveitems permission
+    permission-message: You don't have permissions to run this!
   hyperionblade:
     description: Gives a specified player a hyperion.
     usage: /hyperionblade [player]
     permission: itemrewardsquest.giveitems
-    permission-message: You don't have itemrewardsquest.giveitems permission
+    permission-message: You don't have permissions to run this!
   reloaditemrewardsquest:
     description: Reloads config files and the plugin
     usage: /reloaditemrewardsquest
     permission: itemrewardsquest.reload
+    permission-message: You don't have permissions to run this!
   updateitem:
     description: Update old item to new one
     usage: /updateitem
     permission: itemrewardsquest.updateitems
-    permission-message: You don't have itemrewardsquest.updateitems permission
+    permission-message: You don't have permissions to run this!
   addprotectedregion:
     description: Add a protected region
     usage: /addprotectedregion [region] [world name]
     permission: itemrewardsquest.addregions
-    permission-message: You don't have itemrewardsquest.addregions permission
+    permission-message: You don't have permissions to run this!
   removeprotectedregion:
     description: Removes a protected region
     usage: /removeprotectedregion [region] [world name]
     permission: itemrewardsquest.addregions
-    permission-message: You don't have itemrewardsquest.addregions permission
+    permission-message: You don't have permissions to run this!
   addwhitelistedregion:
     description: Add a whilelisted region
     usage: /addwhitelistedregion [region] [worldname]
     permission: itemrewardsquest.addregions
-    permission-message: You don't have itemrewardsquest.addregions permission
+    permission-message: You don't have permissions to run this!
   removewhitelistedregion:
     description: Remove a whilelisted region
     usage: /removewhitelistedregion [region] [worldname]
     permission: itemrewardsquest.addregions
-    permission-message: You don't have itemrewardsquest.addregions permission
+    permission-message: You don't have permissions to run this!
   listwhitelistedregions:
     description: Lists all whitelisted regions
     usage: /listwhitelistedregions
     permission: itemrewardsquest.addregions
-    permission-message: You don't have itemrewardsquest.addregions permission
+    permission-message: You don't have permissions to run this!
   listprotectedregions:
     description: Lists all protected regions
     usage: /listprotectedregions
     permission: itemrewardsquest.addregions
-    permission-message: You don't have itemrewardsquest.addregions permission
+    permission-message: You don't have permissions to run this!
   getworld:
     description: Get an applicable world name for region manipulation commands [IRQ]
     usage: /getworld
     permission: itemrewardsquest.addregions
-    permission-message: You don't have itemrewardsquest.addregions permission
+    permission-message: You don't have permissions to run this!
+  blacklistplayer:
+    description: Prevents a player from using custom items
+    usage: /blacklistplayer [player]
+    permission: itemrewardsquest.manageplayers
+    permission-message: You don't have permissions to run this!
+  freeplayer:
+    description: Allows a player to start using custom items again
+    usage: /freeplayer [player]
+    permission: itemrewardsquest.manageplayers
+    permission-message: You don't have permissions to run this!
+  listblacklistedplayers:
+    description: Lists all currently blacklisted players
+    usage: /listblacklistedplayers
+    permission: itemrewardsquest.manageplayers
+    permission-message: You don't have permissions to run this!
