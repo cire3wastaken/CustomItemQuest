@@ -42,6 +42,15 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                 return;
             }
 
+            if(!PlayerUtils.shouldUse(playerAttacker))
+            {
+                if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+
+                playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
+                return;
+            }
+
             double[] c = DamageUtils.damageCalculator(victim, event.getFinalDamage() - 2);
             c[1] = c[1] * DamageUtils.strengthIncrease(playerAttacker);
 
@@ -54,14 +63,6 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.vampireBlade.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
-                if(!PlayerUtils.shouldUse(playerAttacker) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
-                {
-                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
-
-                    playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
-                    ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
-                    return;
-                }
 
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
                     Math.min(Math.max(DamageUtils.calcDamage((int) c[0], c[1], 0, (int) c[3],
@@ -75,15 +76,6 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.thorHammer.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.GOLD_AXE))
             {
-                if(!PlayerUtils.shouldUse(playerAttacker) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
-                {
-                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
-
-                    playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
-                    ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
-                    return;
-                }
-
                 playerAttacker.getWorld().strikeLightningEffect(victim.getLocation());
                 if(victim instanceof LivingEntity){
                     LivingEntity target = (LivingEntity) victim;
@@ -101,15 +93,6 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.witchScythe.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.GOLD_HOE))
             {
-                if(!PlayerUtils.shouldUse(playerAttacker) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
-                {
-                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
-
-                    playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
-                    ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
-                    return;
-                }
-
                 if(victim instanceof Player){
                     Player playerVictim = (Player) victim;
 

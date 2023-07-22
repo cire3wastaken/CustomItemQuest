@@ -46,7 +46,7 @@ public class AttackEntityByProjectileEvent implements Listener {
                 if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig) &&
                     playerShooter.getItemInHand().getType().equals(Material.BOW))
                 {
-                    if(!PlayerUtils.shouldUse(playerShooter) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
+                    if(!PlayerUtils.shouldUse(playerShooter))
                     {
                         if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
 
@@ -78,7 +78,7 @@ public class AttackEntityByProjectileEvent implements Listener {
                             if (nearby instanceof LivingEntity) {
                                 LivingEntity entity = (LivingEntity) nearby;
                                 entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig *
-                                        (100F - entity.getLocation().distanceSquared(event.getEntity().getLocation()) / 100F));
+                                        ((100F - entity.getLocation().distanceSquared(event.getEntity().getLocation())) / 100F));
                             }
                         }
                     } else {

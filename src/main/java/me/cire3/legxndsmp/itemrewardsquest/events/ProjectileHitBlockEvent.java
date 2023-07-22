@@ -58,7 +58,7 @@ public class ProjectileHitBlockEvent implements Listener {
                         playerShooter.getItemInHand().getType().equals(Material.BOW)){
                     if(hitBlock == null) return;
 
-                    if(!PlayerUtils.shouldUse(playerShooter)|| !PlayerUtils.shouldUse(hitBlock.getLocation()))
+                    if(!PlayerUtils.shouldUse(playerShooter))
                     {
                         if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
 
@@ -91,9 +91,8 @@ public class ProjectileHitBlockEvent implements Listener {
                         for (Entity nearby: collection) {
                             if (nearby instanceof LivingEntity) {
                                 LivingEntity entity = (LivingEntity) nearby;
-
                                 entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig *
-                                        (100F - entity.getLocation().distanceSquared(hitBlock.getLocation()) / 100F));
+                                        ((100F - entity.getLocation().distanceSquared(event.getEntity().getLocation())) / 100F));
                             }
                         }
                     } else {

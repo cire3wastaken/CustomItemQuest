@@ -31,7 +31,7 @@ ThorHammer:
     - "&6Ability: &eLEFT CLICK"
     - "&fStrike &elightning &fon your target"
   Damage: 3.0
-  IgnoreArmor: true
+  IgnoreArmor: false
   FireSeconds: 10
 
 GhastBow:
