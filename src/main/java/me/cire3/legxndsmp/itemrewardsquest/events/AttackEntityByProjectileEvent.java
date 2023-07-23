@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
+import static me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand.OLD_GHASTBOW_LORE;
 
 public class AttackEntityByProjectileEvent implements Listener {
     //Handles ghast bow
@@ -36,6 +37,13 @@ public class AttackEntityByProjectileEvent implements Listener {
                     return;
                 }
 
+                if(PlayerUtils.containsString(playerShooter.getItemInHand(), OLD_GHASTBOW_LORE)){
+                    playerShooter.sendMessage(FAIL_PREFIX +
+                            "This items abilities are nullified due to being outdated. " +
+                            "Use /updateitem while holding it to update it.");
+                    return;
+                }
+
                 if(ItemRewardsQuest.INSTANCE.isBlacklisted(playerShooter)){
                     if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
 
@@ -44,23 +52,8 @@ public class AttackEntityByProjectileEvent implements Listener {
                     return;
                 }
 
-                if(playerShooter.getItemInHand() == null){
-                    return;
-                }
-                if(!playerShooter.getItemInHand().hasItemMeta()){
-                    return;
-                }
-                if(!playerShooter.getItemInHand().getItemMeta().hasLore()){
-                    return;
-                }
-
-                List<String> lowerCaseLore = new ArrayList<>();
-                for(String str : playerShooter.getItemInHand().getItemMeta().getLore()){
-                    lowerCaseLore.add(str.toLowerCase());
-                }
-
-                if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig) &&
-                    playerShooter.getItemInHand().getType().equals(Material.BOW))
+                if(PlayerUtils.containsLore(playerShooter.getItemInHand(), ItemRewardsQuest.INSTANCE.ghastBow.lore)
+                    && playerShooter.getItemInHand().getType().equals(Material.BOW))
                 {
                     World world = playerShooter.getWorld();
                     Location location = event.getEntity().getLocation();

@@ -12,17 +12,16 @@ public class FreePlayerCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled){
-            commandSender.sendMessage(ChatColor.RED + DISABLED_MESSAGE);
+            commandSender.sendMessage(DISABLED_MESSAGE);
             return true;
         }
 
         if(!command.getName().equalsIgnoreCase("freeplayer")) {
-            commandSender.sendMessage(ChatColor.RED + UNKNOWN_COMMAND);
+            commandSender.sendMessage(UNKNOWN_COMMAND);
             return false;
         }
         if(strings.length != 1){
-            commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                    "Specify one argument (player name)");
+            commandSender.sendMessage(FAIL_PREFIX + "Specify one argument (player name)");
             return false;
         }
 
@@ -34,8 +33,9 @@ public class FreePlayerCommand implements CommandExecutor {
                 commandSender.sendMessage(ChatColor.GREEN + CHAT_PREFIX + strings[0] + " isn't blacklisted, " +
                         "did you mean to /blacklistplayer?");
             }
+        } else {
+            commandSender.sendMessage(PERMISSION_DENIED);
         }
-
         return true;
     }
 }

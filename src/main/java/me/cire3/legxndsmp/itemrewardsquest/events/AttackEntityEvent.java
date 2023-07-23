@@ -13,8 +13,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
 import static me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand.*;
@@ -46,23 +45,13 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             }
             Entity victim = event.getEntity();
 
-            //null checks
-            if(playerAttacker.getItemInHand() == null){
-                return;
-            }
-            if (!playerAttacker.getItemInHand().hasItemMeta()){
-                return;
-            }
-            if (!playerAttacker.getItemInHand().getItemMeta().hasLore()) {
-                return;
-            }
-
-            if(!PlayerUtils.shouldUse(playerAttacker))
+            if(PlayerUtils.containsString(playerAttacker.getItemInHand(), OLD_THORHAMMER_LORE) ||
+                PlayerUtils.containsString(playerAttacker.getItemInHand(), OLD_WITCHSCYTHE_LORE) ||
+                PlayerUtils.containsString(playerAttacker.getItemInHand(), OLD_VAMPBLADE_LORE) )
             {
-                if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
-
-                playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
-                ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
+                playerAttacker.sendMessage(FAIL_PREFIX +
+                        "This items abilities are nullified due to being outdated. " +
+                        "Use /updateitem while holding it to update it.");
                 return;
             }
 
@@ -75,13 +64,8 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             double[] c = DamageUtils.damageCalculator(victim, event.getFinalDamage() - 2);
             c[1] = c[1] * DamageUtils.strengthIncrease(playerAttacker);
 
-            List<String> lowerCaseLore = new ArrayList<>();
-            for(String str : playerAttacker.getItemInHand().getItemMeta().getLore()){
-                lowerCaseLore.add(str.toLowerCase());
-            }
-
             // Handles vamp blade
-            if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.vampireBlade.lore) &&
+            if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), ItemRewardsQuest.INSTANCE.vampireBlade.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
@@ -93,7 +77,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             }
 
             // Handles Thor Hammer
-            if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.thorHammer.lore) &&
+            if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), ItemRewardsQuest.INSTANCE.thorHammer.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.GOLD_AXE))
             {
                 playerAttacker.getWorld().strikeLightningEffect(victim.getLocation());
@@ -110,7 +94,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             }
 
             // Handles witch scythe
-            if (lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.witchScythe.lore) &&
+            if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), ItemRewardsQuest.INSTANCE.witchScythe.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.GOLD_HOE))
             {
                 if(victim instanceof LivingEntity){
@@ -122,16 +106,6 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                     playerVictim.addPotionEffect(new PotionEffect(PotionEffectType.POISON,
                             (int) Math.ceil(ItemRewardsQuest.INSTANCE.witchScythe.secondsOfEffect * 20), 4));
                 }
-            }
-
-            if(playerAttacker.getItemInHand().getItemMeta().getLore().contains(OLD_GHASTBOW_LORE) ||
-                    playerAttacker.getItemInHand().getItemMeta().getLore().contains(OLD_THORHAMMER_LORE) ||
-                    playerAttacker.getItemInHand().getItemMeta().getLore().contains(OLD_WITCHSCYTHE_LORE) ||
-                    playerAttacker.getItemInHand().getItemMeta().getLore().contains(OLD_VAMPBLADE_LORE) )
-            {
-                playerAttacker.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                    "This items abilities are nullified due to being outdated. " +
-                        "Use /updateitem while holding it to update it.");
             }
         }
     }

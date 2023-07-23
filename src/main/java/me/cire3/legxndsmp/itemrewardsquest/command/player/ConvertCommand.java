@@ -30,16 +30,16 @@ public class ConvertCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled){
-            commandSender.sendMessage(ChatColor.RED + DISABLED_MESSAGE);
+            commandSender.sendMessage(DISABLED_MESSAGE);
             return true;
         }
 
         if(!command.getName().equalsIgnoreCase("updateitem")) {
-            commandSender.sendMessage(ChatColor.RED + UNKNOWN_COMMAND);
+            commandSender.sendMessage(UNKNOWN_COMMAND);
             return false;
         }
         if(strings.length != 0){
-            commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "This command requires no arguments");
+            commandSender.sendMessage(FAIL_PREFIX + "This command requires no arguments");
             return false;
         }
 
@@ -47,18 +47,15 @@ public class ConvertCommand implements CommandExecutor {
             if(commandSender instanceof Player){
                 Player target = (Player) commandSender;
                 if(target.getItemInHand() == null){
-                    commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                        "Please hold an old item to update!");
+                    commandSender.sendMessage(FAIL_PREFIX + "Please hold an old item to update!");
                     return true;
                 }
                 if(!target.getItemInHand().hasItemMeta()){
-                    commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                        "Please hold an old item to update!");
+                    commandSender.sendMessage(FAIL_PREFIX + "Please hold an old item to update!");
                     return true;
                 }
                 if(!target.getItemInHand().getItemMeta().hasLore()){
-                    commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                        "Please hold an old item to update!");
+                    commandSender.sendMessage(FAIL_PREFIX + "Please hold an old item to update!");
                     return true;
                 }
 
@@ -85,17 +82,17 @@ public class ConvertCommand implements CommandExecutor {
                                 );
                             }
 
-                            target.sendMessage(ChatColor.GREEN + CHAT_PREFIX + "Successfully updated the item!");
+                            target.sendMessage(CHAT_PREFIX + "Successfully updated the item!");
                             return true;
                         }
                     }
                 }
 
-                commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
+                commandSender.sendMessage(FAIL_PREFIX +
                         "Failed to update item, ensure you are holding an old item!");
             }
         } else {
-            commandSender.sendMessage(ChatColor.RED + PERMISSION_DENIED);
+            commandSender.sendMessage(PERMISSION_DENIED);
         }
         return true;
     }

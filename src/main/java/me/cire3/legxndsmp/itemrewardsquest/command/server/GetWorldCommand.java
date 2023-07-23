@@ -13,28 +13,28 @@ public class GetWorldCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled){
-            commandSender.sendMessage(ChatColor.RED + DISABLED_MESSAGE);
+            commandSender.sendMessage(DISABLED_MESSAGE);
             return true;
         }
 
         if(!command.getName().equalsIgnoreCase("getworld")) {
-            commandSender.sendMessage(ChatColor.RED + UNKNOWN_COMMAND);
+            commandSender.sendMessage(UNKNOWN_COMMAND);
             return false;
         }
         if(strings.length != 0){
-            commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "This command requires no arguments!");
+            commandSender.sendMessage(FAIL_PREFIX + "This command requires no arguments!");
             return false;
         }
 
         if(commandSender.hasPermission("itemrewardsquest.addregions") || commandSender.isOp()){
             if(commandSender instanceof Player){
-                commandSender.sendMessage(ChatColor.GREEN + CHAT_PREFIX + "World name is '" +
+                commandSender.sendMessage(CHAT_PREFIX + "World name is '" +
                     ((Player) commandSender).getWorld().getName().toLowerCase() + "'");
             } else {
-                commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "Only players can run this!");
+                commandSender.sendMessage(FAIL_PREFIX + "Only players can run this!");
             }
         } else {
-            commandSender.sendMessage(ChatColor.RED + PERMISSION_DENIED);
+            commandSender.sendMessage(PERMISSION_DENIED);
         }
         return true;
     }

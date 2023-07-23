@@ -16,23 +16,22 @@ public class RemoveProtectedRegionCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled){
-            commandSender.sendMessage(ChatColor.RED + DISABLED_MESSAGE);
+            commandSender.sendMessage(DISABLED_MESSAGE);
             return true;
         }
 
         if(!command.getName().equalsIgnoreCase("removeprotectedregion")) {
-            commandSender.sendMessage(ChatColor.RED + UNKNOWN_COMMAND);
+            commandSender.sendMessage(UNKNOWN_COMMAND);
             return false;
         }
         if(strings.length != 2){
-            commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                "Specify two arguments (region id) (world name)");
+            commandSender.sendMessage(FAIL_PREFIX + "Specify two arguments (region id) (world name)");
             return false;
         }
 
         if(commandSender.hasPermission("itemrewardsquest.addregions") || commandSender.isOp()){
             if(!ItemRewardsQuest.INSTANCE.protectedRegions.containsKey(strings[1].toLowerCase())){
-                commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "World '" +
+                commandSender.sendMessage(FAIL_PREFIX + "World '" +
                     strings[1] + "' doesn't exist!");
                 return true;
             }
@@ -42,7 +41,7 @@ public class RemoveProtectedRegionCommand implements CommandExecutor {
                     strings[1].toLowerCase());
 
                 if(temp == null){
-                    commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "Blacklisted region '" +
+                    commandSender.sendMessage(FAIL_PREFIX + "Blacklisted region '" +
                             strings[0] + "' in world '" + strings[1] + "' doesn't exist, do you mean /addprotectedregion?");
                     return true;
                 }
@@ -54,21 +53,19 @@ public class RemoveProtectedRegionCommand implements CommandExecutor {
                 try {
                     ItemRewardsQuest.INSTANCE.configuration.save(ItemRewardsQuest.INSTANCE.configFile);
 
-                    commandSender.sendMessage(ChatColor.GREEN + CHAT_PREFIX + "Successfully removed region '" +
+                    commandSender.sendMessage(CHAT_PREFIX + "Successfully removed region '" +
                             strings[0] + "' from the list of protected regions!");
                 } catch (IOException e) {
-                    commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                        "Failed to save deleted region to disk, check logs!");
-                    commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX +
-                        "This change will only be in memory!");
+                    commandSender.sendMessage(FAIL_PREFIX + "Failed to save deleted region to disk, check logs!");
+                    commandSender.sendMessage(FAIL_PREFIX + "This change will only be in memory!");
                     e.printStackTrace();
                 }
             } else {
-                commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "Blacklisted region '" +
+                commandSender.sendMessage(FAIL_PREFIX + "Blacklisted region '" +
                         strings[0] + "' in world '" + strings[1] + "' doesn't exist, do you mean /addprotectedregion?");
             }
         } else {
-            commandSender.sendMessage(ChatColor.RED + PERMISSION_DENIED);
+            commandSender.sendMessage(PERMISSION_DENIED);
         }
         return true;
     }

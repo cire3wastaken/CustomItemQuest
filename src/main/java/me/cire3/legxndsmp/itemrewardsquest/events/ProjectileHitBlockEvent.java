@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
+import static me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand.OLD_GHASTBOW_LORE;
 
 public class ProjectileHitBlockEvent implements Listener {
     @EventHandler
@@ -38,7 +39,14 @@ public class ProjectileHitBlockEvent implements Listener {
             if (shooter instanceof Player) {
                 Player playerShooter = (Player) shooter;
 
-                if(ItemRewardsQuest.INSTANCE.blacklistedPlayers.contains(playerShooter.getName())){
+                if(PlayerUtils.containsString(playerShooter.getItemInHand(), OLD_GHASTBOW_LORE)){
+                    playerShooter.sendMessage(FAIL_PREFIX +
+                            "This items abilities are nullified due to being outdated. " +
+                            "Use /updateitem while holding it to update it.");
+                    return;
+                }
+
+                if(ItemRewardsQuest.INSTANCE.isBlacklisted(playerShooter)){
                     if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
 
                     playerShooter.sendMessage(ChatColor.RED + BLACKLISTED);
@@ -46,23 +54,9 @@ public class ProjectileHitBlockEvent implements Listener {
                     return;
                 }
 
-                if(playerShooter.getItemInHand() == null){
-                    return;
-                }
-                if(!playerShooter.getItemInHand().hasItemMeta()){
-                    return;
-                }
-                if(!playerShooter.getItemInHand().getItemMeta().hasLore()){
-                    return;
-                }
-
-                List<String> lowerCaseLore = new ArrayList<>();
-                for(String str : playerShooter.getItemInHand().getItemMeta().getLore()){
-                    lowerCaseLore.add(str.toLowerCase());
-                }
-
-                if(lowerCaseLore.equals(ItemRewardsQuest.INSTANCE.ghastBow.loreConfig) &&
-                        playerShooter.getItemInHand().getType().equals(Material.BOW)){
+                if(PlayerUtils.containsLore(playerShooter.getItemInHand(), ItemRewardsQuest.INSTANCE.ghastBow.lore)
+                        && playerShooter.getItemInHand().getType().equals(Material.BOW))
+                {
                     if(hitBlock == null) return;
 
                     if(!PlayerUtils.shouldUse(playerShooter) || !PlayerUtils.shouldUse(hitBlock.getLocation()))
@@ -113,7 +107,7 @@ public class ProjectileHitBlockEvent implements Listener {
 
                                 LivingEntity entity = (LivingEntity) nearby;
                                 entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig *
-                                        ((100F - entity.getLocation().distanceSquared(event.getEntity().getLocation())) / 100F));
+                                    ((100F - entity.getLocation().distanceSquared(event.getEntity().getLocation())) / 100F));
                             }
                         }
                     } else {

@@ -22,25 +22,24 @@ public class GhastBowCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
         if (!ItemRewardsQuest.INSTANCE.isEnabled) {
-            commandSender.sendMessage(ChatColor.RED + DISABLED_MESSAGE);
+            commandSender.sendMessage(DISABLED_MESSAGE);
             return true;
         }
 
         if (!command.getName().equalsIgnoreCase("ghastbow")) {
-            commandSender.sendMessage(ChatColor.RED + UNKNOWN_COMMAND);
+            commandSender.sendMessage(UNKNOWN_COMMAND);
             return false;
         }
         if (strings.length != 1) {
-            commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + "Specify one argument (player)");
+            commandSender.sendMessage(FAIL_PREFIX + "Specify one argument (player)");
             return false;
         }
 
         if (commandSender.hasPermission("itemrewardsquest.giveitems") || commandSender.isOp()) {
             this.giveItem(commandSender, strings);
-            commandSender.sendMessage(ChatColor.GREEN + CHAT_PREFIX + "Successfully gave " +
-                    strings[0] + " a Ghast Bow!");
+            commandSender.sendMessage(CHAT_PREFIX + "Successfully gave " + strings[0] + " a Ghast Bow!");
         } else {
-            commandSender.sendMessage(ChatColor.RED + PERMISSION_DENIED);
+            commandSender.sendMessage(PERMISSION_DENIED);
         }
         return true;
     }
@@ -53,11 +52,11 @@ public class GhastBowCommand implements CommandExecutor {
         ItemStack item = new ItemStack(Material.BOW);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ColorUtils.color(ItemRewardsQuest.INSTANCE.ghastBow.nameConfig));
-        meta.setLore(ColorUtils.color(INSTANCE.ghastBow.originalLoreConfig));
+        meta.setLore(ColorUtils.color(INSTANCE.ghastBow.lore));
 
         Player target = Bukkit.getPlayerExact(args[0]);
         if (target == null) {
-            commandSender.sendMessage(ChatColor.RED + CHAT_PREFIX + args[0] + " is not online!");
+            commandSender.sendMessage(FAIL_PREFIX + args[0] + " is not online!");
             return;
         }
 

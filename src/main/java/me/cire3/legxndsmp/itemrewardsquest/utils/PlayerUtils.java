@@ -1,6 +1,5 @@
 package me.cire3.legxndsmp.itemrewardsquest.utils;
 
-import com.sk89q.jnbt.NBTUtils;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.RegionContainer;
@@ -19,9 +18,11 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class PlayerUtils {
@@ -173,5 +174,28 @@ public class PlayerUtils {
         }
 
         return true;
+    }
+
+    public static boolean containsLore(ItemStack itemStack, List<String> lore){
+        for(String str : lore){
+            if(!containsString(itemStack, str)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean containsString(ItemStack itemStack, String loreString){
+        if(itemStack == null || !itemStack.hasItemMeta() || !itemStack.getItemMeta().hasLore()){
+            return false;
+        }
+
+        List<String> itemLore = new ArrayList<>();
+        for(String str : itemStack.getItemMeta().getLore()){
+            itemLore.add(str.toLowerCase());
+        }
+
+        return itemLore.contains(loreString.toLowerCase());
     }
 }

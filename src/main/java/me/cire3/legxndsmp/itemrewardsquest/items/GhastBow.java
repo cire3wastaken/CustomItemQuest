@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GhastBow {
-    public List<String> loreConfig = new ArrayList<>();
-    public List<String> originalLoreConfig;
+    public List<String> lore;
     public String nameConfig;
     public double damageConfig;
     public double explosionPowerConfig;
@@ -22,17 +21,11 @@ public class GhastBow {
     }
 
     public void update(FileConfiguration configuration){
-        this.originalLoreConfig = configuration.getStringList("GhastBow.Lore");
+        this.lore = configuration.getStringList("GhastBow.Lore");
         this.nameConfig = configuration.getString("GhastBow.Name");
         this.explosionPowerConfig = configuration.getDouble("GhastBow.Power");
         this.ignoreArmor = configuration.getBoolean("GhastBow.IgnoreArmor");
         this.explosion = configuration.getBoolean("GhastBow.Explosion");
-
-       this.damageConfig = configuration.getDouble("GhastBow.Damage");
-        this.loreConfig = new ArrayList<>();
-
-        for(String s : ColorUtils.color(configuration.getStringList("GhastBow.Lore"))){
-            this.loreConfig.add(s.toLowerCase());
-        }
+        this.damageConfig = configuration.getDouble("GhastBow.Damage");
     }
 }
