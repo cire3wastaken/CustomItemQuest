@@ -15,7 +15,7 @@ public class HelpSubCommand implements SubCommand {
 
     @Override
     public void execute(CommandSender commandSender, String[] args) {
-        if (commandSender.hasPermission("itemrewardsquest.help") || commandSender.isOp()) {
+        if (commandSender.hasPermission("itemrewardsquest.updateitems") || commandSender.isOp()) {
             boolean flag = false;
             if (args.length == 1) {
                 commandSender.sendMessage(CHAT_PREFIX + "ItemRewardsQuest Help Menu: Made by cire3 (sire3#0000)");
