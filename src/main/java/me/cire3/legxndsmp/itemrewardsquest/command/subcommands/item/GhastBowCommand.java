@@ -36,10 +36,13 @@ public class GhastBowCommand implements SubCommand {
         } else if (strings.length == 2) {
             if(strings[1].equalsIgnoreCase("toggle")) {
                 boolean temp = ItemRewardsQuest.INSTANCE.toggledItems.get(Items.GHASTBOW);
-                ItemRewardsQuest.INSTANCE.toggledItems.remove(Items.GHASTBOW);
+                ItemRewardsQuest.INSTANCE.toggledItems.remove(Items.GHASTBOW, temp);
                 ItemRewardsQuest.INSTANCE.toggledItems.put(Items.GHASTBOW, !temp);
 
-                commandSender.sendMessage("Ghast Bows are now " + (!temp ? "disabled" : "enabled") + "!");
+                commandSender.sendMessage(CHAT_PREFIX + "Ghast Bows are now " + (!temp ? "disabled!" : "enabled!"));
+            } else if (strings[1].equalsIgnoreCase("state")){
+                commandSender.sendMessage(CHAT_PREFIX + "Ghast Bows are " +
+                        (INSTANCE.toggledItems.get(Items.GHASTBOW) ? "enabled!" : "disabled!"));
             } else {
                 flag = true;
             }

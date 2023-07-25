@@ -50,6 +50,7 @@ public class HelpSubCommand implements SubCommand {
                             commandSender.sendMessage(makeTitleString(str));
                             commandSender.sendMessage(makeSubString("give (player)", "Gives a player the item"));
                             commandSender.sendMessage(makeSubString("toggle", "Toggles usage of this item"));
+                            commandSender.sendMessage(makeSubString("state", "Returns the usage state of this item"));
 
                         } else if (str.equalsIgnoreCase("regions")) {
                             commandSender.sendMessage(makeTitleString("regions"));

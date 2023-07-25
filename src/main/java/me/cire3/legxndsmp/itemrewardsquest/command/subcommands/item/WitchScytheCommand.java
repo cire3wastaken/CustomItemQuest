@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Collections;
 import java.util.Map;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
@@ -37,10 +38,13 @@ public class WitchScytheCommand implements SubCommand {
         } else if (strings.length == 2) {
             if(strings[1].equalsIgnoreCase("toggle")) {
                 boolean temp = ItemRewardsQuest.INSTANCE.toggledItems.get(Items.WITCHSCYHTE);
-                ItemRewardsQuest.INSTANCE.toggledItems.remove(Items.WITCHSCYHTE);
+                ItemRewardsQuest.INSTANCE.toggledItems.remove(Items.WITCHSCYHTE, temp);
                 ItemRewardsQuest.INSTANCE.toggledItems.put(Items.WITCHSCYHTE, !temp);
 
-                commandSender.sendMessage("Witch Scythes are now " + (!temp ? "disabled" : "enabled") + "!");
+                commandSender.sendMessage(CHAT_PREFIX + "Witch Scythes are now " + (!temp ? "disabled" : "enabled") + "!");
+            } else if (strings[1].equalsIgnoreCase("state")){
+                commandSender.sendMessage(CHAT_PREFIX + "Witch Scythes are " +
+                        (INSTANCE.toggledItems.get(Items.WITCHSCYHTE) ? "enabled!" : "disabled!"));
             } else {
                 flag = true;
             }

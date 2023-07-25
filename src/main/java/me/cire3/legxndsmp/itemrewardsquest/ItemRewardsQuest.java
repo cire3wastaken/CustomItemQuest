@@ -297,7 +297,7 @@ public enum ItemRewardsQuest
     }
 
     public Boolean isDisabled(Items item){
-        return this.toggledItems.get(item);
+        return !this.toggledItems.get(item);
     }
 
     public boolean status(){
