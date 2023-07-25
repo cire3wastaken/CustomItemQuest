@@ -1,12 +1,7 @@
 package me.cire3.legxndsmp.itemrewardsquest;
 
 import me.cire3.legxndsmp.itemrewardsquest.command.ItemCommands;
-import me.cire3.legxndsmp.itemrewardsquest.command.player.BlacklistPlayerCommand;
-import me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand;
-import me.cire3.legxndsmp.itemrewardsquest.command.player.FreePlayerCommand;
-import me.cire3.legxndsmp.itemrewardsquest.command.player.ListBlacklistedPlayersCommand;
-import me.cire3.legxndsmp.itemrewardsquest.command.server.*;
-import me.cire3.legxndsmp.itemrewardsquest.command.item.*;
+import me.cire3.legxndsmp.itemrewardsquest.command.ConvertCommand;
 import me.cire3.legxndsmp.itemrewardsquest.events.*;
 import me.cire3.legxndsmp.itemrewardsquest.items.*;
 import me.cire3.legxndsmp.itemrewardsquest.utils.FileUtils;
@@ -35,6 +30,7 @@ public enum ItemRewardsQuest
     public static final String UNKNOWN_SUBCOMMAND = FAIL_PREFIX + "Unknown sub command!";
     public static final String CAN_NOT_USE = FAIL_PREFIX + "You can not use this item here!";
     public static final String BLACKLISTED = FAIL_PREFIX + "You are blacklisted from using custom items!";
+    public static final String DISABLED_ITEM = FAIL_PREFIX + "This item is disabled!";
 
     public static final String VERSION_FILE_URL = "https://raw.githubusercontent.com/cire3wastaken/CustomItemQuest/master/version.txt";
     public static final String GITHUB_REPO = "https://github.com/cire3wastaken/CustomItemQuest/tree/master";
@@ -56,23 +52,7 @@ public enum ItemRewardsQuest
     public WitchScythe witchScythe;
     public Hyperion hyperion;
 
-    public VampireBladeCommand vampireBladeCommand;
-    public GhastBowCommand ghastBowCommand;
-    public ThorHammerCommand thorHammerCommand;
-    public WitchScytheCommand witchScytheCommand;
-    public HypeCommand hypeCommand;
-    public ReloadPluginCommand reloadPluginCommand;
     public ConvertCommand convertCommand;
-    public AddProtectedRegionCommand addProtectedRegionCommand;
-    public RemoveProtectedRegionCommand removeProtectedRegionCommand;
-    public AddWhitelistedRegionCommand addWhitelistedRegionCommand;
-    public RemoveWhitelistedRegionCommand removeWhitelistedRegionCommand;
-    public ListProtectedRegionsCommand listProtectedRegionsCommand;
-    public ListWhitelistedRegionsCommand listWhitelistedRegionsCommand;
-    public GetWorldCommand getWorldCommand;
-    public BlacklistPlayerCommand blacklistPlayerCommand;
-    public FreePlayerCommand freePlayerCommand;
-    public ListBlacklistedPlayersCommand listBlacklistedPlayersCommand;
     public ItemCommands itemCommands;
 
     public File configFile;
@@ -91,23 +71,7 @@ public enum ItemRewardsQuest
             Bukkit.getLogger().info(OUTDATED_MESSAGE);
         }
 
-        this.vampireBladeCommand = new VampireBladeCommand();
-        this.ghastBowCommand = new GhastBowCommand();
-        this.thorHammerCommand = new ThorHammerCommand();
-        this.witchScytheCommand = new WitchScytheCommand();
-        this.hypeCommand = new HypeCommand();
-        this.reloadPluginCommand = new ReloadPluginCommand(plugin);
         this.convertCommand = new ConvertCommand();
-        this.addProtectedRegionCommand = new AddProtectedRegionCommand();
-        this.removeProtectedRegionCommand = new RemoveProtectedRegionCommand();
-        this.addWhitelistedRegionCommand = new AddWhitelistedRegionCommand();
-        this.removeWhitelistedRegionCommand = new RemoveWhitelistedRegionCommand();
-        this.listProtectedRegionsCommand = new ListProtectedRegionsCommand();
-        this.listWhitelistedRegionsCommand = new ListWhitelistedRegionsCommand();
-        this.getWorldCommand = new GetWorldCommand();
-        this.listBlacklistedPlayersCommand = new ListBlacklistedPlayersCommand();
-        this.blacklistPlayerCommand = new BlacklistPlayerCommand();
-        this.freePlayerCommand = new FreePlayerCommand();
         this.itemCommands = new ItemCommands();
 
         this.hyperion = new Hyperion(this.configuration);
@@ -154,21 +118,9 @@ public enum ItemRewardsQuest
         Bukkit.getServer().getPluginManager().registerEvents(new ProjectileHitBlockEvent(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new RightClickInteractEvent(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinServerEvent(), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new ShootBowEvent(), plugin);
 
-        plugin.getCommand("vampireblade").setExecutor(this.vampireBladeCommand);
-        plugin.getCommand("ghastbow").setExecutor(this.ghastBowCommand);
-        plugin.getCommand("thorhammer").setExecutor(this.thorHammerCommand);
-        plugin.getCommand("hyperionblade").setExecutor(this.hypeCommand);
-        plugin.getCommand("witchscythe").setExecutor(this.witchScytheCommand);
-        plugin.getCommand("reloaditemrewardsquest").setExecutor(this.reloadPluginCommand);
         plugin.getCommand("updateitem").setExecutor(this.convertCommand);
-        plugin.getCommand("addprotectedregion").setExecutor(this.addProtectedRegionCommand);
-        plugin.getCommand("removeprotectedregion").setExecutor(this.removeProtectedRegionCommand);
-        plugin.getCommand("addwhitelistedregion").setExecutor(this.addWhitelistedRegionCommand);
-        plugin.getCommand("removewhitelistedregion").setExecutor(this.removeWhitelistedRegionCommand);
-        plugin.getCommand("listprotectedregions").setExecutor(this.listProtectedRegionsCommand);
-        plugin.getCommand("listwhitelistedregions").setExecutor(this.listWhitelistedRegionsCommand);
-        plugin.getCommand("getworld").setExecutor(this.getWorldCommand);
         plugin.getCommand("itemrewardsquest").setExecutor(this.itemCommands);
 
         this.thorHammer.update(configuration);
@@ -342,6 +294,10 @@ public enum ItemRewardsQuest
 
     public boolean isBlacklisted(Player p){
         return this.blacklistedPlayers.contains(p.getName().toLowerCase());
+    }
+
+    public Boolean isDisabled(Items item){
+        return this.toggledItems.get(item);
     }
 
     public boolean status(){

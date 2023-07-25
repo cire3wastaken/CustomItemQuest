@@ -48,22 +48,22 @@ public class HelpSubCommand implements SubCommand {
                     if (str.equalsIgnoreCase(args[1])) {
                         if (this.itemSub.contains(str.toLowerCase())) {
                             commandSender.sendMessage(makeTitleString(str));
-                            commandSender.sendMessage(makeHelpString("give (player)", "Gives a player the item"));
-                            commandSender.sendMessage(makeHelpString("toggle", "Toggles usage of this item"));
+                            commandSender.sendMessage(makeSubString("give (player)", "Gives a player the item"));
+                            commandSender.sendMessage(makeSubString("toggle", "Toggles usage of this item"));
 
                         } else if (str.equalsIgnoreCase("regions")) {
                             commandSender.sendMessage(makeTitleString("regions"));
-                            commandSender.sendMessage(makeHelpString("whitelist [add/remove/list]",
+                            commandSender.sendMessage(makeSubString("whitelist [add/remove/list]",
                                     "Commands to manipulate whitelisted regions"));
-                            commandSender.sendMessage(makeHelpString("blacklist [add/remove/list]",
+                            commandSender.sendMessage(makeSubString("blacklist [add/remove/list]",
                                     "Commands to manipulate blacklisted regions"));
-                            commandSender.sendMessage(makeHelpString("world", "Returns the world ID"));
+                            commandSender.sendMessage(makeSubString("world", "Returns the world ID"));
 
                         } else if (str.equalsIgnoreCase("players")) {
                             commandSender.sendMessage(makeTitleString("players"));
-                            commandSender.sendMessage(makeHelpString("disallow (player)", "Prevents a player from using custom items"));
-                            commandSender.sendMessage(makeHelpString("allow (player)", "Allows a player to use custom items"));
-                            commandSender.sendMessage(makeHelpString("list", "Lists disallowed players"));
+                            commandSender.sendMessage(makeSubString("disallow (player)", "Prevents a player from using custom items"));
+                            commandSender.sendMessage(makeSubString("allow (player)", "Allows a player to use custom items"));
+                            commandSender.sendMessage(makeSubString("list", "Lists disallowed players"));
 
                         } else if (str.equalsIgnoreCase("reload")) {
                             commandSender.sendMessage(makeTitleString("reload"));
@@ -85,17 +85,20 @@ public class HelpSubCommand implements SubCommand {
             } else if (args.length == 3){
                 if(args[1].equalsIgnoreCase("regions")){
                     if(args[2].equalsIgnoreCase("whitelist")){
-                        commandSender.sendMessage(makeHelpString("add (region) (world)", "Adds a whitelisted region"));
-                        commandSender.sendMessage(makeHelpString("remove (region) (world)", "Removes a whitelisted region"));
-                        commandSender.sendMessage(makeHelpString("list", "Lists whitelisted regions"));
+                        commandSender.sendMessage(makeSubString("add (region) (world)",
+                                "Adds a whitelisted region"));
+                        commandSender.sendMessage(makeSubString("remove (region) (world)",
+                                "Removes a whitelisted region"));
+                        commandSender.sendMessage(makeSubString("list",
+                                "Lists whitelisted regions"));
 
                     } else if(args[2].equalsIgnoreCase("blacklist")){
-                        commandSender.sendMessage(makeHelpString("add (region) (world)", "Adds a blacklisted region"));
-                        commandSender.sendMessage(makeHelpString("remove (region) (world)", "Removes a blacklisted region"));
-                        commandSender.sendMessage(makeHelpString("list", "Lists blacklisted regions"));
+                        commandSender.sendMessage(makeSubString("add (region) (world)", "Adds a blacklisted region"));
+                        commandSender.sendMessage(makeSubString("remove (region) (world)", "Removes a blacklisted region"));
+                        commandSender.sendMessage(makeSubString("list", "Lists blacklisted regions"));
 
                     } else if(args[2].equalsIgnoreCase("world")){
-                        commandSender.sendMessage(makeHelpString("world", "Returns the world ID"));
+                        commandSender.sendMessage(makeSubString("world", "Returns the world ID"));
                     } else {
                         flag = true;
                     }
@@ -112,11 +115,15 @@ public class HelpSubCommand implements SubCommand {
     }
 
     public static String makeHelpString(String cmd, String desc){
-        return ChatColor.GOLD + "/itemrewardsquest " + cmd + ChatColor.DARK_GRAY + " - " +
-                ChatColor.WHITE + desc;
+        return makeSubString("/itemrewardsquest " + cmd, desc);
     }
 
     public static String makeTitleString(String cmd){
         return ChatColor.BOLD + ChatColor.RED.toString() + "Help menu for " + cmd + ": ";
+    }
+
+    public static String makeSubString(String cmd, String desc){
+        return ChatColor.GOLD + cmd + ChatColor.DARK_GRAY + " - " +
+                ChatColor.WHITE + desc;
     }
 }

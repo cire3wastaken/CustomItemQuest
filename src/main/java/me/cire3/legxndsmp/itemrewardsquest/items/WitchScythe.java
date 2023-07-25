@@ -1,5 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
+import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public class WitchScythe {
     }
 
     public void update(FileConfiguration fileConfiguration){
-        this.lore = fileConfiguration.getStringList("WitchScythe.Lore");
-        this.name = fileConfiguration.getString("WitchScythe.Name");
+        this.lore = ColorUtils.color(fileConfiguration.getStringList("WitchScythe.Lore"));
+        this.name = ColorUtils.color(fileConfiguration.getString("WitchScythe.Name"));
         this.secondsOfEffect = fileConfiguration.getDouble("WitchScythe.Seconds");
     }
 }

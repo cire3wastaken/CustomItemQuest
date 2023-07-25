@@ -1,5 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
+import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
@@ -16,8 +17,8 @@ public class ThorHammer {
     }
 
     public void update(FileConfiguration config){
-        this.lore = config.getStringList("ThorHammer.Lore");
-        this.name = config.getString("ThorHammer.Name");
+        this.lore = ColorUtils.color(config.getStringList("ThorHammer.Lore"));
+        this.name = ColorUtils.color(config.getString("ThorHammer.Name"));
         this.ignoreArmor = config.getBoolean("ThorHammer.IgnoreArmor");
         this.fireTicks = config.getDouble("ThorHammer.FireSeconds") * 20;
         this.damage = config.getDouble("ThorHammer.Damage");

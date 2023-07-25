@@ -21,8 +21,8 @@ public class GhastBow {
     }
 
     public void update(FileConfiguration configuration){
-        this.lore = configuration.getStringList("GhastBow.Lore");
-        this.nameConfig = configuration.getString("GhastBow.Name");
+        this.lore = ColorUtils.color(configuration.getStringList("GhastBow.Lore"));
+        this.nameConfig = ColorUtils.color(configuration.getString("GhastBow.Name"));
         this.explosionPowerConfig = configuration.getDouble("GhastBow.Power");
         this.ignoreArmor = configuration.getBoolean("GhastBow.IgnoreArmor");
         this.explosion = configuration.getBoolean("GhastBow.Explosion");

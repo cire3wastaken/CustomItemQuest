@@ -1,4 +1,4 @@
-package me.cire3.legxndsmp.itemrewardsquest.command.player;
+package me.cire3.legxndsmp.itemrewardsquest.command;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.item.GhastBowCommand;

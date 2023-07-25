@@ -31,6 +31,8 @@ public class PlayerSubCommand implements SubCommand {
                 } else {
                     commandSender.sendMessage(FAIL_PREFIX + "Player " + args[2] + " is already allowed!");
                 }
+            } else if (args[1].equalsIgnoreCase("reach")){
+
             } else {
                 flag = true;
             }

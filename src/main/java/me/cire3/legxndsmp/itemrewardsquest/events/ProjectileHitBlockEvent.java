@@ -1,6 +1,7 @@
 package me.cire3.legxndsmp.itemrewardsquest.events;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
+import me.cire3.legxndsmp.itemrewardsquest.items.Items;
 import me.cire3.legxndsmp.itemrewardsquest.utils.PlayerUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -12,13 +13,10 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
-import static me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand.OLD_GHASTBOW_LORE;
+import static me.cire3.legxndsmp.itemrewardsquest.command.ConvertCommand.OLD_GHASTBOW_LORE;
 
 public class ProjectileHitBlockEvent implements Listener {
     @EventHandler
@@ -62,61 +60,62 @@ public class ProjectileHitBlockEvent implements Listener {
                     return;
                 }
 
-                if(PlayerUtils.containsLore(playerShooter.getItemInHand(), ItemRewardsQuest.INSTANCE.ghastBow.lore)
-                        && playerShooter.getItemInHand().getType().equals(Material.BOW))
-                {
-                    World world = playerShooter.getWorld();
-                    Location location = event.getEntity().getLocation();
+                if(INSTANCE.isDisabled(Items.WITCHSCYHTE)){
+                    playerShooter.sendMessage(DISABLED_ITEM);
+                    return;
+                }
 
-                    float power;
-                    Effect effect;
+                World world = playerShooter.getWorld();
+                Location location = event.getEntity().getLocation();
 
-                    switch((int) ItemRewardsQuest.INSTANCE.ghastBow.explosionPowerConfig){
-                        case 2: power = 5; effect = Effect.EXPLOSION_LARGE; break;
-                        case 3: power = 6; effect = Effect.EXPLOSION_HUGE; break;
-                        default: effect = Effect.EXPLOSION; power = 4; break;
-                    }
+                float power;
+                Effect effect;
 
-                    if(!ItemRewardsQuest.INSTANCE.ghastBow.explosion){
-                        world.playEffect(location, effect, 3);
-                        world.playSound(location, Sound.EXPLODE, 1F, 1F);
+                switch((int) ItemRewardsQuest.INSTANCE.ghastBow.explosionPowerConfig){
+                    case 2: power = 5; effect = Effect.EXPLOSION_LARGE; break;
+                    case 3: power = 6; effect = Effect.EXPLOSION_HUGE; break;
+                    default: effect = Effect.EXPLOSION; power = 4; break;
+                }
 
-                        Collection<Entity> collection =  world.getNearbyEntities(location, power, power, power);
-                        collection.remove(playerShooter);
+                if(!ItemRewardsQuest.INSTANCE.ghastBow.explosion){
+                    world.playEffect(location, effect, 3);
+                    world.playSound(location, Sound.EXPLODE, 1F, 1F);
 
-                        for (Entity nearby : collection) {
-                            if (nearby instanceof LivingEntity) {
-                                if(nearby instanceof Player){
-                                    if(!PlayerUtils.shouldUse((Player) nearby)){
-                                        continue;
-                                    }
-                                }
+                    Collection<Entity> collection =  world.getNearbyEntities(location, power, power, power);
+                    collection.remove(playerShooter);
 
-                                LivingEntity entity = (LivingEntity) nearby;
-                                BigDecimal healthBefore = BigDecimal.valueOf(entity.getHealth());
-
-                                entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig * ((100F -
-                                                entity.getLocation().distanceSquared(event.getEntity().getLocation())) / 100F),
-                                        playerShooter
-                                );
-
-                                BigDecimal healthAfter = BigDecimal.valueOf(entity.getHealth());
-
-                                // Checks that it wasn't cancelled
-                                if(healthAfter.compareTo(healthBefore) < 0){
-                                    Vector affectedLoc = entity.getLocation().toVector();
-                                    Vector abilityLoc = playerShooter.getLocation().toVector();
-                                    Vector result = affectedLoc.subtract(abilityLoc);
-                                    entity.setVelocity(result);
+                    for (Entity nearby : collection) {
+                        if (nearby instanceof LivingEntity) {
+                            if(nearby instanceof Player){
+                                if(!PlayerUtils.shouldUse((Player) nearby)){
+                                    continue;
                                 }
                             }
-                        }
-                    } else {
-                        playerShooter.getWorld().createExplosion(event.getEntity().getLocation(), power);
-                    }
-                }
-            }
 
+                            LivingEntity entity = (LivingEntity) nearby;
+                            BigDecimal healthBefore = BigDecimal.valueOf(entity.getHealth());
+
+                            entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig * ((100F -
+                                            entity.getLocation().distanceSquared(event.getEntity().getLocation()) * 3) / 100F),
+                                    playerShooter
+                            );
+
+                            BigDecimal healthAfter = BigDecimal.valueOf(entity.getHealth());
+
+                            // Checks that it wasn't cancelled
+                            if(healthAfter.compareTo(healthBefore) < 0){
+                                Vector affectedLoc = entity.getLocation().toVector();
+                                Vector abilityLoc = playerShooter.getLocation().toVector();
+                                Vector result = affectedLoc.subtract(abilityLoc);
+                                entity.setVelocity(result);
+                            }
+                        }
+                    }
+                } else {
+                    playerShooter.getWorld().createExplosion(event.getEntity().getLocation(), power);
+                }
+
+            }
         }
     }
 }

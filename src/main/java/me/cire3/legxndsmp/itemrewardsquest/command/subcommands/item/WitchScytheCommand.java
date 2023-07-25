@@ -39,6 +39,8 @@ public class WitchScytheCommand implements SubCommand {
                 boolean temp = ItemRewardsQuest.INSTANCE.toggledItems.get(Items.WITCHSCYHTE);
                 ItemRewardsQuest.INSTANCE.toggledItems.remove(Items.WITCHSCYHTE);
                 ItemRewardsQuest.INSTANCE.toggledItems.put(Items.WITCHSCYHTE, !temp);
+
+                commandSender.sendMessage("Witch Scythes are now " + (!temp ? "disabled" : "enabled") + "!");
             } else {
                 flag = true;
             }

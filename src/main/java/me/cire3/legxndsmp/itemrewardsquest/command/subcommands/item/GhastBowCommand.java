@@ -38,6 +38,8 @@ public class GhastBowCommand implements SubCommand {
                 boolean temp = ItemRewardsQuest.INSTANCE.toggledItems.get(Items.GHASTBOW);
                 ItemRewardsQuest.INSTANCE.toggledItems.remove(Items.GHASTBOW);
                 ItemRewardsQuest.INSTANCE.toggledItems.put(Items.GHASTBOW, !temp);
+
+                commandSender.sendMessage("Ghast Bows are now " + (!temp ? "disabled" : "enabled") + "!");
             } else {
                 flag = true;
             }
@@ -58,8 +60,8 @@ public class GhastBowCommand implements SubCommand {
     public boolean giveItem(CommandSender commandSender, String[] args, ItemMeta metaToSave) {
         ItemStack item = new ItemStack(Material.BOW);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ColorUtils.color(ItemRewardsQuest.INSTANCE.ghastBow.nameConfig));
-        meta.setLore(ColorUtils.color(INSTANCE.ghastBow.lore));
+        meta.setDisplayName(ItemRewardsQuest.INSTANCE.ghastBow.nameConfig);
+        meta.setLore(INSTANCE.ghastBow.lore);
 
         Player target = Bukkit.getPlayerExact(args[2]);
         if (target == null) {

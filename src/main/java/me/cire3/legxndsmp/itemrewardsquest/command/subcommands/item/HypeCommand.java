@@ -39,6 +39,8 @@ public class HypeCommand implements SubCommand {
                 boolean temp = ItemRewardsQuest.INSTANCE.toggledItems.get(Items.HYPERION);
                 ItemRewardsQuest.INSTANCE.toggledItems.remove(Items.HYPERION);
                 ItemRewardsQuest.INSTANCE.toggledItems.put(Items.HYPERION, !temp);
+
+                commandSender.sendMessage("Hyperions are now " + (!temp ? "disabled" : "enabled") + "!");
             } else {
                 flag = true;
             }

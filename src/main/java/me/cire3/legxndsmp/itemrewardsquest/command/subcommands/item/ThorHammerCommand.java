@@ -39,6 +39,8 @@ public class ThorHammerCommand implements SubCommand {
                 boolean temp = ItemRewardsQuest.INSTANCE.toggledItems.get(Items.THORHAMMER);
                 ItemRewardsQuest.INSTANCE.toggledItems.remove(Items.THORHAMMER);
                 ItemRewardsQuest.INSTANCE.toggledItems.put(Items.THORHAMMER, !temp);
+
+                commandSender.sendMessage("Thor Hammers are now " + (!temp ? "disabled" : "enabled") + "!");
             } else {
                 flag = true;
             }

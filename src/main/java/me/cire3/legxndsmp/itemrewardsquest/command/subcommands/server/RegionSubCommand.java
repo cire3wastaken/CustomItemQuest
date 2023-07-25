@@ -67,14 +67,16 @@ public class RegionSubCommand implements SubCommand {
                 } else {
                     flag = true;
                 }
-            } else if (args[1].equalsIgnoreCase("world")){
+            } else {
+                flag = true;
+            }
+        } else if (args.length == 2){
+            if (args[1].equalsIgnoreCase("world")){
                 if(commandSender instanceof Player) {
-                    commandSender.sendMessage(CHAT_PREFIX + "Applicable world name is: " + ((Player) commandSender).getWorld());
+                    commandSender.sendMessage(CHAT_PREFIX + "Applicable world name is: " + ((Player) commandSender).getWorld().getName());
                 } else {
                     commandSender.sendMessage(FAIL_PREFIX + "Only players can run this command!");
                 }
-            } else {
-                flag = true;
             }
         } else {
             flag = true;

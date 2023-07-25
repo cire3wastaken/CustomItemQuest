@@ -38,6 +38,8 @@ public class VampireBladeCommand implements SubCommand {
                 boolean temp = ItemRewardsQuest.INSTANCE.toggledItems.get(Items.VAMPIREBLADE);
                 ItemRewardsQuest.INSTANCE.toggledItems.remove(Items.VAMPIREBLADE);
                 ItemRewardsQuest.INSTANCE.toggledItems.put(Items.VAMPIREBLADE, !temp);
+
+                commandSender.sendMessage("Vampire Blades are now " + (!temp ? "disabled" : "enabled") + "!");
             } else {
                 flag = true;
             }

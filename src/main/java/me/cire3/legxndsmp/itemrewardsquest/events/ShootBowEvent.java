@@ -1,17 +1,17 @@
 package me.cire3.legxndsmp.itemrewardsquest.events;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
+import me.cire3.legxndsmp.itemrewardsquest.items.Items;
 import me.cire3.legxndsmp.itemrewardsquest.utils.PlayerUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
-import static me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand.OLD_GHASTBOW_LORE;
+import static me.cire3.legxndsmp.itemrewardsquest.command.ConvertCommand.OLD_GHASTBOW_LORE;
 
 public class ShootBowEvent implements Listener {
     @EventHandler
@@ -49,6 +49,11 @@ public class ShootBowEvent implements Listener {
         if(PlayerUtils.containsLore(playerShooter.getItemInHand(), ItemRewardsQuest.INSTANCE.ghastBow.lore)
                 && playerShooter.getItemInHand().getType().equals(Material.BOW))
         {
+            if(INSTANCE.isDisabled(Items.WITCHSCYHTE)){
+                playerShooter.sendMessage(DISABLED_ITEM);
+                return;
+            }
+
             event.getProjectile().setCustomName("aksjfuaqialfkiaGhastBowShot");
             event.getEntity().setCustomNameVisible(false);
         }

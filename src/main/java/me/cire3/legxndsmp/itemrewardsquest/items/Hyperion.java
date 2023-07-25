@@ -1,5 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
+import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class Hyperion {
     }
 
     public void update(FileConfiguration config){
-        this.lore = config.getStringList("Hyperion.Lore");
-        this.name = config.getString("Hyperion.Name");
+        this.lore = ColorUtils.color(config.getStringList("Hyperion.Lore"));
+        this.name = ColorUtils.color(config.getString("Hyperion.Name"));
         this.explosionPower = config.getDouble("Hyperion.Power");
         this.explosionRadius = config.getDouble("Hyperion.Radius");
         this.damage = config.getDouble("Hyperion.Damage");

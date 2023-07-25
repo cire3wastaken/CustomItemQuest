@@ -1,8 +1,10 @@
 package me.cire3.legxndsmp.itemrewardsquest.events;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
+import me.cire3.legxndsmp.itemrewardsquest.items.Items;
 import me.cire3.legxndsmp.itemrewardsquest.utils.DamageUtils;
 import me.cire3.legxndsmp.itemrewardsquest.utils.PlayerUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -15,16 +17,19 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
-import static me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand.*;
+import static me.cire3.legxndsmp.itemrewardsquest.command.ConvertCommand.*;
 
 public class AttackEntityEvent implements org.bukkit.event.Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityAttack(EntityDamageByEntityEvent event) {
+        Bukkit.getLogger().info("cancelled by event");
+
         if(!ItemRewardsQuest.INSTANCE.isEnabled) return;
         if(event.isCancelled()) return;
 
         if(event.getDamager() instanceof Player) {
+            Bukkit.getLogger().info("got to line 32");
             Player playerAttacker = (Player) event.getDamager();
 
             if(!PlayerUtils.shouldUse(playerAttacker))
@@ -55,12 +60,6 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                 return;
             }
 
-            if(victim instanceof Player){
-                if(!PlayerUtils.shouldUse((Player) victim)){
-                    return;
-                }
-            }
-
             double[] c = DamageUtils.damageCalculator(victim, event.getFinalDamage() - 2);
             c[1] = c[1] * DamageUtils.strengthIncrease(playerAttacker);
 
@@ -68,6 +67,11 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), ItemRewardsQuest.INSTANCE.vampireBlade.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
+                if(INSTANCE.isDisabled(Items.VAMPIREBLADE)){
+                    playerAttacker.sendMessage(DISABLED_ITEM);
+                    return;
+                }
+
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
                     Math.min(Math.max(DamageUtils.calcDamage((int) c[0], c[1], 0, (int) c[3],
                             (int) c[4]) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed,
@@ -80,6 +84,11 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), ItemRewardsQuest.INSTANCE.thorHammer.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.GOLD_AXE))
             {
+                if(INSTANCE.isDisabled(Items.THORHAMMER)){
+                    playerAttacker.sendMessage(DISABLED_ITEM);
+                    return;
+                }
+
                 playerAttacker.getWorld().strikeLightningEffect(victim.getLocation());
                 if(victim instanceof LivingEntity){
                     LivingEntity target = (LivingEntity) victim;
@@ -97,6 +106,11 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), ItemRewardsQuest.INSTANCE.witchScythe.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.GOLD_HOE))
             {
+                if(INSTANCE.isDisabled(Items.WITCHSCYHTE)){
+                    playerAttacker.sendMessage(DISABLED_ITEM);
+                    return;
+                }
+
                 if(victim instanceof LivingEntity){
                     LivingEntity playerVictim = (LivingEntity) victim;
 
