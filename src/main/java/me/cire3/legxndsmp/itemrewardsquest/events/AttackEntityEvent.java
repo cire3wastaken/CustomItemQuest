@@ -23,13 +23,10 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityAttack(EntityDamageByEntityEvent event) {
-        Bukkit.getLogger().info("cancelled by event");
-
         if(!ItemRewardsQuest.INSTANCE.isEnabled) return;
         if(event.isCancelled()) return;
 
         if(event.getDamager() instanceof Player) {
-            Bukkit.getLogger().info("got to line 32");
             Player playerAttacker = (Player) event.getDamager();
 
             if(!PlayerUtils.shouldUse(playerAttacker))
@@ -76,8 +73,8 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                     Math.min(Math.max(DamageUtils.calcDamage((int) c[0], c[1], 0, (int) c[3],
                             (int) c[4]) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed,
                         playerAttacker.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE) ?
-                            (Math.random() >= 0.5 ? 2.0F : 1.0F) :
-                                (Math.random() >= 0.5 ? 1.5F : 1.0F)), 6.0F), 20.0F));
+                            (Math.random() >= 0.25 ? 3F : 2F) :
+                                (Math.random() >= 0.5 ? 2.0F : 1.0F)), 6.0F), 20.0F));
             }
 
             // Handles Thor Hammer
@@ -95,8 +92,10 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
 
                     if(ItemRewardsQuest.INSTANCE.thorHammer.ignoreArmor){
                         target.setHealth(Math.max(target.getHealth() - ItemRewardsQuest.INSTANCE.thorHammer.damage, 0));
+                        event.setCancelled(true);
                     } else {
-                        target.damage(ItemRewardsQuest.INSTANCE.thorHammer.damage);
+                        target.damage(ItemRewardsQuest.INSTANCE.thorHammer.damage, playerAttacker);
+                        event.setCancelled(true);
                     }
                     target.setFireTicks(((int) Math.floor(ItemRewardsQuest.INSTANCE.thorHammer.fireTicks)));
                 }
