@@ -4,6 +4,7 @@ import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.SubCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,6 +67,12 @@ public class RegionSubCommand implements SubCommand {
                 } else {
                     flag = true;
                 }
+            } else if (args[1].equalsIgnoreCase("world")){
+                if(commandSender instanceof Player) {
+                    commandSender.sendMessage(CHAT_PREFIX + "Applicable world name is: " + ((Player) commandSender).getWorld());
+                } else {
+                    commandSender.sendMessage(FAIL_PREFIX + "Only players can run this command!");
+                }
             } else {
                 flag = true;
             }
@@ -73,7 +80,7 @@ public class RegionSubCommand implements SubCommand {
             flag = true;
         }
         if(flag){
-            commandSender.sendMessage(UNKNOWN_COMMAND);
+            commandSender.sendMessage(UNKNOWN_SUBCOMMAND);
         }
     }
 

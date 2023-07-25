@@ -17,7 +17,7 @@ public class HelpSubCommand implements SubCommand {
     public void execute(CommandSender commandSender, String[] args) {
         if (commandSender.hasPermission("itemrewardsquest.updateitems") || commandSender.isOp()) {
             boolean flag = false;
-            if (args.length == 1) {
+            if (args.length == 1 || args.length == 0) {
                 commandSender.sendMessage(CHAT_PREFIX + "ItemRewardsQuest Help Menu: Made by cire3 (sire3#0000)");
                 commandSender.sendMessage(makeHelpString("help", "Opens this help menu"));
                 commandSender.sendMessage("");
@@ -39,9 +39,9 @@ public class HelpSubCommand implements SubCommand {
                 commandSender.sendMessage(makeHelpString("enable", "Enables item functionality"));
                 commandSender.sendMessage("");
 
-                commandSender.sendMessage(makeHelpString("players [disallow/allow]",
+                commandSender.sendMessage(makeHelpString("players [disallow/allow/list]",
                     "Commands to manipulate players"));
-                commandSender.sendMessage(makeHelpString("regions [whitelist/blacklist]",
+                commandSender.sendMessage(makeHelpString("regions [whitelist/blacklist/world]",
                     "Commands to manipulate regions"));
             } else if(args.length == 2) {
                 for (String str : ItemRewardsQuest.INSTANCE.itemCommands.subCommands.keySet()) {

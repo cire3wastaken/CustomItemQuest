@@ -50,7 +50,7 @@ public class PlayerSubCommand implements SubCommand {
         }
 
         if(flag){
-            commandSender.sendMessage(UNKNOWN_COMMAND);
+            commandSender.sendMessage(UNKNOWN_SUBCOMMAND);
         }
     }
 }
