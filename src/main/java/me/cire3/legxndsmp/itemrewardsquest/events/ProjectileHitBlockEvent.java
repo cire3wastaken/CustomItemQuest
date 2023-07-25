@@ -9,7 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.BlockIterator;
+import org.bukkit.util.Vector;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,11 +35,17 @@ public class ProjectileHitBlockEvent implements Listener {
                 break;
             }
         }
-        if (event.getEntity() instanceof Arrow) {
-            LivingEntity shooter = (LivingEntity) event.getEntity().getShooter();
+        if(event.getEntity().getShooter() instanceof Player){
+            Player playerShooter = (Player) event.getEntity().getShooter();
+            if("aksjfuaqialfkiaGhastBowShot".equalsIgnoreCase(event.getEntity().getCustomName())){
+                if(!PlayerUtils.shouldUse(playerShooter))
+                {
+                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
 
-            if (shooter instanceof Player) {
-                Player playerShooter = (Player) shooter;
+                    playerShooter.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                    ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
+                    return;
+                }
 
                 if(PlayerUtils.containsString(playerShooter.getItemInHand(), OLD_GHASTBOW_LORE)){
                     playerShooter.sendMessage(FAIL_PREFIX +
@@ -57,25 +65,6 @@ public class ProjectileHitBlockEvent implements Listener {
                 if(PlayerUtils.containsLore(playerShooter.getItemInHand(), ItemRewardsQuest.INSTANCE.ghastBow.lore)
                         && playerShooter.getItemInHand().getType().equals(Material.BOW))
                 {
-                    if(hitBlock == null) return;
-
-                    if(!PlayerUtils.shouldUse(playerShooter) || !PlayerUtils.shouldUse(hitBlock.getLocation()))
-                    {
-                        if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
-
-                        playerShooter.sendMessage(ChatColor.RED + CAN_NOT_USE);
-                        ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
-                        return;
-                    }
-
-                    if(ItemRewardsQuest.INSTANCE.isBlacklisted(playerShooter)){
-                        if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
-
-                        playerShooter.sendMessage(ChatColor.RED + BLACKLISTED);
-                        ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
-                        return;
-                    }
-
                     World world = playerShooter.getWorld();
                     Location location = event.getEntity().getLocation();
 
@@ -89,15 +78,13 @@ public class ProjectileHitBlockEvent implements Listener {
                     }
 
                     if(!ItemRewardsQuest.INSTANCE.ghastBow.explosion){
-                        for(int i = 0; i < 15; i++){
-                            world.playEffect(location, effect, 3);
-                        }
-
+                        world.playEffect(location, effect, 3);
                         world.playSound(location, Sound.EXPLODE, 1F, 1F);
+
                         Collection<Entity> collection =  world.getNearbyEntities(location, power, power, power);
                         collection.remove(playerShooter);
 
-                        for (Entity nearby: collection) {
+                        for (Entity nearby : collection) {
                             if (nearby instanceof LivingEntity) {
                                 if(nearby instanceof Player){
                                     if(!PlayerUtils.shouldUse((Player) nearby)){
@@ -106,15 +93,30 @@ public class ProjectileHitBlockEvent implements Listener {
                                 }
 
                                 LivingEntity entity = (LivingEntity) nearby;
-                                entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig *
-                                    ((100F - entity.getLocation().distanceSquared(event.getEntity().getLocation())) / 100F));
+                                BigDecimal healthBefore = BigDecimal.valueOf(entity.getHealth());
+
+                                entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig * ((100F -
+                                                entity.getLocation().distanceSquared(event.getEntity().getLocation())) / 100F),
+                                        playerShooter
+                                );
+
+                                BigDecimal healthAfter = BigDecimal.valueOf(entity.getHealth());
+
+                                // Checks that it wasn't cancelled
+                                if(healthAfter.compareTo(healthBefore) < 0){
+                                    Vector affectedLoc = entity.getLocation().toVector();
+                                    Vector abilityLoc = playerShooter.getLocation().toVector();
+                                    Vector result = affectedLoc.subtract(abilityLoc);
+                                    entity.setVelocity(result);
+                                }
                             }
                         }
                     } else {
-                        playerShooter.getWorld().createExplosion(hitBlock.getLocation(), power);
+                        playerShooter.getWorld().createExplosion(event.getEntity().getLocation(), power);
                     }
                 }
             }
+
         }
     }
 }

@@ -1,6 +1,10 @@
 package me.cire3.legxndsmp.itemrewardsquest.command.player;
 
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
+import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.item.GhastBowCommand;
+import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.item.ThorHammerCommand;
+import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.item.VampireBladeCommand;
+import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.item.WitchScytheCommand;
 import me.cire3.legxndsmp.itemrewardsquest.events.RightClickInteractEvent;
 import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.ChatColor;
@@ -46,15 +50,9 @@ public class ConvertCommand implements CommandExecutor {
         if(commandSender.hasPermission("itemrewardsquest.updateitems") || commandSender.isOp()){
             if(commandSender instanceof Player){
                 Player target = (Player) commandSender;
-                if(target.getItemInHand() == null){
-                    commandSender.sendMessage(FAIL_PREFIX + "Please hold an old item to update!");
-                    return true;
-                }
-                if(!target.getItemInHand().hasItemMeta()){
-                    commandSender.sendMessage(FAIL_PREFIX + "Please hold an old item to update!");
-                    return true;
-                }
-                if(!target.getItemInHand().getItemMeta().hasLore()){
+                if(target.getItemInHand() == null || !target.getItemInHand().hasItemMeta() ||
+                        !target.getItemInHand().getItemMeta().hasLore())
+                {
                     commandSender.sendMessage(FAIL_PREFIX + "Please hold an old item to update!");
                     return true;
                 }
@@ -63,23 +61,14 @@ public class ConvertCommand implements CommandExecutor {
                 for(String str : meta.getLore()){
                     for(String lore : OLD_LORE) {
                         if (str.equalsIgnoreCase(lore)) {
-                            target.setItemInHand(null);
                             if(lore.equalsIgnoreCase(OLD_GHASTBOW_LORE)) {
-                                ItemRewardsQuest.INSTANCE.ghastBowCommand.giveItem(target, new String[]{
-                                    target.getName()}, meta
-                                );
+                                target.getItemInHand().getItemMeta().setLore(INSTANCE.ghastBow.lore);
                             } else if(lore.equalsIgnoreCase(OLD_VAMPBLADE_LORE)) {
-                                ItemRewardsQuest.INSTANCE.vampireBladeCommand.giveItem(target, new String[]{
-                                    target.getName()}, meta
-                                );
+                                target.getItemInHand().getItemMeta().setLore(INSTANCE.vampireBlade.lore);
                             } else if(lore.equalsIgnoreCase(OLD_THORHAMMER_LORE)) {
-                                ItemRewardsQuest.INSTANCE.thorHammerCommand.giveItem(target, new String[]{
-                                    target.getName()}, meta
-                                );
+                                target.getItemInHand().getItemMeta().setLore(INSTANCE.thorHammer.lore);
                             } else if(lore.equalsIgnoreCase(OLD_WITCHSCYTHE_LORE)) {
-                                ItemRewardsQuest.INSTANCE.witchScytheCommand.giveItem(target, new String[]{
-                                        target.getName()}, meta
-                                );
+                                target.getItemInHand().getItemMeta().setLore(INSTANCE.witchScythe.lore);
                             }
 
                             target.sendMessage(CHAT_PREFIX + "Successfully updated the item!");

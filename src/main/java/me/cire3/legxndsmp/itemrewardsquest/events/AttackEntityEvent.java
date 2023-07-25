@@ -9,25 +9,25 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import java.util.Collections;
 
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
 import static me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand.*;
 
 public class AttackEntityEvent implements org.bukkit.event.Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onEntityAttack(EntityDamageByEntityEvent event) {
         if(!ItemRewardsQuest.INSTANCE.isEnabled) return;
+        if(event.isCancelled()) return;
 
         if(event.getDamager() instanceof Player) {
             Player playerAttacker = (Player) event.getDamager();
 
-            if(!PlayerUtils.shouldUse(playerAttacker) || !PlayerUtils.shouldUse(event.getEntity().getLocation()))
+            if(!PlayerUtils.shouldUse(playerAttacker))
             {
                 if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
 

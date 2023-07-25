@@ -1,11 +1,12 @@
 package me.cire3.legxndsmp.itemrewardsquest;
 
-import me.cire3.legxndsmp.itemrewardsquest.command.item.*;
+import me.cire3.legxndsmp.itemrewardsquest.command.ItemCommands;
 import me.cire3.legxndsmp.itemrewardsquest.command.player.BlacklistPlayerCommand;
 import me.cire3.legxndsmp.itemrewardsquest.command.player.ConvertCommand;
 import me.cire3.legxndsmp.itemrewardsquest.command.player.FreePlayerCommand;
 import me.cire3.legxndsmp.itemrewardsquest.command.player.ListBlacklistedPlayersCommand;
 import me.cire3.legxndsmp.itemrewardsquest.command.server.*;
+import me.cire3.legxndsmp.itemrewardsquest.command.item.*;
 import me.cire3.legxndsmp.itemrewardsquest.events.*;
 import me.cire3.legxndsmp.itemrewardsquest.items.*;
 import me.cire3.legxndsmp.itemrewardsquest.utils.FileUtils;
@@ -27,10 +28,11 @@ public enum ItemRewardsQuest
 
     public static final String CHAT_PREFIX = ChatColor.BOLD.toString() + ChatColor.GREEN +
             "[ItemRewardsQuest] >> " + ChatColor.RESET;
-    public static final String FAIL_PREFIX = ChatColor.BOLD.toString() + ChatColor.RED + CHAT_PREFIX + ChatColor.RESET;
+    public static final String FAIL_PREFIX = ChatColor.BOLD.toString() + ChatColor.RED + "[ItemRewardsQuest] >> " + ChatColor.RESET;
     public static final String DISABLED_MESSAGE = FAIL_PREFIX + "ItemRewardsQuest is currently disabled!";
     public static final String PERMISSION_DENIED = FAIL_PREFIX + "You do not have permissions!";
     public static final String UNKNOWN_COMMAND = FAIL_PREFIX + "Unknown command!";
+    public static final String UNKNOWN_SUBCOMMAND = FAIL_PREFIX + "Unknown sub command!";
     public static final String CAN_NOT_USE = FAIL_PREFIX + "You can not use this item here!";
     public static final String BLACKLISTED = FAIL_PREFIX + "You are blacklisted from using custom items!";
 
@@ -42,9 +44,9 @@ public enum ItemRewardsQuest
 
     public final Map<String, Set<String>> protectedRegions = new HashMap<>();
     public final Map<String, Set<String>> whitelistedRegions = new HashMap<>();
-    public final Set<String> blacklistedPlayers = new HashSet<>();
-
     public final Map<String, Long> tillNextMessage = new HashMap<>();
+    public final Map<Items, Boolean> toggledItems = new HashMap<>();
+    public final Set<String> blacklistedPlayers = new HashSet<>();
 
     public boolean isEnabled;
 
@@ -71,6 +73,7 @@ public enum ItemRewardsQuest
     public BlacklistPlayerCommand blacklistPlayerCommand;
     public FreePlayerCommand freePlayerCommand;
     public ListBlacklistedPlayersCommand listBlacklistedPlayersCommand;
+    public ItemCommands itemCommands;
 
     public File configFile;
     public FileConfiguration configuration;
@@ -105,6 +108,7 @@ public enum ItemRewardsQuest
         this.listBlacklistedPlayersCommand = new ListBlacklistedPlayersCommand();
         this.blacklistPlayerCommand = new BlacklistPlayerCommand();
         this.freePlayerCommand = new FreePlayerCommand();
+        this.itemCommands = new ItemCommands();
 
         this.hyperion = new Hyperion(this.configuration);
         this.witchScythe = new WitchScythe(this.configuration);
@@ -118,6 +122,7 @@ public enum ItemRewardsQuest
         this.register(plugin);
         this.updateConfig();
         this.loadRegions();
+        this.items();
     }
 
     public void enable() {
@@ -164,6 +169,7 @@ public enum ItemRewardsQuest
         plugin.getCommand("listprotectedregions").setExecutor(this.listProtectedRegionsCommand);
         plugin.getCommand("listwhitelistedregions").setExecutor(this.listWhitelistedRegionsCommand);
         plugin.getCommand("getworld").setExecutor(this.getWorldCommand);
+        plugin.getCommand("itemrewardsquest").setExecutor(this.itemCommands);
 
         this.thorHammer.update(configuration);
         this.vampireBlade.update(configuration);
@@ -215,7 +221,7 @@ public enum ItemRewardsQuest
         return true;
     }
 
-    public void updateConfig(){
+    private void updateConfig(){
         File current = new File(this.plugin.getDataFolder(), "versionCurrent.txt");
 
         double[] versionCurrent = this.versionParse(FileUtils.getVersion(current));
@@ -242,7 +248,7 @@ public enum ItemRewardsQuest
         }
     }
 
-    public double[] versionParse(String ver){
+    private double[] versionParse(String ver){
         if(ver == null){
             Bukkit.getLogger().info(ChatColor.DARK_RED + CHAT_PREFIX +
                     "Unknown version format, please manually check if this is up to date! " + GITHUB_REPO);
@@ -261,7 +267,7 @@ public enum ItemRewardsQuest
         };
     }
 
-    public void defineConfig(){
+    private void defineConfig(){
         this.configFile = new File(this.plugin.getDataFolder(), "config.yml");
         if(!configFile.exists()){
             this.configuration = this.plugin.getConfig();
@@ -271,7 +277,7 @@ public enum ItemRewardsQuest
         }
     }
 
-    public void loadRegions(){
+    private void loadRegions(){
         try {
             List<String> worlds = this.configuration.getStringList("Protected.Worldlist");
             for (String name : worlds) {
@@ -313,6 +319,14 @@ public enum ItemRewardsQuest
         this.whitelistedRegions.get("survival").add("pvparena");
     }
 
+    private void items(){
+        this.toggledItems.putIfAbsent(Items.GHASTBOW, true);
+        this.toggledItems.putIfAbsent(Items.VAMPIREBLADE, true);
+        this.toggledItems.putIfAbsent(Items.HYPERION, true);
+        this.toggledItems.putIfAbsent(Items.WITCHSCYHTE, true);
+        this.toggledItems.putIfAbsent(Items.THORHAMMER, true);
+    }
+
     public void activateCooldown(Player player){
         this.tillNextMessage.remove(player.getName());
         this.tillNextMessage.put(player.getName(), System.currentTimeMillis());
@@ -327,7 +341,7 @@ public enum ItemRewardsQuest
     }
 
     public boolean isBlacklisted(Player p){
-        return this.blacklistedPlayers.contains(p.getName());
+        return this.blacklistedPlayers.contains(p.getName().toLowerCase());
     }
 
     public boolean status(){
