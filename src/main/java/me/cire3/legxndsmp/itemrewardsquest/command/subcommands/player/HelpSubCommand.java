@@ -22,15 +22,15 @@ public class HelpSubCommand implements SubCommand {
                 commandSender.sendMessage(makeHelpString("help", "Opens this help menu"));
                 commandSender.sendMessage("");
 
-                commandSender.sendMessage(makeHelpString("ghastbow [give/toggle]",
+                commandSender.sendMessage(makeHelpString("ghastbow [give/toggle/state]",
                     "Commands for the Ghast Bow"));
-                commandSender.sendMessage(makeHelpString("hyperion [give/toggle]",
+                commandSender.sendMessage(makeHelpString("hyperion [give/toggle/state]",
                     "Commands for the Hyperion"));
-                commandSender.sendMessage(makeHelpString("witchscythe [give/toggle]",
+                commandSender.sendMessage(makeHelpString("witchscythe [give/toggle/state]",
                     "Commands for the Witch Scythe"));
-                commandSender.sendMessage(makeHelpString("vampireblade [give/toggle]",
+                commandSender.sendMessage(makeHelpString("vampireblade [give/toggle/state]",
                     "Commands for the Vampire Blade"));
-                commandSender.sendMessage(makeHelpString("thorhammer [give/toggle]",
+                commandSender.sendMessage(makeHelpString("thorhammer [give/toggle/state]",
                     "Commands for the Thor Hammer"));
                 commandSender.sendMessage("");
 
