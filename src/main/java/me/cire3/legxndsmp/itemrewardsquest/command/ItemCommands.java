@@ -45,13 +45,14 @@ public class ItemCommands implements CommandExecutor {
         }
 
         boolean flag = false;
+        if(subCommand instanceof EnableSubCommand || args[0].equalsIgnoreCase("enable")){
+            subCommand.execute(commandSender, args);
+        }
+
         if(INSTANCE.isEnabled) {
             subCommand.execute(commandSender, args);
         } else {
             flag = true;
-        }
-        if(subCommand instanceof EnableSubCommand){
-            subCommand.execute(commandSender, args);
         }
         if(flag){
             commandSender.sendMessage(DISABLED_MESSAGE);

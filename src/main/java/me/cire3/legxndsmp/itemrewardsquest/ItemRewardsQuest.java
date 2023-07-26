@@ -296,7 +296,7 @@ public enum ItemRewardsQuest
         return this.blacklistedPlayers.contains(p.getName().toLowerCase());
     }
 
-    public Boolean isDisabled(Items item){
+    public boolean isDisabled(Items item){
         return !this.toggledItems.get(item);
     }
 

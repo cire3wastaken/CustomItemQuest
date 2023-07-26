@@ -7,6 +7,10 @@ import org.bukkit.command.CommandSender;
 public class ReloadPluginSubCommand implements SubCommand {
     @Override
     public void execute(CommandSender commandSender, String[] args) {
+        if(!commandSender.hasPermission("itemrewardsquest.reload") && !commandSender.isOp()){
+            return;
+        }
+
         ItemRewardsQuest.INSTANCE.disable();
         ItemRewardsQuest.INSTANCE.enable();
     }

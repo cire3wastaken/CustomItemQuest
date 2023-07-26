@@ -29,15 +29,6 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
         if(event.getDamager() instanceof Player) {
             Player playerAttacker = (Player) event.getDamager();
 
-            if(!PlayerUtils.shouldUse(playerAttacker))
-            {
-                if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
-
-                playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
-                ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
-                return;
-            }
-
             if(ItemRewardsQuest.INSTANCE.isBlacklisted(playerAttacker)){
                 if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
 
@@ -69,6 +60,15 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                     return;
                 }
 
+                if(!PlayerUtils.shouldUse(playerAttacker))
+                {
+                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+
+                    playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                    ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
+                    return;
+                }
+
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
                     Math.min(Math.max(DamageUtils.calcDamage((int) c[0], c[1], 0, (int) c[3],
                             (int) c[4]) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed,
@@ -90,6 +90,15 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                 if(victim instanceof LivingEntity){
                     LivingEntity target = (LivingEntity) victim;
 
+                    if(!PlayerUtils.shouldUse(playerAttacker))
+                    {
+                        if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+
+                        playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                        ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
+                        return;
+                    }
+
                     if(ItemRewardsQuest.INSTANCE.thorHammer.ignoreArmor){
                         target.setHealth(Math.max(target.getHealth() - ItemRewardsQuest.INSTANCE.thorHammer.damage, 0));
                         event.setCancelled(true);
@@ -105,6 +114,15 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), ItemRewardsQuest.INSTANCE.witchScythe.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.GOLD_HOE))
             {
+                if(!PlayerUtils.shouldUse(playerAttacker))
+                {
+                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+
+                    playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
+                    ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
+                    return;
+                }
+
                 if(INSTANCE.isDisabled(Items.WITCHSCYHTE)){
                     playerAttacker.sendMessage(DISABLED_ITEM);
                     return;

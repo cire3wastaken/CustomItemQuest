@@ -62,13 +62,25 @@ public class ConvertCommand implements CommandExecutor {
                     for(String lore : OLD_LORE) {
                         if (str.equalsIgnoreCase(lore)) {
                             if(lore.equalsIgnoreCase(OLD_GHASTBOW_LORE)) {
-                                target.getItemInHand().getItemMeta().setLore(INSTANCE.ghastBow.lore);
+                                ((GhastBowCommand) INSTANCE.itemCommands.subCommands.get("ghastbow"))
+                                    .giveItem(commandSender, new String[]{ "", "", commandSender.getName() },
+                                        meta
+                                );
                             } else if(lore.equalsIgnoreCase(OLD_VAMPBLADE_LORE)) {
-                                target.getItemInHand().getItemMeta().setLore(INSTANCE.vampireBlade.lore);
+                                ((VampireBladeCommand) INSTANCE.itemCommands.subCommands.get("vampireblade"))
+                                    .giveItem(commandSender, new String[]{ "", "", commandSender.getName() },
+                                        meta
+                                );
                             } else if(lore.equalsIgnoreCase(OLD_THORHAMMER_LORE)) {
-                                target.getItemInHand().getItemMeta().setLore(INSTANCE.thorHammer.lore);
+                                ((ThorHammerCommand) INSTANCE.itemCommands.subCommands.get("thorhammer"))
+                                    .giveItem(commandSender, new String[]{ "", "", commandSender.getName() },
+                                        meta
+                                );
                             } else if(lore.equalsIgnoreCase(OLD_WITCHSCYTHE_LORE)) {
-                                target.getItemInHand().getItemMeta().setLore(INSTANCE.witchScythe.lore);
+                                ((WitchScytheCommand) INSTANCE.itemCommands.subCommands.get("witchscythe"))
+                                    .giveItem(commandSender, new String[]{ "", "", commandSender.getName() },
+                                        meta
+                                );
                             }
 
                             target.sendMessage(CHAT_PREFIX + "Successfully updated the item!");

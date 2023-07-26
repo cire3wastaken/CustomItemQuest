@@ -105,8 +105,8 @@ public class ProjectileHitBlockEvent implements Listener {
                             // Checks that it wasn't cancelled
                             if(healthAfter.compareTo(healthBefore) < 0){
                                 Vector affectedLoc = entity.getLocation().toVector();
-                                Vector abilityLoc = playerShooter.getLocation().toVector();
-                                Vector result = affectedLoc.subtract(abilityLoc);
+                                Vector abilityLoc = event.getEntity().getLocation().toVector();
+                                Vector result = affectedLoc.subtract(abilityLoc).divide(new Vector(2, 2, 2));
                                 entity.setVelocity(result);
                             }
                         }
