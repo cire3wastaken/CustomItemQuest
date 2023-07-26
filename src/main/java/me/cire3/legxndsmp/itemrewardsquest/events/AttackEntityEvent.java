@@ -16,10 +16,14 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
 import static me.cire3.legxndsmp.itemrewardsquest.command.ConvertCommand.*;
 
 public class AttackEntityEvent implements org.bukkit.event.Listener {
+    private final Map<Player, Long> thorHammerPatch = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityAttack(EntityDamageByEntityEvent event) {
@@ -86,7 +90,12 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                     return;
                 }
 
-                playerAttacker.getWorld().strikeLightningEffect(victim.getLocation());
+                if(!this.hasCooldown(playerAttacker))
+                {
+                    playerAttacker.getWorld().strikeLightningEffect(victim.getLocation());
+                    this.activateCooldown(playerAttacker);
+                }
+
                 if(victim instanceof LivingEntity){
                     LivingEntity target = (LivingEntity) victim;
 
@@ -139,6 +148,19 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                 }
             }
         }
+    }
+
+    public void activateCooldown(Player player){
+        this.thorHammerPatch.remove(player);
+        this.thorHammerPatch.put(player, System.currentTimeMillis());
+    }
+
+    public boolean hasCooldown(Player player){
+        if(!this.thorHammerPatch.containsKey(player)){
+            return false;
+        }
+
+        return !(this.thorHammerPatch.get(player) < (System.currentTimeMillis() - 500));
     }
 }
 
