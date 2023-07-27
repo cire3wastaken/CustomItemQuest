@@ -29,6 +29,7 @@ me\cire3\legxndsmp\itemrewardsquest\events\AttackEntityEvent.class
 me\cire3\legxndsmp\itemrewardsquest\command\ItemCommands.class
 me\cire3\legxndsmp\itemrewardsquest\command\subcommands\item\GhastBowCommand.class
 me\cire3\legxndsmp\itemrewardsquest\command\subcommands\player\HelpSubCommand.class
+me\cire3\legxndsmp\itemrewardsquest\command\subcommands\item\RenameItemCommand.class
 me\cire3\legxndsmp\itemrewardsquest\ItemRewardsQuest.class
 me\cire3\legxndsmp\itemrewardsquest\items\GhastBow.class
 me\cire3\legxndsmp\itemrewardsquest\command\subcommands\server\ReloadPluginSubCommand.class

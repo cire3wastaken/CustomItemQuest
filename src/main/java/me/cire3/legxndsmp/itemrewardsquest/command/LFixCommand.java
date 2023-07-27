@@ -14,6 +14,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,10 +50,18 @@ public class LFixCommand implements CommandExecutor {
                         if(Economy.playerExists(player.getName())){
                             try {
                                 if(Economy.hasEnough(player.getName(), cost)){
-                                    player.getItemInHand().setDurability((short) 0);
+                                    ItemStack item = player.getItemInHand();
+                                    item.setDurability((short) 0);
+                                    player.setItemInHand(item);
+                                    player.updateInventory();
                                     Economy.subtract(player.getName(), cost);
+                                    player.sendMessage(CHAT_PREFIX + "Successfully repaired your item for $" + cost + "!");
+                                } else {
+                                    commandSender.sendMessage(FAIL_PREFIX + "You need $" +
+                                            BigDecimal.valueOf(cost).subtract(Economy.getMoneyExact(player.getName()))
+                                            + " more to repair this item!");
                                 }
-                                // none of these exceptions actually get thrown since we have checks
+                                // none of these exceptions actually get thrown sinc    e we have checks
                                 // This is just to make compiler happy
                             } catch (UserDoesNotExistException | MaxMoneyException | NoLoanPermittedException ignored) {
                             }

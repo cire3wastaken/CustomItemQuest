@@ -75,5 +75,7 @@ public class ItemCommands implements CommandExecutor {
         this.subCommands.put("players", new PlayerSubCommand()); // FINISHED
 
         this.subCommands.put("regions", new RegionSubCommand()); // FINISHED
+
+        this.subCommands.put("rename", new RenameItemCommand());
     }
 }
