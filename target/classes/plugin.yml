@@ -2,7 +2,7 @@ name: ItemRewardsQuests # the plugins name as it should appear in the plugin lis
 version: 1.0 # the plugin's version
 author: cire3
 main: me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuestInitializer
-depend: [WorldGuard, EssentialsX]
+depend: [WorldGuard, Essentials]
 
 permissions:
   itemrewardsquest.*:
