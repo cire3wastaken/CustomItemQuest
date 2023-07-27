@@ -61,6 +61,7 @@ public class ConvertCommand implements CommandExecutor {
                 for(String str : meta.getLore()){
                     for(String lore : OLD_LORE) {
                         if (str.equalsIgnoreCase(lore)) {
+                            target.setItemInHand(null);
                             if(lore.equalsIgnoreCase(OLD_GHASTBOW_LORE)) {
                                 ((GhastBowCommand) INSTANCE.itemCommands.subCommands.get("ghastbow"))
                                     .giveItem(commandSender, new String[]{ "", "", commandSender.getName() },
@@ -82,8 +83,6 @@ public class ConvertCommand implements CommandExecutor {
                                         meta
                                 );
                             }
-
-                            target.setItemInHand(null);
 
                             target.sendMessage(CHAT_PREFIX + "Successfully updated the item!");
                             return true;
