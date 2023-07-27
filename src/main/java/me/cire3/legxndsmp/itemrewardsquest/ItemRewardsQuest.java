@@ -2,6 +2,7 @@ package me.cire3.legxndsmp.itemrewardsquest;
 
 import me.cire3.legxndsmp.itemrewardsquest.command.ItemCommands;
 import me.cire3.legxndsmp.itemrewardsquest.command.ConvertCommand;
+import me.cire3.legxndsmp.itemrewardsquest.command.LFixCommand;
 import me.cire3.legxndsmp.itemrewardsquest.events.*;
 import me.cire3.legxndsmp.itemrewardsquest.items.*;
 import me.cire3.legxndsmp.itemrewardsquest.utils.FileUtils;
@@ -53,6 +54,7 @@ public enum ItemRewardsQuest
     public Hyperion hyperion;
 
     public ConvertCommand convertCommand;
+    public LFixCommand lFixCommand;
     public ItemCommands itemCommands;
 
     public File configFile;
@@ -72,6 +74,7 @@ public enum ItemRewardsQuest
         }
 
         this.convertCommand = new ConvertCommand();
+        this.lFixCommand = new LFixCommand();
         this.itemCommands = new ItemCommands();
 
         this.hyperion = new Hyperion(this.configuration);
@@ -121,6 +124,7 @@ public enum ItemRewardsQuest
         Bukkit.getServer().getPluginManager().registerEvents(new ShootBowEvent(), plugin);
 
         plugin.getCommand("updateitem").setExecutor(this.convertCommand);
+        plugin.getCommand("lfix").setExecutor(this.lFixCommand);
         plugin.getCommand("itemrewardsquest").setExecutor(this.itemCommands);
 
         this.thorHammer.update(configuration);
