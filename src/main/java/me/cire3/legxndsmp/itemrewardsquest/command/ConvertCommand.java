@@ -83,6 +83,8 @@ public class ConvertCommand implements CommandExecutor {
                                 );
                             }
 
+                            target.setItemInHand(null);
+
                             target.sendMessage(CHAT_PREFIX + "Successfully updated the item!");
                             return true;
                         }
