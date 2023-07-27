@@ -39,7 +39,7 @@ public class DamageUtils {
     }
 
     public static float getAttackDamage(ItemStack itemStack) {
-        if(itemStack == null) return 1;
+        if(itemStack == null) return 0;
         float bonusEnchantDamage = 0;
         boolean hasEnchantSharpness = itemStack.getEnchantments().containsKey(Enchantment.DAMAGE_ALL);
         boolean hasEnchantPower = itemStack.getEnchantments().containsKey(Enchantment.ARROW_DAMAGE);
@@ -47,7 +47,7 @@ public class DamageUtils {
             bonusEnchantDamage += (itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 1.25F);
         }
         if(hasEnchantPower){
-            bonusEnchantDamage += 0.25 * (itemStack.getEnchantmentLevel(Enchantment.ARROW_DAMAGE) + 1);
+            bonusEnchantDamage += 0.25 * (itemStack.getEnchantmentLevel(Enchantment.ARROW_DAMAGE));
         }
         return bonusEnchantDamage;
     }

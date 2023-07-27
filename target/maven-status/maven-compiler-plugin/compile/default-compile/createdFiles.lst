@@ -1,4 +1,5 @@
 me\cire3\legxndsmp\itemrewardsquest\command\subcommands\item\HypeCommand.class
+me\cire3\legxndsmp\itemrewardsquest\command\LFixCommand$1.class
 me\cire3\legxndsmp\itemrewardsquest\command\subcommands\server\EnableSubCommand.class
 me\cire3\legxndsmp\itemrewardsquest\utils\DamageUtils.class
 me\cire3\legxndsmp\itemrewardsquest\events\RightClickInteractEvent.class
@@ -16,6 +17,7 @@ me\cire3\legxndsmp\itemrewardsquest\command\subcommands\SubCommand.class
 me\cire3\legxndsmp\itemrewardsquest\ItemRewardsQuestInitializer.class
 me\cire3\legxndsmp\itemrewardsquest\utils\DamageUtils$1.class
 me\cire3\legxndsmp\itemrewardsquest\utils\ColorUtils.class
+me\cire3\legxndsmp\itemrewardsquest\command\LFixCommand.class
 me\cire3\legxndsmp\itemrewardsquest\items\ThorHammer.class
 me\cire3\legxndsmp\itemrewardsquest\utils\FileUtils.class
 me\cire3\legxndsmp\itemrewardsquest\command\subcommands\server\RegionSubCommand.class
