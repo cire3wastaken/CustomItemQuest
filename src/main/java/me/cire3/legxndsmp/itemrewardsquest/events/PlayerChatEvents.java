@@ -22,7 +22,7 @@ public class PlayerChatEvents implements Listener {
         this.lastMessages.remove(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void storeChat(AsyncPlayerChatEvent event){
         boolean flag = false;
         String[] messages = event.getMessage().split(" ");
