@@ -15,6 +15,7 @@ me\cire3\legxndsmp\itemrewardsquest\utils\PlayerUtils.class
 me\cire3\legxndsmp\itemrewardsquest\command\ConvertCommand.class
 me\cire3\legxndsmp\itemrewardsquest\command\subcommands\SubCommand.class
 me\cire3\legxndsmp\itemrewardsquest\ItemRewardsQuestInitializer.class
+me\cire3\legxndsmp\itemrewardsquest\events\PlayerChatEvents.class
 me\cire3\legxndsmp\itemrewardsquest\utils\DamageUtils$1.class
 me\cire3\legxndsmp\itemrewardsquest\utils\ColorUtils.class
 me\cire3\legxndsmp\itemrewardsquest\command\LFixCommand.class

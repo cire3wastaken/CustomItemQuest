@@ -41,10 +41,7 @@ public class LFixCommand implements CommandExecutor {
             if(this.needConfirm.contains(player)){
                 if(strings.length == 1 && strings[0].equalsIgnoreCase("confirm")){
                     if(isDamageable(player.getItemInHand())){
-                        int count = 0;
-                        for(Enchantment ignored : player.getItemInHand().getEnchantments().keySet()){
-                            count++;
-                        }
+                        int count = player.getItemInHand().getEnchantments().keySet().size();
                         int cost = 2000 + count * 900;
 
                         if(Economy.playerExists(player.getName())){
@@ -56,24 +53,24 @@ public class LFixCommand implements CommandExecutor {
                                     player.updateInventory();
                                     Economy.subtract(player.getName(), cost);
                                     player.sendMessage(CHAT_PREFIX + "Successfully repaired your item for $" + cost + "!");
+                                    this.needConfirm.remove(player);
                                 } else {
                                     commandSender.sendMessage(FAIL_PREFIX + "You need $" +
                                             BigDecimal.valueOf(cost).subtract(Economy.getMoneyExact(player.getName()))
                                             + " more to repair this item!");
                                 }
-                                // none of these exceptions actually get thrown sinc    e we have checks
+                                // none of these exceptions actually get thrown since we have checks
                                 // This is just to make compiler happy
                             } catch (UserDoesNotExistException | MaxMoneyException | NoLoanPermittedException ignored) {
                             }
                         }
                     }
                 }
-                this.needConfirm.remove(player);
             } else {
                 if(this.needConfirm.add(player)) {
                     commandSender.sendMessage(CHAT_PREFIX + "This command will cost $2000 as base, " +
-                            "and another $900 for each enchant on this item. " + ChatColor.YELLOW +
-                            "Please use /lfix confirm to fix this item!");
+                            "and another $900 for each enchant on this item.");
+                    commandSender.sendMessage(ChatColor.YELLOW + "Use /lfix confirm to confirm fixing!");
                 } else {
                     commandSender.sendMessage(FAIL_PREFIX + "Please use /lfix confirm!");
                 }

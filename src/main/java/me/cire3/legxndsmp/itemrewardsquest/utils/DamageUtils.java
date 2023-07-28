@@ -1,7 +1,5 @@
 package me.cire3.legxndsmp.itemrewardsquest.utils;
 
-import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -11,7 +9,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 public class DamageUtils {

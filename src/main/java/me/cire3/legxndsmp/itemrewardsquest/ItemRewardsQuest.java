@@ -122,6 +122,7 @@ public enum ItemRewardsQuest
         Bukkit.getServer().getPluginManager().registerEvents(new RightClickInteractEvent(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerJoinServerEvent(), plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new ShootBowEvent(), plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerChatEvents(), plugin);
 
         plugin.getCommand("updateitem").setExecutor(this.convertCommand);
         plugin.getCommand("lfix").setExecutor(this.lFixCommand);
