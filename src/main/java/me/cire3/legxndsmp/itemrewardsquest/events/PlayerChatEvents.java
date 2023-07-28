@@ -18,7 +18,7 @@ public class PlayerChatEvents implements Listener {
             return;
         }
 
-        event.setFormat(ColorUtils.color(this.lastMessages.get(event.getPlayer())));
+        event.setMessage(ColorUtils.color(this.lastMessages.get(event.getPlayer())));
         this.lastMessages.remove(event.getPlayer());
     }
 
