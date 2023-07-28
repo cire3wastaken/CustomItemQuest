@@ -1,27 +1,33 @@
 package me.cire3.legxndsmp.itemrewardsquest.items;
 
-import org.bukkit.plugin.Plugin;
+import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
+import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Hyperion {
-    public List<String> lore = new ArrayList<>();
-    public List<String> originalLore;
+    public List<String> lore;
     public String name;
     public double damage;
     public double explosionPower;
     public double explosionRadius;
+    public double cooldownSeconds;
+    public double percentage;
+    public double shieldDurationTicks;
+    public boolean ignoreArmor;
 
-    public Hyperion(Plugin plugin){
-        this.originalLore = plugin.getConfig().getStringList("Hyperion.Lore");
-        this.name = plugin.getConfig().getString("Hyperion.Name");
-        this.explosionPower = plugin.getConfig().getDouble("Hyperion.Power");
-        this.explosionRadius = plugin.getConfig().getDouble("Hyperion.Radius");
-        this.damage = plugin.getConfig().getDouble("Hyperion.Damage");
+    public Hyperion(FileConfiguration config){
+        this.update(config);
+    }
 
-        for(String s : plugin.getConfig().getStringList("Hyperion.Lore")){
-            this.lore.add(s.toLowerCase());
-        }
+    public void update(FileConfiguration config){
+        this.lore = ColorUtils.color(config.getStringList("Hyperion.Lore"));
+        this.name = ColorUtils.color(config.getString("Hyperion.Name"));
+        this.explosionPower = config.getDouble("Hyperion.Power");
+        this.explosionRadius = config.getDouble("Hyperion.Radius");
+        this.damage = config.getDouble("Hyperion.Damage");
+        this.cooldownSeconds = config.getDouble("Hyperion.Cooldown");
+        this.percentage = config.getDouble("Hyperion.Amount");
+        this.ignoreArmor = config.getBoolean("Hyperion.IgnoreArmor");
     }
 }

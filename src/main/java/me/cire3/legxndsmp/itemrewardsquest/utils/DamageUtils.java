@@ -1,7 +1,5 @@
 package me.cire3.legxndsmp.itemrewardsquest.utils;
 
-import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -11,7 +9,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 public class DamageUtils {
@@ -19,6 +16,10 @@ public class DamageUtils {
         return (float) (weaponDamage * (1 - Math.min(20, Math.max(armorPoints / 5F,
             armorPoints - weaponDamage / (2 + armorToughness / 4F))) / 25) *
                 (1 - (resistanceAmplifier * 0.2)) * (1 - (Math.min(20.0, protectionEpf) / 25)));
+    }
+
+    public static float calcDamage(double[] argc){
+        return calcDamage((int) argc[0], argc[1], (int) argc[2], (int) argc[3], (int) argc[4]);
     }
 
     public static int getArmorToughness(ItemStack item){
@@ -36,7 +37,6 @@ public class DamageUtils {
 
     public static float getAttackDamage(ItemStack itemStack) {
         if(itemStack == null) return 0;
-        Material item = itemStack.getType();
         float bonusEnchantDamage = 0;
         boolean hasEnchantSharpness = itemStack.getEnchantments().containsKey(Enchantment.DAMAGE_ALL);
         boolean hasEnchantPower = itemStack.getEnchantments().containsKey(Enchantment.ARROW_DAMAGE);
@@ -44,20 +44,22 @@ public class DamageUtils {
             bonusEnchantDamage += (itemStack.getEnchantmentLevel(Enchantment.DAMAGE_ALL) * 1.25F);
         }
         if(hasEnchantPower){
-            bonusEnchantDamage += 0.25 * (itemStack.getEnchantmentLevel(Enchantment.ARROW_DAMAGE) + 1);
+            bonusEnchantDamage += 0.25 * (itemStack.getEnchantmentLevel(Enchantment.ARROW_DAMAGE));
         }
+        return bonusEnchantDamage;
+    }
 
-        if(item.equals(Material.DIAMOND_SWORD)){
-            return 7 + bonusEnchantDamage;
+    public static float strengthIncrease(Player player){
+        boolean hasStrength = player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE);
+        int strengthLevel = 0;
+        if(hasStrength){
+            for(PotionEffect effect : player.getActivePotionEffects()){
+                if(effect.getType().equals(PotionEffectType.INCREASE_DAMAGE)){
+                    strengthLevel = Math.max(strengthLevel, effect.getAmplifier() + 1);
+                }
+            }
         }
-        if(item.equals(Material.BOW)){
-            return 6 + bonusEnchantDamage;
-        }
-        if(item.equals(Material.GOLD_AXE)){
-            return 3 + bonusEnchantDamage;
-        }
-
-        return 1 + bonusEnchantDamage;
+        return Math.max(1.0F, 1.3F * strengthLevel);
     }
 
     /**
