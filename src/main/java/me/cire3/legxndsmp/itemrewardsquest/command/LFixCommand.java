@@ -5,6 +5,7 @@ import com.earth2me.essentials.User;
 import com.earth2me.essentials.api.Economy;
 import com.earth2me.essentials.api.NoLoanPermittedException;
 import com.earth2me.essentials.api.UserDoesNotExistException;
+import me.cire3.legxndsmp.itemrewardsquest.Constants;
 import net.ess3.api.MaxMoneyException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -18,8 +19,6 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
-
 public class LFixCommand implements CommandExecutor {
     private final Set<Player> needConfirm = new HashSet<>();
 
@@ -27,12 +26,12 @@ public class LFixCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if(!command.getName().equalsIgnoreCase("lfix")){
-            commandSender.sendMessage(UNKNOWN_COMMAND);
+            commandSender.sendMessage(Constants.UNKNOWN_COMMAND);
             return true;
         }
 
         if(!commandSender.hasPermission("itemrewardsquest.updateitems") && !commandSender.isOp()){
-            commandSender.sendMessage(PERMISSION_DENIED);
+            commandSender.sendMessage(Constants.PERMISSION_DENIED);
             return true;
         }
 
@@ -52,10 +51,11 @@ public class LFixCommand implements CommandExecutor {
                                     player.setItemInHand(item);
                                     player.updateInventory();
                                     Economy.subtract(player.getName(), cost);
-                                    player.sendMessage(CHAT_PREFIX + "Successfully repaired your item for $" + cost + "!");
+                                    player.sendMessage(Constants.CHAT_PREFIX +
+                                            "Successfully repaired your item for $" + cost + "!");
                                     this.needConfirm.remove(player);
                                 } else {
-                                    commandSender.sendMessage(FAIL_PREFIX + "You need $" +
+                                    commandSender.sendMessage(Constants.FAIL_PREFIX + "You need $" +
                                             BigDecimal.valueOf(cost).subtract(Economy.getMoneyExact(player.getName()))
                                             + " more to repair this item!");
                                 }
@@ -68,15 +68,15 @@ public class LFixCommand implements CommandExecutor {
                 }
             } else {
                 if(this.needConfirm.add(player)) {
-                    commandSender.sendMessage(CHAT_PREFIX + "This command will cost $2000 as base, " +
+                    commandSender.sendMessage(Constants.CHAT_PREFIX + "This command will cost $2000 as base, " +
                             "and another $900 for each enchant on this item.");
                     commandSender.sendMessage(ChatColor.YELLOW + "Use /lfix confirm to confirm fixing!");
                 } else {
-                    commandSender.sendMessage(FAIL_PREFIX + "Please use /lfix confirm!");
+                    commandSender.sendMessage(Constants.FAIL_PREFIX + "Please use /lfix confirm!");
                 }
             }
         } else {
-            commandSender.sendMessage(FAIL_PREFIX + "Only players can use this command!");
+            commandSender.sendMessage(Constants.FAIL_PREFIX + "Only players can use this command!");
         }
         return true;
     }

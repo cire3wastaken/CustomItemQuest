@@ -1,5 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.utils;
 
+import me.cire3.legxndsmp.itemrewardsquest.Constants;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import org.bukkit.Bukkit;
 
@@ -39,9 +40,9 @@ public class FileUtils {
     public static boolean writeVersion(File file){
         try {
             FileWriter myWriter = new FileWriter(file, false);
-            myWriter.write(ItemRewardsQuest.PLUGIN_VERSION);
+            myWriter.write(Constants.PLUGIN_VERSION);
             myWriter.close();
-            Bukkit.getLogger().info("Successfully wrote " + ItemRewardsQuest.PLUGIN_VERSION + " to " +
+            Bukkit.getLogger().info("Successfully wrote " + Constants.PLUGIN_VERSION + " to " +
                     file.getAbsolutePath());
             return true;
         } catch (IOException e) {

@@ -11,7 +11,7 @@ public class ReloadPluginSubCommand implements SubCommand {
             return;
         }
 
-        ItemRewardsQuest.INSTANCE.disable();
-        ItemRewardsQuest.INSTANCE.enable();
+        ItemRewardsQuest.getInstance().disable();
+        ItemRewardsQuest.getInstance().enable();
     }
 }

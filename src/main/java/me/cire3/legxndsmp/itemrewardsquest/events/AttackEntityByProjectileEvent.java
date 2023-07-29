@@ -1,6 +1,8 @@
 package me.cire3.legxndsmp.itemrewardsquest.events;
 
+import me.cire3.legxndsmp.itemrewardsquest.Constants;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
+import me.cire3.legxndsmp.itemrewardsquest.items.GhastBow;
 import me.cire3.legxndsmp.itemrewardsquest.items.Items;
 import me.cire3.legxndsmp.itemrewardsquest.utils.PlayerUtils;
 import org.bukkit.*;
@@ -14,15 +16,12 @@ import org.bukkit.util.Vector;
 import java.math.BigDecimal;
 import java.util.Collection;
 
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
-import static me.cire3.legxndsmp.itemrewardsquest.command.ConvertCommand.OLD_GHASTBOW_LORE;
-
 public class AttackEntityByProjectileEvent implements Listener {
     //Handles ghast bow
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onAttackEntityByProjectile(EntityDamageByEntityEvent event) {
-        if(!ItemRewardsQuest.INSTANCE.isEnabled) return;
+        if(!ItemRewardsQuest.getInstance().isEnabled) return;
         if(event.isCancelled()) return;
 
         if(event.getDamager() instanceof Projectile){
@@ -32,30 +31,30 @@ public class AttackEntityByProjectileEvent implements Listener {
 
                     if(!PlayerUtils.shouldUse(playerShooter))
                     {
-                        if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
+                        if(ItemRewardsQuest.getInstance().hasCooldown(playerShooter)) return;
 
-                        playerShooter.sendMessage(ChatColor.RED + CAN_NOT_USE);
-                        ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
+                        playerShooter.sendMessage(ChatColor.RED + Constants.CAN_NOT_USE);
+                        ItemRewardsQuest.getInstance().activateCooldown(playerShooter);
                         return;
                     }
 
-                    if(PlayerUtils.containsString(playerShooter.getItemInHand(), OLD_GHASTBOW_LORE)){
-                        playerShooter.sendMessage(FAIL_PREFIX +
+                    if(PlayerUtils.containsLore(playerShooter.getItemInHand(), GhastBow.oldLore)){
+                        playerShooter.sendMessage(Constants.FAIL_PREFIX +
                                 "This items abilities are nullified due to being outdated. " +
                                 "Use /updateitem while holding it to update it.");
                         return;
                     }
 
-                    if(ItemRewardsQuest.INSTANCE.isBlacklisted(playerShooter)){
-                        if(ItemRewardsQuest.INSTANCE.hasCooldown(playerShooter)) return;
+                    if(ItemRewardsQuest.getInstance().isBlacklisted(playerShooter)){
+                        if(ItemRewardsQuest.getInstance().hasCooldown(playerShooter)) return;
 
-                        playerShooter.sendMessage(ChatColor.RED + BLACKLISTED);
-                        ItemRewardsQuest.INSTANCE.activateCooldown(playerShooter);
+                        playerShooter.sendMessage(ChatColor.RED + Constants.BLACKLISTED);
+                        ItemRewardsQuest.getInstance().activateCooldown(playerShooter);
                         return;
                     }
 
-                    if(INSTANCE.isDisabled(Items.WITCHSCYHTE)){
-                        playerShooter.sendMessage(DISABLED_ITEM);
+                    if(ItemRewardsQuest.getInstance().isDisabled(Items.WITCHSCYHTE)){
+                        playerShooter.sendMessage(Constants.DISABLED_ITEM);
                         return;
                     }
 
@@ -65,13 +64,13 @@ public class AttackEntityByProjectileEvent implements Listener {
                     float power;
                     Effect effect;
 
-                    switch((int) ItemRewardsQuest.INSTANCE.ghastBow.explosionPowerConfig){
+                    switch((int) GhastBow.explosionPowerConfig){
                         case 2: power = 5; effect = Effect.EXPLOSION_LARGE; break;
                         case 3: power = 6; effect = Effect.EXPLOSION_HUGE; break;
                         default: effect = Effect.EXPLOSION; power = 4; break;
                     }
 
-                    if(!ItemRewardsQuest.INSTANCE.ghastBow.explosion){
+                    if(!GhastBow.explosion){
                         world.playEffect(location, effect, 3);
                         world.playSound(location, Sound.EXPLODE, 1F, 1F);
 
@@ -89,7 +88,7 @@ public class AttackEntityByProjectileEvent implements Listener {
                                 LivingEntity entity = (LivingEntity) nearby;
                                 BigDecimal healthBefore = BigDecimal.valueOf(entity.getHealth());
 
-                                entity.damage(ItemRewardsQuest.INSTANCE.ghastBow.damageConfig * ((100F -
+                                entity.damage(GhastBow.damageConfig * ((100F -
                                     entity.getLocation().distanceSquared(event.getEntity().getLocation()) * 3) / 100F),
                                         playerShooter
                                 );

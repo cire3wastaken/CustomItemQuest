@@ -1,10 +1,9 @@
 package me.cire3.legxndsmp.itemrewardsquest.command.subcommands.server;
 
+import me.cire3.legxndsmp.itemrewardsquest.Constants;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.SubCommand;
 import org.bukkit.command.CommandSender;
-
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
 
 public class EnableSubCommand implements SubCommand {
     @Override
@@ -13,9 +12,9 @@ public class EnableSubCommand implements SubCommand {
             return;
         }
 
-        ItemRewardsQuest.INSTANCE.isEnabled = true;
-        ItemRewardsQuest.INSTANCE.enable();
+        ItemRewardsQuest.getInstance().isEnabled = true;
+        ItemRewardsQuest.getInstance().itemCommands.subCommands.get("reload").execute(commandSender, args);
 
-        commandSender.sendMessage(CHAT_PREFIX + "ItemRewardsQuest is now enabled!");
+        commandSender.sendMessage(Constants.CHAT_PREFIX + "ItemRewardsQuest is now enabled!");
     }
 }
