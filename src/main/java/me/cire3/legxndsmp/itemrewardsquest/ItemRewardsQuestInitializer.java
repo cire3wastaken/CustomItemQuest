@@ -12,10 +12,10 @@ public class ItemRewardsQuestInitializer extends JavaPlugin {
     public void onEnable(){
         if(hasBeenInitialized){
             Bukkit.getLogger().info(ChatColor.GOLD + "ItemsRewardsQuest has been enabled");
-            ItemRewardsQuest.INSTANCE.enable();
+            ItemRewardsQuest.getInstance().enable();
         } else {
             Bukkit.getLogger().info(ChatColor.GOLD + "ItemsRewardsQuest has been initialized");
-            ItemRewardsQuest.INSTANCE.init(this);
+            ItemRewardsQuest.getInstance().init(this);
             hasBeenInitialized = true;
         }
     }
@@ -23,6 +23,6 @@ public class ItemRewardsQuestInitializer extends JavaPlugin {
     @Override
     public void onDisable(){
         Bukkit.getLogger().info(ChatColor.GOLD + "ItemsRewardsQuest has been disabled");
-        ItemRewardsQuest.INSTANCE.disable();
+        ItemRewardsQuest.getInstance().disable();
     }
 }

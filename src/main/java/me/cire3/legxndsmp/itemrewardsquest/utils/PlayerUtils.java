@@ -70,9 +70,9 @@ public class PlayerUtils {
 
         String worldName = p.getWorld().getName().toLowerCase();
 
-        if(ItemRewardsQuest.INSTANCE.protectedRegions.containsKey(worldName)){
+        if(ItemRewardsQuest.getInstance().protectedRegions.containsKey(worldName)){
             for(ProtectedRegion region : set) {
-                if (ItemRewardsQuest.INSTANCE.protectedRegions.get(worldName).contains(region.getId().toLowerCase())){
+                if (ItemRewardsQuest.getInstance().protectedRegions.get(worldName).contains(region.getId().toLowerCase())){
                     return false;
                 }
             }
@@ -97,9 +97,9 @@ public class PlayerUtils {
         ApplicableRegionSet set = query.getApplicableRegions(p.getLocation());
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(p);
 
-        if(ItemRewardsQuest.INSTANCE.protectedRegions.containsKey(worldName)){
+        if(ItemRewardsQuest.getInstance().protectedRegions.containsKey(worldName)){
             for (ProtectedRegion region : set){
-                if(ItemRewardsQuest.INSTANCE.protectedRegions.get(worldName).contains(region.getId().toLowerCase())) {
+                if(ItemRewardsQuest.getInstance().protectedRegions.get(worldName).contains(region.getId().toLowerCase())) {
                     return true;
                 }
             }
@@ -122,15 +122,15 @@ public class PlayerUtils {
 
         String worldName = p.getWorld().getName().toLowerCase();
 
-        if(ItemRewardsQuest.INSTANCE.protectedRegions.containsKey(worldName)){
+        if(ItemRewardsQuest.getInstance().protectedRegions.containsKey(worldName)){
             for(ProtectedRegion region : set) {
-                if(ItemRewardsQuest.INSTANCE.whitelistedRegions.containsKey(worldName)){
-                    if(ItemRewardsQuest.INSTANCE.whitelistedRegions.get(worldName).contains(region.getId().toLowerCase())){
+                if(ItemRewardsQuest.getInstance().whitelistedRegions.containsKey(worldName)){
+                    if(ItemRewardsQuest.getInstance().whitelistedRegions.get(worldName).contains(region.getId().toLowerCase())){
                         return true;
                     }
                 }
 
-                if (ItemRewardsQuest.INSTANCE.protectedRegions.get(worldName).contains(region.getId().toLowerCase())){
+                if (ItemRewardsQuest.getInstance().protectedRegions.get(worldName).contains(region.getId().toLowerCase())){
                     return false;
                 }
             }
@@ -153,15 +153,15 @@ public class PlayerUtils {
 
         String worldName = loc.getWorld().getName().toLowerCase();
 
-        if(ItemRewardsQuest.INSTANCE.protectedRegions.containsKey(worldName)){
+        if(ItemRewardsQuest.getInstance().protectedRegions.containsKey(worldName)){
             for(ProtectedRegion region : set) {
-                if(ItemRewardsQuest.INSTANCE.whitelistedRegions.containsKey(worldName)){
-                    if(ItemRewardsQuest.INSTANCE.whitelistedRegions.get(worldName).contains(region.getId().toLowerCase())){
+                if(ItemRewardsQuest.getInstance().whitelistedRegions.containsKey(worldName)){
+                    if(ItemRewardsQuest.getInstance().whitelistedRegions.get(worldName).contains(region.getId().toLowerCase())){
                         return true;
                     }
                 }
 
-                if (ItemRewardsQuest.INSTANCE.protectedRegions.get(worldName).contains(region.getId().toLowerCase())){
+                if (ItemRewardsQuest.getInstance().protectedRegions.get(worldName).contains(region.getId().toLowerCase())){
                     return false;
                 }
             }

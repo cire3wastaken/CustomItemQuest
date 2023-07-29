@@ -1,5 +1,7 @@
 package me.cire3.legxndsmp.itemrewardsquest.command;
 
+import me.cire3.legxndsmp.itemrewardsquest.Constants;
+import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.SubCommand;
 import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.item.*;
 import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.player.HelpSubCommand;
@@ -39,8 +41,8 @@ public class ItemCommands implements CommandExecutor {
         SubCommand subCommand = this.subCommands.get(args[0]);
 
         if(subCommand == null){
-            commandSender.sendMessage(UNKNOWN_COMMAND);
-            commandSender.sendMessage(FAIL_PREFIX + "/itemrewardsquest help");
+            commandSender.sendMessage(Constants.UNKNOWN_COMMAND);
+            commandSender.sendMessage(Constants.FAIL_PREFIX + "/itemrewardsquest help");
             return;
         }
 
@@ -49,13 +51,13 @@ public class ItemCommands implements CommandExecutor {
             subCommand.execute(commandSender, args);
         }
 
-        if(INSTANCE.isEnabled) {
+        if(getInstance().isEnabled) {
             subCommand.execute(commandSender, args);
         } else {
             flag = true;
         }
         if(flag){
-            commandSender.sendMessage(DISABLED_MESSAGE);
+            commandSender.sendMessage(Constants.DISABLED_MESSAGE);
         }
     }
 

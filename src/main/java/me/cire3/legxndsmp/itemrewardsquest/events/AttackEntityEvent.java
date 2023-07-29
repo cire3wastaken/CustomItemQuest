@@ -1,7 +1,12 @@
 package me.cire3.legxndsmp.itemrewardsquest.events;
 
+import me.cire3.legxndsmp.itemrewardsquest.Constants;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
+import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.item.WitchScytheCommand;
 import me.cire3.legxndsmp.itemrewardsquest.items.Items;
+import me.cire3.legxndsmp.itemrewardsquest.items.ThorHammer;
+import me.cire3.legxndsmp.itemrewardsquest.items.VampireBlade;
+import me.cire3.legxndsmp.itemrewardsquest.items.WitchScythe;
 import me.cire3.legxndsmp.itemrewardsquest.utils.DamageUtils;
 import me.cire3.legxndsmp.itemrewardsquest.utils.PlayerUtils;
 import org.bukkit.Bukkit;
@@ -19,34 +24,31 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.HashMap;
 import java.util.Map;
 
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
-import static me.cire3.legxndsmp.itemrewardsquest.command.ConvertCommand.*;
-
 public class AttackEntityEvent implements org.bukkit.event.Listener {
     private final Map<Player, Long> thorHammerPatch = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityAttack(EntityDamageByEntityEvent event) {
-        if(!ItemRewardsQuest.INSTANCE.isEnabled) return;
+        if(!ItemRewardsQuest.getInstance().isEnabled) return;
         if(event.isCancelled()) return;
 
         if(event.getDamager() instanceof Player) {
             Player playerAttacker = (Player) event.getDamager();
 
-            if(ItemRewardsQuest.INSTANCE.isBlacklisted(playerAttacker)){
-                if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+            if(ItemRewardsQuest.getInstance().isBlacklisted(playerAttacker)){
+                if(ItemRewardsQuest.getInstance().hasCooldown(playerAttacker)) return;
 
-                playerAttacker.sendMessage(ChatColor.RED + BLACKLISTED);
-                ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
+                playerAttacker.sendMessage(ChatColor.RED + Constants.BLACKLISTED);
+                ItemRewardsQuest.getInstance().activateCooldown(playerAttacker);
                 return;
             }
             Entity victim = event.getEntity();
 
-            if(PlayerUtils.containsString(playerAttacker.getItemInHand(), OLD_THORHAMMER_LORE) ||
-                PlayerUtils.containsString(playerAttacker.getItemInHand(), OLD_WITCHSCYTHE_LORE) ||
-                PlayerUtils.containsString(playerAttacker.getItemInHand(), OLD_VAMPBLADE_LORE) )
+            if(PlayerUtils.containsLore(playerAttacker.getItemInHand(), ThorHammer.oldLore) ||
+                PlayerUtils.containsLore(playerAttacker.getItemInHand(), WitchScythe.oldLore) ||
+                PlayerUtils.containsLore(playerAttacker.getItemInHand(), VampireBlade.oldLore) )
             {
-                playerAttacker.sendMessage(FAIL_PREFIX +
+                playerAttacker.sendMessage(Constants.FAIL_PREFIX +
                         "This items abilities are nullified due to being outdated. " +
                         "Use /updateitem while holding it to update it.");
                 return;
@@ -56,37 +58,37 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
             c[1] = c[1] * DamageUtils.strengthIncrease(playerAttacker);
 
             // Handles vamp blade
-            if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), ItemRewardsQuest.INSTANCE.vampireBlade.lore) &&
+            if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), VampireBlade.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.DIAMOND_SWORD))
             {
-                if(INSTANCE.isDisabled(Items.VAMPIREBLADE)){
-                    playerAttacker.sendMessage(DISABLED_ITEM);
+                if(ItemRewardsQuest.getInstance().isDisabled(Items.VAMPIREBLADE)){
+                    playerAttacker.sendMessage(Constants.DISABLED_ITEM);
                     return;
                 }
 
                 if(!PlayerUtils.shouldUse(playerAttacker))
                 {
-                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+                    if(ItemRewardsQuest.getInstance().hasCooldown(playerAttacker)) return;
 
-                    playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
-                    ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
+                    playerAttacker.sendMessage(ChatColor.RED + Constants.CAN_NOT_USE);
+                    ItemRewardsQuest.getInstance().activateCooldown(playerAttacker);
                     return;
                 }
 
                 playerAttacker.setHealth(Math.min(playerAttacker.getHealth() +
                     Math.min(Math.max(DamageUtils.calcDamage((int) c[0], c[1], 0, (int) c[3],
-                            (int) c[4]) * ItemRewardsQuest.INSTANCE.vampireBlade.toBeHealed,
+                            (int) c[4]) * VampireBlade.toBeHealed,
                         playerAttacker.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE) ?
                             (Math.random() >= 0.25 ? 3F : 2F) :
                                 (Math.random() >= 0.5 ? 2.0F : 1.0F)), 6.0F), 20.0F));
             }
 
             // Handles Thor Hammer
-            if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), ItemRewardsQuest.INSTANCE.thorHammer.lore) &&
+            if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), ThorHammer.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.GOLD_AXE))
             {
-                if(INSTANCE.isDisabled(Items.THORHAMMER)){
-                    playerAttacker.sendMessage(DISABLED_ITEM);
+                if(ItemRewardsQuest.getInstance().isDisabled(Items.THORHAMMER)){
+                    playerAttacker.sendMessage(Constants.DISABLED_ITEM);
                     return;
                 }
 
@@ -101,39 +103,39 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
 
                     if(!PlayerUtils.shouldUse(playerAttacker))
                     {
-                        if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+                        if(ItemRewardsQuest.getInstance().hasCooldown(playerAttacker)) return;
 
-                        playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
-                        ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
+                        playerAttacker.sendMessage(ChatColor.RED + Constants.CAN_NOT_USE);
+                        ItemRewardsQuest.getInstance().activateCooldown(playerAttacker);
                         return;
                     }
 
-                    if(ItemRewardsQuest.INSTANCE.thorHammer.ignoreArmor){
-                        target.setHealth(Math.max(target.getHealth() - ItemRewardsQuest.INSTANCE.thorHammer.damage, 0));
+                    if(ThorHammer.ignoreArmor){
+                        target.setHealth(Math.max(target.getHealth() - ThorHammer.damage, 0));
                         event.setCancelled(true);
                     } else {
-                        target.damage(ItemRewardsQuest.INSTANCE.thorHammer.damage, playerAttacker);
+                        target.damage(ThorHammer.damage, playerAttacker);
                         event.setCancelled(true);
                     }
-                    target.setFireTicks(((int) Math.floor(ItemRewardsQuest.INSTANCE.thorHammer.fireTicks)));
+                    target.setFireTicks(((int) Math.floor(ThorHammer.fireTicks)));
                 }
             }
 
             // Handles witch scythe
-            if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), ItemRewardsQuest.INSTANCE.witchScythe.lore) &&
+            if (PlayerUtils.containsLore(playerAttacker.getItemInHand(), WitchScythe.lore) &&
                     playerAttacker.getItemInHand().getType().equals(Material.GOLD_HOE))
             {
                 if(!PlayerUtils.shouldUse(playerAttacker))
                 {
-                    if(ItemRewardsQuest.INSTANCE.hasCooldown(playerAttacker)) return;
+                    if(ItemRewardsQuest.getInstance().hasCooldown(playerAttacker)) return;
 
-                    playerAttacker.sendMessage(ChatColor.RED + CAN_NOT_USE);
-                    ItemRewardsQuest.INSTANCE.activateCooldown(playerAttacker);
+                    playerAttacker.sendMessage(ChatColor.RED + Constants.CAN_NOT_USE);
+                    ItemRewardsQuest.getInstance().activateCooldown(playerAttacker);
                     return;
                 }
 
-                if(INSTANCE.isDisabled(Items.WITCHSCYHTE)){
-                    playerAttacker.sendMessage(DISABLED_ITEM);
+                if(ItemRewardsQuest.getInstance().isDisabled(Items.WITCHSCYHTE)){
+                    playerAttacker.sendMessage(Constants.DISABLED_ITEM);
                     return;
                 }
 
@@ -144,7 +146,7 @@ public class AttackEntityEvent implements org.bukkit.event.Listener {
                         playerVictim.removePotionEffect(PotionEffectType.POISON);
                     }
                     playerVictim.addPotionEffect(new PotionEffect(PotionEffectType.POISON,
-                            (int) Math.ceil(ItemRewardsQuest.INSTANCE.witchScythe.secondsOfEffect * 20), 4));
+                            (int) Math.ceil(WitchScythe.secondsOfEffect * 20), 4));
                 }
             }
         }

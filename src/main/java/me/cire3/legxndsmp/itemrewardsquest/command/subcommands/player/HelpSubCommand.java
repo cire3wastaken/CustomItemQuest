@@ -1,5 +1,6 @@
 package me.cire3.legxndsmp.itemrewardsquest.command.subcommands.player;
 
+import me.cire3.legxndsmp.itemrewardsquest.Constants;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.SubCommand;
 import org.bukkit.ChatColor;
@@ -8,18 +9,17 @@ import org.bukkit.command.CommandSender;
 import java.util.Arrays;
 import java.util.List;
 
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
-
 public class HelpSubCommand implements SubCommand {
     public final List<String> itemSub = Arrays.asList("ghastbow", "hyperion", "vampireblade", "thorhammer", "witchscythe");
 
     @Override
     public void execute(CommandSender commandSender, String[] args) {
         if (commandSender.hasPermission("itemrewardsquest.updateitems") || commandSender.isOp()) {
+            boolean flag3 = false;
             boolean flag2 = commandSender.isOp();
             boolean flag = false;
             if (args.length == 1 || args.length == 0) {
-                commandSender.sendMessage(CHAT_PREFIX + "ItemRewardsQuest Help Menu: Made by cire3 (sire3#0000)");
+                commandSender.sendMessage(Constants.CHAT_PREFIX + "ItemRewardsQuest Help Menu: Made by cire3 (sire3#0000)");
                 commandSender.sendMessage(makeHelpString("help", "Opens this help menu"));
                 commandSender.sendMessage("");
 
@@ -53,9 +53,9 @@ public class HelpSubCommand implements SubCommand {
                             "Commands to manipulate regions"));
                 }
             } else if(args.length == 2) {
-                for (String str : ItemRewardsQuest.INSTANCE.itemCommands.subCommands.keySet()) {
+                for (String str : ItemRewardsQuest.getInstance().itemCommands.subCommands.keySet()) {
                     if (str.equalsIgnoreCase(args[1])) {
-                        boolean flag3 = false;
+
                         if (this.itemSub.contains(str.toLowerCase())) {
                             if(flag2 || commandSender.hasPermission("itemrewardsquest.giveitems")) {
                                 commandSender.sendMessage(makeTitleString(str));
@@ -117,16 +117,13 @@ public class HelpSubCommand implements SubCommand {
 
                         }
 
-                        if(flag3){
-                            commandSender.sendMessage(PERMISSION_DENIED);
-                        }
+
 
                         break;
                     }
                 }
-                if(!ItemRewardsQuest.INSTANCE.itemCommands.subCommands.containsKey(args[1])) flag = true;
+                if(!ItemRewardsQuest.getInstance().itemCommands.subCommands.containsKey(args[1])) flag = true;
             } else if (args.length == 3){
-                boolean flag3 = false;
                 if(flag2 || commandSender.hasPermission("itemrewardsquest.addregions")) {
                     if (args[1].equalsIgnoreCase("regions")) {
                         if (args[2].equalsIgnoreCase("whitelist")) {
@@ -156,12 +153,18 @@ public class HelpSubCommand implements SubCommand {
                 } else {
                     flag3 = true;
                 }
+
+                if(flag3)
+                    commandSender.sendMessage(Constants.PERMISSION_DENIED);
             } else {
                 flag = true;
             }
 
+            if(flag3)
+                commandSender.sendMessage(Constants.PERMISSION_DENIED);
+
             if(flag)
-                commandSender.sendMessage(UNKNOWN_SUBCOMMAND);
+                commandSender.sendMessage(Constants.UNKNOWN_SUBCOMMAND);
         }
     }
 

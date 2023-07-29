@@ -1,10 +1,9 @@
 package me.cire3.legxndsmp.itemrewardsquest.command.subcommands.server;
 
+import me.cire3.legxndsmp.itemrewardsquest.Constants;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.SubCommand;
 import org.bukkit.command.CommandSender;
-
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.CHAT_PREFIX;
 
 public class DisableSubCommand implements SubCommand {
     @Override
@@ -13,7 +12,7 @@ public class DisableSubCommand implements SubCommand {
             return;
         }
 
-        ItemRewardsQuest.INSTANCE.isEnabled = false;
-        commandSender.sendMessage(CHAT_PREFIX + "ItemRewardsQuest has been disabled!");
+        ItemRewardsQuest.getInstance().isEnabled = false;
+        commandSender.sendMessage(Constants.CHAT_PREFIX + "ItemRewardsQuest has been disabled!");
     }
 }

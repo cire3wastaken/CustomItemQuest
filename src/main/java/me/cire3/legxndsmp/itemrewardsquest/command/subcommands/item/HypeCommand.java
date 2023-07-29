@@ -1,13 +1,13 @@
 package me.cire3.legxndsmp.itemrewardsquest.command.subcommands.item;
 
+import me.cire3.legxndsmp.itemrewardsquest.Constants;
 import me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest;
 import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.SubCommand;
+import me.cire3.legxndsmp.itemrewardsquest.items.Hyperion;
 import me.cire3.legxndsmp.itemrewardsquest.items.Items;
 import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -16,13 +16,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Map;
 
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.*;
-
 public class HypeCommand implements SubCommand {
     @Override
     public void execute(CommandSender commandSender, String[] strings) {
         if(!commandSender.hasPermission("itemrewardsquest.giveitems") && !commandSender.isOp()){
-            commandSender.sendMessage(PERMISSION_DENIED);
+            commandSender.sendMessage(Constants.PERMISSION_DENIED);
             return;
         }
 
@@ -30,20 +28,21 @@ public class HypeCommand implements SubCommand {
         if(strings.length == 3){
             if(strings[1].equalsIgnoreCase("give")) {
                 if(this.giveItem(commandSender, strings))
-                    commandSender.sendMessage(CHAT_PREFIX + "Successfully gave " + strings[2] + " a Hyperion!");
+                    commandSender.sendMessage(Constants.CHAT_PREFIX + "Successfully gave " + strings[2] + " a Hyperion!");
             } else {
                 flag = true;
             }
         } else if (strings.length == 2) {
             if(strings[1].equalsIgnoreCase("toggle")) {
-                boolean temp = ItemRewardsQuest.INSTANCE.toggledItems.get(Items.HYPERION);
-                ItemRewardsQuest.INSTANCE.toggledItems.remove(Items.HYPERION, temp);
-                ItemRewardsQuest.INSTANCE.toggledItems.put(Items.HYPERION, !temp);
+                boolean temp = ItemRewardsQuest.getInstance().toggledItems.get(Items.HYPERION);
+                ItemRewardsQuest.getInstance().toggledItems.remove(Items.HYPERION, temp);
+                ItemRewardsQuest.getInstance().toggledItems.put(Items.HYPERION, !temp);
 
-                commandSender.sendMessage(CHAT_PREFIX + "Hyperions are now " + (!temp ? "disabled" : "enabled") + "!");
+                commandSender.sendMessage(Constants.CHAT_PREFIX + "Hyperions are now " +
+                        (temp ? "disabled!" : "enabled!"));
             } else if (strings[1].equalsIgnoreCase("state")){
-                commandSender.sendMessage(CHAT_PREFIX + "Hyperions are " +
-                        (INSTANCE.toggledItems.get(Items.HYPERION) ? "enabled!" : "disabled!"));
+                commandSender.sendMessage(Constants.CHAT_PREFIX + "Hyperions are " +
+                        (ItemRewardsQuest.getInstance().toggledItems.get(Items.HYPERION) ? "enabled!" : "disabled!"));
             } else {
                 flag = true;
             }
@@ -51,7 +50,7 @@ public class HypeCommand implements SubCommand {
             flag = true;
         }
         if(flag){
-            commandSender.sendMessage(UNKNOWN_COMMAND);
+            commandSender.sendMessage(Constants.UNKNOWN_COMMAND);
             commandSender.sendMessage("/itemrewardsquest help");
         }
     }
@@ -63,12 +62,12 @@ public class HypeCommand implements SubCommand {
     public boolean giveItem(CommandSender commandSender, String[] args, ItemMeta metaToSave) {
         ItemStack item = new ItemStack(Material.IRON_SPADE);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ColorUtils.color(INSTANCE.hyperion.name));
-        meta.setLore(ColorUtils.color(INSTANCE.hyperion.lore));
+        meta.setDisplayName(Hyperion.name);
+        meta.setLore(Hyperion.lore);
 
         Player target = Bukkit.getPlayerExact(args[2]);
         if (target == null) {
-            commandSender.sendMessage(FAIL_PREFIX + args[2] + " is not online!");
+            commandSender.sendMessage(Constants.FAIL_PREFIX + args[2] + " is not online!");
             return false;
         }
 

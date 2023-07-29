@@ -1,14 +1,12 @@
 package me.cire3.legxndsmp.itemrewardsquest.command.subcommands.item;
 
+import me.cire3.legxndsmp.itemrewardsquest.Constants;
 import me.cire3.legxndsmp.itemrewardsquest.command.subcommands.SubCommand;
 import me.cire3.legxndsmp.itemrewardsquest.utils.ColorUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.UNKNOWN_COMMAND;
-import static me.cire3.legxndsmp.itemrewardsquest.ItemRewardsQuest.UNKNOWN_SUBCOMMAND;
 
 public class RenameItemCommand implements SubCommand {
     @Override
@@ -30,10 +28,10 @@ public class RenameItemCommand implements SubCommand {
                 meta.setDisplayName(stringBuilder.toString());
                 currentItem.setItemMeta(meta);
             } else {
-                commandSender.sendMessage(UNKNOWN_SUBCOMMAND);
+                commandSender.sendMessage(Constants.UNKNOWN_SUBCOMMAND);
             }
         } else {
-            commandSender.sendMessage(UNKNOWN_COMMAND);
+            commandSender.sendMessage(Constants.UNKNOWN_COMMAND);
         }
     }
 }
